@@ -10,7 +10,7 @@ load_dotenv()
 
 # create the bot
 bot = commands.Bot(owner_id=196141424318611457,
-                   command_prefix='',
+                   command_prefix='~',
                    help_command=None)
 
 # add all the cogs
