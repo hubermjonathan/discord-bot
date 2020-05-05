@@ -22,10 +22,11 @@ class Roles(commands.Cog):
         # ignore the event
         if (payload.message_id != self.bot.get_channel(self.welcome_channel_id).last_message_id or
                 payload.emoji.is_unicode_emoji()):
-            welcome_channel_messages = await self.bot.get_channel(self.welcome_channel_id).history(limit=1).flatten()
-            reaction_to_remove = discord.utils.find(lambda r: r.emoji == payload.emoji.name,
-                                                    welcome_channel_messages[0].reactions)
-            await reaction_to_remove.remove(payload.member)
+            if payload.message_id == self.bot.get_channel(self.welcome_channel_id).last_message_id:
+                welcome_channel_messages = await self.bot.get_channel(self.welcome_channel_id).history(limit=1).flatten()
+                reaction_to_remove = discord.utils.find(lambda r: r.emoji == payload.emoji.name,
+                                                        welcome_channel_messages[0].reactions)
+                await reaction_to_remove.remove(payload.member)
             return
 
         # find the role
@@ -57,3 +58,17 @@ class Roles(commands.Cog):
 
         # remove the role
         await member.remove_roles(role_to_remove)
+
+    @commands.command()
+    @commands.is_owner()
+    @commands.dm_only()
+    async def refresh(self, ctx):
+        # acknowledge the command
+        await ctx.message.add_reaction('👍')
+
+        # add roles
+        welcome_channel_messages = await self.bot.get_channel(self.welcome_channel_id).history(limit=1).flatten()
+        for reaction in welcome_channel_messages[0].reactions:
+            async for member in reaction.users():
+                if discord.utils.get(member.roles, name=reaction.emoji.name) is None:
+                    await member.add_roles(discord.utils.get(member.guild.roles, name=reaction.emoji.name))
