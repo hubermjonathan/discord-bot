@@ -21,7 +21,7 @@ jobs:
         uses: actions/checkout@v1
 
       - name: Download
-      - uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
+        uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
         with:
           version: '275.0.0'
           service_account_email: ${{ secrets.SA_EMAIL }}
