@@ -2,7 +2,7 @@ import discord
 from discord.ext import commands
 
 
-class Roles(commands.Cog):
+class Welcome(commands.Cog):
     def __init__(self, bot, welcome_channel_id, default_role_id):
         self.bot = bot
         self.welcome_channel_id = welcome_channel_id
@@ -56,9 +56,9 @@ class Roles(commands.Cog):
 
     @commands.command()
     @commands.is_owner()
-    async def create(self, ctx):
+    async def welcome_create(self, ctx):
         # ignore the command
-        if ctx.message.id != self.bot.get_channel(self.welcome_channel_id).last_message_id:
+        if ctx.channel.id != self.welcome_channel_id:
             raise commands.CommandError
 
         # acknowledge the command

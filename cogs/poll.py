@@ -10,14 +10,7 @@ class Poll(commands.Cog):
 
     @commands.command()
     @commands.guild_only()
-    async def poll(self, ctx, *args):
-        # check the flag
-        if len(args) > 0 and args[0] == 'all':
-            # add the reactions
-            for r in reversed(ctx.guild.roles[1:ctx.guild.roles.index(ctx.guild.get_role(self.default_role_id))]):
-                await ctx.message.add_reaction(discord.utils.get(ctx.guild.emojis, name=r.name))
-            return
-
+    async def poll(self, ctx):
         # get the members
         voice_channel = None
         for vc in ctx.guild.voice_channels:
@@ -39,4 +32,11 @@ class Poll(commands.Cog):
 
         # add the reactions
         for r in roles:
+            await ctx.message.add_reaction(discord.utils.get(ctx.guild.emojis, name=r.name))
+
+    @commands.command()
+    @commands.guild_only()
+    async def poll_all(self, ctx):
+        # add the reactions
+        for r in reversed(ctx.guild.roles[1:ctx.guild.roles.index(ctx.guild.get_role(self.default_role_id))]):
             await ctx.message.add_reaction(discord.utils.get(ctx.guild.emojis, name=r.name))
