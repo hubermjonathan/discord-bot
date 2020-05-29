@@ -8,8 +8,7 @@ on:
 env:
   TOKEN: ${{ secrets.TOKEN }}
   PROJECT_ID: ${{ secrets.PROJECT_ID }}
-  REGION: us-central1
-  IMAGE_NAME: image
+  ZONE: us-central1-a
 
 jobs:
   setup-build-deploy:
@@ -20,7 +19,8 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
+      - name: Setup
+        uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
         with:
           version: '290.0.1'
           service_account_key: ${{ secrets.SA_KEY }}
@@ -30,14 +30,11 @@ jobs:
         run: |-
           gcloud builds submit \
             --quiet \
-            --tag "gcr.io/$PROJECT_ID/$IMAGE_NAME:"latest
+            --tag "gcr.io/$PROJECT_ID/image:latest"
 
       - name: Deploy
         run: |-
-          gcloud run deploy "$IMAGE_NAME" \
-            --quiet \
-            --region "$REGION" \
-            --image "gcr.io/$PROJECT_ID/$IMAGE_NAME:latest" \
-            --set-env-vars "TOKEN=$TOKEN" \
-            --platform "managed" \
-            --allow-unauthenticated
+          gcloud compute instances update-container instance \
+            --zone "$ZONE" \
+            --container-image "gcr.io/$PROJECT_ID/image:latest" \
+            --container-env "TOKEN=$TOKEN"
