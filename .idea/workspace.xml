@@ -12,10 +12,9 @@
   <component name="ChangeListManager">
     <list default="true" id="fdd432cb-d2dc-4e6e-99cf-4cb23d26eb29" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/bot.py" beforeDir="false" afterPath="$PROJECT_DIR$/bot.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cogs/poll.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cogs/roles.py" beforeDir="false" afterPath="$PROJECT_DIR$/cogs/roles.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cogs/controls.py" beforeDir="false" afterPath="$PROJECT_DIR$/cogs/controls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cogs/roles.py" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -144,7 +143,14 @@
       <option name="project" value="LOCAL" />
       <updated>1590746407168</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="added control panel, merged poll and roles into it, game picker is broken">
+      <created>1590751121441</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1590751121441</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -169,7 +175,8 @@
     <MESSAGE value="changing deployment" />
     <MESSAGE value="organization changes" />
     <MESSAGE value="split role management and welcome" />
-    <option name="LAST_COMMIT_MESSAGE" value="split role management and welcome" />
+    <MESSAGE value="added control panel, merged poll and roles into it, game picker is broken" />
+    <option name="LAST_COMMIT_MESSAGE" value="added control panel, merged poll and roles into it, game picker is broken" />
   </component>
   <component name="WindowStateProjectService">
     <state x="735" y="150" key="#bot" timestamp="1590727384737">
@@ -188,22 +195,22 @@
       <screen x="0" y="0" width="2048" height="1112" />
     </state>
     <state x="805" y="311" key="FileChooserDialogImpl/0.0.2048.1112@0.0.2048.1112" timestamp="1590710474262" />
-    <state width="2027" height="293" key="GridCell.Tab.0.bottom" timestamp="1590750913314">
+    <state width="2027" height="293" key="GridCell.Tab.0.bottom" timestamp="1590752263097">
       <screen x="0" y="0" width="2048" height="1112" />
     </state>
-    <state width="2027" height="293" key="GridCell.Tab.0.bottom/0.0.2048.1112@0.0.2048.1112" timestamp="1590750913314" />
-    <state width="2027" height="293" key="GridCell.Tab.0.center" timestamp="1590750913314">
+    <state width="2027" height="293" key="GridCell.Tab.0.bottom/0.0.2048.1112@0.0.2048.1112" timestamp="1590752263097" />
+    <state width="2027" height="293" key="GridCell.Tab.0.center" timestamp="1590752263097">
       <screen x="0" y="0" width="2048" height="1112" />
     </state>
-    <state width="2027" height="293" key="GridCell.Tab.0.center/0.0.2048.1112@0.0.2048.1112" timestamp="1590750913314" />
-    <state width="2027" height="293" key="GridCell.Tab.0.left" timestamp="1590750913314">
+    <state width="2027" height="293" key="GridCell.Tab.0.center/0.0.2048.1112@0.0.2048.1112" timestamp="1590752263097" />
+    <state width="2027" height="293" key="GridCell.Tab.0.left" timestamp="1590752263097">
       <screen x="0" y="0" width="2048" height="1112" />
     </state>
-    <state width="2027" height="293" key="GridCell.Tab.0.left/0.0.2048.1112@0.0.2048.1112" timestamp="1590750913314" />
-    <state width="2027" height="293" key="GridCell.Tab.0.right" timestamp="1590750913314">
+    <state width="2027" height="293" key="GridCell.Tab.0.left/0.0.2048.1112@0.0.2048.1112" timestamp="1590752263097" />
+    <state width="2027" height="293" key="GridCell.Tab.0.right" timestamp="1590752263097">
       <screen x="0" y="0" width="2048" height="1112" />
     </state>
-    <state width="2027" height="293" key="GridCell.Tab.0.right/0.0.2048.1112@0.0.2048.1112" timestamp="1590750913314" />
+    <state width="2027" height="293" key="GridCell.Tab.0.right/0.0.2048.1112@0.0.2048.1112" timestamp="1590752263097" />
     <state x="533" y="201" key="SettingsEditor" timestamp="1590727231500">
       <screen x="0" y="0" width="2048" height="1112" />
     </state>

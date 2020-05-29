@@ -9,19 +9,20 @@ class Controls(commands.Cog):
         self.controls_channel_id = controls_channel_id
         self.chat_channel_id = chat_channel_id
         self.default_role_id = default_role_id
+        self.payload = None
         self.last_poll = datetime.now()
 
-    async def is_new_reaction(self, payload):
+    async def is_new_reaction(self):
         # unwrap the payload
-        guild = self.bot.get_guild(payload.guild_id)
+        guild = self.bot.get_guild(self.payload.guild_id)
         channel = self.bot.get_channel(self.controls_channel_id)
-        message = await channel.fetch_message(payload.message_id)
+        message = await channel.fetch_message(self.payload.message_id)
 
         # find the reaction
         for r in message.reactions:
-            if isinstance(r.emoji, str) and r.emoji == payload.emoji.name:
+            if isinstance(r.emoji, str) and r.emoji == self.payload.emoji.name:
                 reaction = r
-            elif not isinstance(r.emoji, str) and r.emoji.name == payload.emoji.name:
+            elif not isinstance(r.emoji, str) and r.emoji.name == self.payload.emoji.name:
                 reaction = r
 
         # determine if it is new
@@ -31,42 +32,42 @@ class Controls(commands.Cog):
         else:
             return False
 
-    async def is_not_owner(self, payload):
-        return not await self.bot.is_owner(payload.member)
+    async def is_not_owner(self):
+        return not await self.bot.is_owner(self.payload.member)
 
-    async def remove_reaction(self, payload):
-        message = await self.bot.get_channel(self.controls_channel_id).fetch_message(payload.message_id)
+    async def is_game_emoji(self):
+        role = discord.utils.get(self.payload.member.guild.roles, name=self.payload.emoji.name)
+        if role is None:
+            return False
+        return True
+
+    async def remove_reaction(self):
+        message = await self.bot.get_channel(self.controls_channel_id).fetch_message(self.payload.message_id)
         for r in message.reactions:
-            if isinstance(r.emoji, str) and r.emoji == payload.emoji.name:
+            if isinstance(r.emoji, str) and r.emoji == self.payload.emoji.name:
                 reaction_to_remove = r
-            elif not isinstance(r.emoji, str) and r.emoji.name == payload.emoji.name:
+            elif not isinstance(r.emoji, str) and r.emoji.name == self.payload.emoji.name:
                 reaction_to_remove = r
-        await reaction_to_remove.remove(payload.member)
+        await reaction_to_remove.remove(self.payload.member)
 
-    async def change_server_region(self, payload):
+    async def change_server_region(self):
         # check if admin
-        if await self.is_not_owner(payload):
+        if await self.is_not_owner():
             return
-
-        # get the guild
-        guild = self.bot.get_guild(payload.guild_id)
 
         # change the server region
-        region = discord.VoiceRegion.us_west if payload.emoji.name == '🌴' else discord.VoiceRegion.us_central
-        await guild.edit(region=region)
+        region = discord.VoiceRegion.us_west if self.payload.emoji.name == '🌴' else discord.VoiceRegion.us_central
+        await self.payload.member.guild.edit(region=region)
 
-    async def toggle_priority_speaker(self, payload):
+    async def toggle_priority_speaker(self):
         # check if admin
-        if await self.is_not_owner(payload):
+        if await self.is_not_owner():
             return
-
-        # get the guild
-        guild = self.bot.get_guild(payload.guild_id)
 
         # get the members
         voice_channel = None
-        for vc in guild.voice_channels:
-            if guild.owner in vc.members:
+        for vc in self.payload.member.guild.voice_channels:
+            if self.payload.member.guild.owner in vc.members:
                 voice_channel = vc
                 break
         if voice_channel is None:
@@ -75,18 +76,18 @@ class Controls(commands.Cog):
 
         # mute or unmute all the members
         for m in members:
-            if m == guild.owner:
+            if m == self.payload.member.guild.owner:
                 continue
             await m.edit(mute=not m.voice.mute)
 
-    async def start_game_poll(self, payload):
+    async def start_game_poll(self):
         # check the cooldown
         if datetime.now() - self.last_poll < timedelta(minutes=1):
             return
         self.last_poll = datetime.now()
 
         # get the guild
-        guild = self.bot.get_guild(payload.guild_id)
+        guild = self.payload.member.guild
 
         # send the message
         message = await self.bot.get_channel(self.chat_channel_id).send('what game do you want to play?')
@@ -95,30 +96,45 @@ class Controls(commands.Cog):
         for r in reversed(guild.roles[1:guild.roles.index(guild.get_role(self.default_role_id))]):
             await message.add_reaction(discord.utils.get(guild.emojis, name=r.name))
 
+    async def update_roles(self):
+        # find the role
+        role = discord.utils.get(self.payload.member.guild.roles, name=self.payload.emoji.name)
+
+        # add or remove the role
+        if role in self.payload.member.roles:
+            await self.payload.member.remove_roles(role)
+        else:
+            await self.payload.member.add_roles(role)
+
     @commands.Cog.listener()
     async def on_raw_reaction_add(self, payload):
+        # deliver the payload
+        self.payload = payload
+
         # ignore the event
         if (payload.channel_id != self.controls_channel_id or
-                await self.is_new_reaction(payload) or
+                await self.is_new_reaction() or
                 payload.member.bot):
             if (payload.channel_id == self.controls_channel_id and
                     not payload.member.bot and
-                    await self.is_new_reaction(payload)):
-                await self.remove_reaction(payload)
+                    await self.is_new_reaction()):
+                await self.remove_reaction()
             return
 
-        await self.remove_reaction(payload)
+        await self.remove_reaction()
         if payload.emoji.name == '🌴' or payload.emoji.name == '🌽':
-            await self.change_server_region(payload)
+            await self.change_server_region()
         elif payload.emoji.name == '🎙':
-            await self.toggle_priority_speaker(payload)
+            await self.toggle_priority_speaker()
         elif payload.emoji.name == '🗳':
-            await self.start_game_poll(payload)
+            await self.start_game_poll()
+        elif await self.is_game_emoji():
+            await self.update_roles()
 
     @commands.command()
     @commands.guild_only()
     @commands.is_owner()
-    async def controls_create(self, ctx):
+    async def create_controls(self, ctx):
         # ignore the command
         if ctx.channel.id != self.controls_channel_id:
             raise commands.CommandError
