@@ -113,8 +113,8 @@ class Controls(commands.Cog):
 
         # ignore the event
         if (payload.channel_id != self.controls_channel_id or
-                await self.is_new_reaction() or
-                payload.member.bot):
+                payload.member.bot or
+                await self.is_new_reaction()):
             if (payload.channel_id == self.controls_channel_id and
                     not payload.member.bot and
                     await self.is_new_reaction()):
@@ -142,6 +142,11 @@ class Controls(commands.Cog):
         # clear the channel
         messages = await ctx.channel.history().flatten()
         await ctx.channel.delete_messages(messages)
+
+        # send the header
+        await ctx.send(file=discord.File('assets/header.png'))
+        await ctx.send('**PURDOODOO GLOBAL\n* now with social distancing! ***\n\n'
+                       ':small_orange_diamond:   there are no rules I don\'t give a shit')
 
         # send the admin controls
         await ctx.send('**-----------------------------------\nADMIN CONTROLS**')
