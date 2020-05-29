@@ -32,5 +32,7 @@ class Globals(commands.Cog):
             await ctx.message.add_reaction('❔')
         elif isinstance(error, commands.PrivateMessageOnly):
             return
+        elif isinstance(error, commands.NoPrivateMessage):
+            return
         else:
             await ctx.message.add_reaction('👎')

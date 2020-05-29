@@ -1,8 +1,9 @@
 # manager-bot
-**v1.0.1**</br>
+**v1.0.2**</br>
 [author](#author)
 
 ## version history
+**1.0.2** - added poll command</br>
 **1.0.1** - added refresh command</br>
 **1.0.0** - added role management</br>
 **0.0.0** - started development
