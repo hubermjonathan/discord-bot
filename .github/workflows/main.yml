@@ -8,8 +8,7 @@ on:
 env:
   TOKEN: ${{ secrets.TOKEN }}
   PROJECT_ID: ${{ secrets.PROJECT_ID }}
-  RUN_REGION: us-central1
-  IMAGE_NAME: image
+  ZONE: us-central1-a
 
 jobs:
   setup-build-deploy:
@@ -18,27 +17,24 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v1
-
-      - name: Download
-        uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
-        with:
-          version: '275.0.0'
-          service_account_email: ${{ secrets.SA_EMAIL }}
-          service_account_key: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS}}
+        uses: actions/checkout@v2
 
       - name: Setup
-        run: |
-          gcloud config set project $PROJECT_ID
-          gcloud config set run/region $RUN_REGION
+        uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
+        with:
+          version: '290.0.1'
+          service_account_key: ${{ secrets.SA_KEY }}
+          project_id: ${{ secrets.PROJECT_ID }}
 
       - name: Build
-        run: |
-          gcloud builds submit -t gcr.io/$PROJECT_ID/$IMAGE_NAME:latest
+        run: |-
+          gcloud builds submit \
+            --quiet \
+            --tag "gcr.io/$PROJECT_ID/image:latest"
 
       - name: Deploy
-        run: |
-          gcloud run deploy $IMAGE_NAME \
-            --image gcr.io/$PROJECT_ID/$IMAGE_NAME:latest \
-            --platform managed \
-            --allow-unauthenticated
+        run: |-
+          gcloud compute instances update-container instance \
+            --zone "$ZONE" \
+            --container-image "gcr.io/$PROJECT_ID/image:latest" \
+            --container-env "TOKEN=$TOKEN"
