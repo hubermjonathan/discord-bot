@@ -1,13 +1,9 @@
 import os
-from dotenv import load_dotenv
 import discord
 from discord.ext import commands
 from cogs.globals import Globals
 from cogs.roles import Roles
 from cogs.poll import Poll
-
-# load environment variables
-load_dotenv()
 
 # create the bot
 bot = commands.Bot(owner_id=196141424318611457,
