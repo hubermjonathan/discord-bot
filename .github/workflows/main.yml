@@ -8,7 +8,6 @@ on:
 env:
   TOKEN: ${{ secrets.TOKEN }}
   PROJECT_ID: ${{ secrets.PROJECT_ID }}
-  SA_KEY: ${{ secrets.SA_KEY }}
   REGION: us-central1
   IMAGE_NAME: image
 
@@ -24,8 +23,8 @@ jobs:
       - uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
         with:
           version: '290.0.1'
-          service_account_key: $SA_KEY
-          project_id: $PROJECT_ID
+          service_account_key: ${{ secrets.SA_KEY }}
+          project_id: ${{ secrets.PROJECT_ID }}
 
       - name: Build
         run: |-
