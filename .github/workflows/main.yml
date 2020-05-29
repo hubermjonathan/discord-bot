@@ -38,5 +38,6 @@ jobs:
             --quiet \
             --region "$REGION" \
             --image "gcr.io/$PROJECT_ID/$IMAGE_NAME:latest" \
+            --set-env-vars "TOKEN=$TOKEN" \
             --platform "managed" \
             --allow-unauthenticated
