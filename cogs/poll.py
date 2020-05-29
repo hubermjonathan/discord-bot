@@ -7,15 +7,14 @@ class Poll(commands.Cog):
         self.bot = bot
         self.default_role_id = default_role_id
         self.promoted_role_id = promoted_role_id
-        self.active_poll = False
 
     @commands.command()
     @commands.guild_only()
     async def poll(self, ctx, *args):
         # check the flag
-        if args[0] == 'all':
+        if len(args) > 0 and args[0] == 'all':
             # add the reactions
-            for r in ctx.guild.roles[1:ctx.guild.roles.index(ctx.guild.get_role(self.promoted_role_id))]:
+            for r in reversed(ctx.guild.roles[1:ctx.guild.roles.index(ctx.guild.get_role(self.default_role_id))]):
                 await ctx.message.add_reaction(discord.utils.get(ctx.guild.emojis, name=r.name))
             return
 
@@ -34,9 +33,7 @@ class Poll(commands.Cog):
         for m in members:
             if ctx.guild.get_role(self.promoted_role_id) in m.roles:
                 member_roles = m.roles[1:m.roles.index(ctx.guild.get_role(self.promoted_role_id))]
-            else:
-                member_roles = m.roles[1:m.roles.index(ctx.guild.get_role(self.default_role_id))]
-            roles = list(set(roles) & set(member_roles))
+                roles = list(set(roles) & set(member_roles))
         if len(roles) < 2:
             raise commands.CommandError
 
