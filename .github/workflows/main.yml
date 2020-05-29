@@ -8,7 +8,8 @@ on:
 env:
   TOKEN: ${{ secrets.TOKEN }}
   PROJECT_ID: ${{ secrets.PROJECT_ID }}
-  RUN_REGION: us-central1
+  SA_KEY: ${{ secrets.GKE_KEY }}
+  REGION: us-central1
   IMAGE_NAME: image
 
 jobs:
@@ -18,27 +19,25 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v1
+        uses: actions/checkout@v2
 
-      - name: Download
-        uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
+      - uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
         with:
-          version: '275.0.0'
-          service_account_email: ${{ secrets.SA_EMAIL }}
-          service_account_key: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS}}
-
-      - name: Setup
-        run: |
-          gcloud config set project $PROJECT_ID
-          gcloud config set run/region $RUN_REGION
+          version: '290.0.1'
+          service_account_key: $SA_KEY
+          project_id: $PROJECT_ID
 
       - name: Build
-        run: |
-          gcloud builds submit -t gcr.io/$PROJECT_ID/$IMAGE_NAME:latest
+        run: |-
+          gcloud builds submit \
+            --quiet \
+            --tag "gcr.io/$PROJECT_ID/$IMAGE_NAME:"latest
 
       - name: Deploy
-        run: |
-          gcloud run deploy $IMAGE_NAME \
-            --image gcr.io/$PROJECT_ID/$IMAGE_NAME:latest \
-            --platform managed \
+        run: |-
+          gcloud run deploy "$IMAGE_NAME" \
+            --quiet \
+            --region "$REGION" \
+            --image "gcr.io/$PROJECT_ID/$IMAGE_NAME:latest" \
+            --platform "managed" \
             --allow-unauthenticated
