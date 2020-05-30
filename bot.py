@@ -12,11 +12,11 @@ bot = commands.Bot(owner_id=196141424318611457,
 
 # add all the cogs
 bot.add_cog(Globals(bot))
-bot.add_cog(Welcome(bot, default_role_id=701162007981981771))
+bot.add_cog(Welcome(bot, default_role_id=int(os.getenv('DEFAULT_ROLE_ID'))))
 bot.add_cog(Controls(bot,
-                     controls_channel_id=715838633277653063,
-                     chat_channel_id=464695932957622292,
-                     default_role_id=701162007981981771))
+                     controls_channel_id=int(os.getenv('CONTROLS_CHANNEL_ID')),
+                     chat_channel_id=int(os.getenv('CHAT_CHANNEL_ID')),
+                     default_role_id=int(os.getenv('DEFAULT_ROLE_ID'))))
 
 # run the bot
 bot.run(os.getenv('TOKEN'))
