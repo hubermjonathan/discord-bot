@@ -4,6 +4,7 @@ from discord.ext import commands
 from cogs.globals import Globals
 from cogs.welcome import Welcome
 from cogs.controls import Controls
+from cogs.hello import Hello
 
 # create the bot
 bot = commands.Bot(owner_id=196141424318611457,
@@ -17,6 +18,7 @@ bot.add_cog(Controls(bot,
                      controls_channel_id=int(os.getenv('CONTROLS_CHANNEL_ID')),
                      chat_channel_id=int(os.getenv('CHAT_CHANNEL_ID')),
                      default_role_id=int(os.getenv('DEFAULT_ROLE_ID'))))
+bot.add_cog(Hello(bot))
 
 # run the bot
 bot.run(os.getenv('TOKEN'))

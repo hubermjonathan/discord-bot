@@ -126,6 +126,8 @@ class Controls(commands.Cog):
             await self.change_server_region()
         elif payload.emoji.name == '🎙':
             await self.toggle_priority_speaker()
+        elif payload.emoji.name == '👋':
+            await self.bot.get_cog('Hello').toggle()
         elif payload.emoji.name == '🗳':
             await self.start_game_poll()
         elif await self.is_game_emoji():
@@ -155,6 +157,8 @@ class Controls(commands.Cog):
         await message.add_reaction('🌽')
         message = await ctx.send('toggle priority speaker')
         await message.add_reaction('🎙')
+        message = await ctx.send('toggle greeting')
+        await message.add_reaction('👋')
 
         # send the general controls
         await ctx.send('**-----------------------------------\nGENERAL CONTROLS**')
