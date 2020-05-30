@@ -40,7 +40,7 @@ jobs:
           gcloud compute instances update-container instance \
             --zone "$ZONE" \
             --container-image "gcr.io/$PROJECT_ID/image:latest" \
-            --container-env "TOKEN=$TOKEN,\
-            CONTROLS_CHANNEL_ID=$CONTROLS_CHANNEL_ID,\
-            CHAT_CHANNEL_ID=$CHAT_CHANNEL_ID,\
-            DEFAULT_ROLE_ID=$DEFAULT_ROLE_ID"
+            --container-env "TOKEN=$TOKEN" \
+            --container-env "CONTROLS_CHANNEL_ID=$CONTROLS_CHANNEL_ID" \
+            --container-env "CHAT_CHANNEL_ID=$CHAT_CHANNEL_ID" \
+            --container-env "DEFAULT_ROLE_ID=$DEFAULT_ROLE_ID"
