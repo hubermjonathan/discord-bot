@@ -3,9 +3,7 @@ from dotenv import load_dotenv
 from discord.ext import commands
 
 # load environment variables
-if os.getenv('DEBUG') is not None:
-    load_dotenv('.env.development')
-else:
+if os.getenv('DEV') is not None:
     load_dotenv('.env')
 
 # create the bot
