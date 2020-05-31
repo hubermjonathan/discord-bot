@@ -11,11 +11,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="fdd432cb-d2dc-4e6e-99cf-4cb23d26eb29" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.github/workflows/main.yml" beforeDir="false" />
+      <change afterPath="$PROJECT_DIR$/Procfile" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dockerfile" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bot.py" beforeDir="false" afterPath="$PROJECT_DIR$/bot.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -195,7 +193,14 @@
       <option name="project" value="LOCAL" />
       <updated>1590883849753</updated>
     </task>
-    <option name="localTasksCounter" value="16" />
+    <task id="LOCAL-00016" summary="changed env vars for deployment">
+      <created>1590893815425</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1590893815425</updated>
+    </task>
+    <option name="localTasksCounter" value="17" />
     <servers />
   </component>
   <component name="UnknownFeatures">
@@ -229,7 +234,8 @@
     <MESSAGE value="switched ids to env variables" />
     <MESSAGE value="broken workflow" />
     <MESSAGE value="converted cogs to extensions, redid environment variables" />
-    <option name="LAST_COMMIT_MESSAGE" value="converted cogs to extensions, redid environment variables" />
+    <MESSAGE value="changed env vars for deployment" />
+    <option name="LAST_COMMIT_MESSAGE" value="changed env vars for deployment" />
   </component>
   <component name="WindowStateProjectService">
     <state x="517" y="126" key="#bot" timestamp="1590893590126">
@@ -241,11 +247,11 @@
       <screen x="0" y="23" width="1440" height="877" />
     </state>
     <state x="369" y="224" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.23.1440.877@0.23.1440.877" timestamp="1590888666032" />
-    <state x="822" y="90" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1590874278902">
+    <state x="822" y="90" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1590895386863">
       <screen x="0" y="23" width="1440" height="877" />
     </state>
     <state x="772" y="346" key="#com.intellij.fileTypes.FileTypeChooser/0.0.2048.1112@0.0.2048.1112" timestamp="1588648145398" />
-    <state x="822" y="90" key="#com.intellij.fileTypes.FileTypeChooser/0.23.1440.877@0.23.1440.877" timestamp="1590874278902" />
+    <state x="822" y="90" key="#com.intellij.fileTypes.FileTypeChooser/0.23.1440.877@0.23.1440.877" timestamp="1590895386863" />
     <state x="531" y="262" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog" timestamp="1590893664866">
       <screen x="0" y="23" width="1440" height="877" />
     </state>
@@ -284,10 +290,11 @@
     </state>
     <state x="533" y="201" key="SettingsEditor/0.0.2048.1112@0.0.2048.1112" timestamp="1590727231500" />
     <state x="-7" y="178" key="SettingsEditor/0.23.1440.877@0.23.1440.877" timestamp="1590885239660" />
-    <state x="617" y="285" key="Vcs.Push.Dialog.v2" timestamp="1590801889854">
-      <screen x="0" y="0" width="2048" height="1112" />
+    <state x="434" y="248" key="Vcs.Push.Dialog.v2" timestamp="1590893830303">
+      <screen x="0" y="23" width="1440" height="877" />
     </state>
     <state x="617" y="285" key="Vcs.Push.Dialog.v2/0.0.2048.1112@0.0.2048.1112" timestamp="1590801889854" />
+    <state x="434" y="248" key="Vcs.Push.Dialog.v2/0.23.1440.877@0.23.1440.877" timestamp="1590893830303" />
     <state x="483" y="215" width="670" height="535" key="search.everywhere.popup" timestamp="1590874474605">
       <screen x="0" y="23" width="1440" height="877" />
     </state>
