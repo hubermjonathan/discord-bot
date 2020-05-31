@@ -85,6 +85,15 @@ class Controls(commands.Cog):
                 continue
             await m.edit(mute=not m.voice.mute)
 
+    async def toggle_control_panel(self):
+        # get the channel
+        channel = self.bot.get_channel(self.controls_channel_id)
+
+        # change the permissions
+        for o in channel.overwrites_for(self.payload.member.guild.default_role):
+            if o[0] == 'read_messages':
+                await channel.set_permissions(self.payload.member.guild.default_role, read_messages=not o[1])
+
     async def start_game_poll(self):
         # check the cooldown
         if datetime.now() - self.last_poll < timedelta(minutes=1):
@@ -131,8 +140,8 @@ class Controls(commands.Cog):
             await self.change_server_region()
         elif payload.emoji.name == '🎙':
             await self.toggle_priority_speaker()
-        elif payload.emoji.name == '👋':
-            await self.bot.get_cog('Hello').toggle()
+        elif payload.emoji.name == '👁':
+            await self.toggle_control_panel()
         elif payload.emoji.name == '🗳':
             await self.start_game_poll()
         elif await self.is_game_emoji():
@@ -162,8 +171,8 @@ class Controls(commands.Cog):
         await message.add_reaction('🌽')
         message = await ctx.send('toggle priority speaker')
         await message.add_reaction('🎙')
-        message = await ctx.send('toggle greeting')
-        await message.add_reaction('👋')
+        message = await ctx.send('toggle control panel visibility')
+        await message.add_reaction('👁')
 
         # send the general controls
         await ctx.send('**-----------------------------------\nGENERAL CONTROLS**')
