@@ -7,6 +7,7 @@ from discord.ext import commands
 
 
 def setup(bot):
+    return
     bot.add_cog(Hello(bot))
 
 
