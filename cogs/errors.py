@@ -1,26 +1,13 @@
-import discord
 from discord.ext import commands
 
 
-class Globals(commands.Cog):
+def setup(bot):
+    bot.add_cog(Errors(bot))
+
+
+class Errors(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
-
-    @commands.Cog.listener()
-    async def on_connect(self):
-        print('connected to discord')
-
-    @commands.Cog.listener()
-    async def on_disconnect(self):
-        print('disconnected from discord')
-
-    @commands.Cog.listener()
-    async def on_resumed(self):
-        print('reconnected to discord')
-
-    @commands.Cog.listener()
-    async def on_ready(self):
-        print('ready')
 
     @commands.Cog.listener()
     async def on_command_error(self, ctx, error):
@@ -35,5 +22,5 @@ class Globals(commands.Cog):
         elif isinstance(error, commands.NoPrivateMessage):
             return
         else:
-            print(error)
+            print(f'BOT ERROR: {error}')
             await ctx.message.add_reaction('👎')

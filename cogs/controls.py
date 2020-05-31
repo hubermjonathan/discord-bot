@@ -1,14 +1,19 @@
+import os
 from datetime import datetime, timedelta
 import discord
 from discord.ext import commands
 
 
+def setup(bot):
+    bot.add_cog(Controls(bot))
+
+
 class Controls(commands.Cog):
-    def __init__(self, bot, controls_channel_id, chat_channel_id, default_role_id):
+    def __init__(self, bot):
         self.bot = bot
-        self.controls_channel_id = controls_channel_id
-        self.chat_channel_id = chat_channel_id
-        self.default_role_id = default_role_id
+        self.controls_channel_id = int(os.getenv('CONTROLS_CHANNEL_ID'))
+        self.chat_channel_id = int(os.getenv('CHAT_CHANNEL_ID'))
+        self.default_role_id = int(os.getenv('DEFAULT_ROLE_ID'))
         self.payload = None
         self.last_poll = datetime.now()
 
@@ -136,10 +141,10 @@ class Controls(commands.Cog):
     @commands.command()
     @commands.guild_only()
     @commands.is_owner()
-    async def create_controls(self, ctx):
+    async def controls(self, ctx):
         # ignore the command
         if ctx.channel.id != self.controls_channel_id:
-            raise commands.CommandError
+            raise commands.CommandError('Cannot use this command in this channel')
 
         # clear the channel
         messages = await ctx.channel.history().flatten()

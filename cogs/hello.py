@@ -6,6 +6,10 @@ import discord
 from discord.ext import commands
 
 
+def setup(bot):
+    bot.add_cog(Hello(bot))
+
+
 class Hello(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
@@ -38,7 +42,7 @@ class Hello(commands.Cog):
             # create the greeting
             member_name = self.queue.pop()
             tts_fp = BytesIO()
-            tts = gTTS('hello ' + member_name)
+            tts = gTTS(f'hello {member_name}')
             tts.write_to_fp(tts_fp)
             tts_fp.seek(0)
 
