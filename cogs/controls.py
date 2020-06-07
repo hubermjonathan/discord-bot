@@ -189,7 +189,7 @@ class Controls(commands.Cog):
         elif await self.is_game_emoji():
             await self.update_roles()
 
-    @commands.command()
+    @commands.command(aliases=['c'])
     @commands.guild_only()
     @commands.is_owner()
     async def controls(self, ctx):
