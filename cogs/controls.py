@@ -14,6 +14,7 @@ class Controls(commands.Cog):
         self.controls_channel_id = int(os.getenv('CONTROLS_CHANNEL_ID'))
         self.chat_channel_id = int(os.getenv('CHAT_CHANNEL_ID'))
         self.default_role_id = int(os.getenv('DEFAULT_ROLE_ID'))
+        self.promoted_role_id = int(os.getenv('PROMOTED_ROLE_ID'))
         self.payload = None
         self.last_poll = datetime.now()
 
@@ -94,6 +95,43 @@ class Controls(commands.Cog):
             if o[0] == 'read_messages':
                 await channel.set_permissions(self.payload.member.guild.default_role, read_messages=not o[1])
 
+    async def start_common_games_poll(self):
+        # check the cooldown
+        if datetime.now() - self.last_poll < timedelta(minutes=1):
+            return
+        self.last_poll = datetime.now()
+
+        # get the guild
+        guild = self.payload.member.guild
+
+        # get the members
+        voice_channel = None
+        for vc in guild.voice_channels:
+            if self.payload.member in vc.members:
+                voice_channel = vc
+                break
+        if voice_channel is None:
+            raise commands.CommandError
+        members = voice_channel.members
+
+        # get the roles
+        roles = guild.roles[1:guild.roles.index(guild.get_role(self.promoted_role_id))]
+        for m in members:
+            if guild.get_role(self.promoted_role_id) in m.roles:
+                member_roles = m.roles[1:m.roles.index(guild.get_role(self.promoted_role_id))]
+            else:
+                member_roles = m.roles[1:m.roles.index(guild.get_role(self.default_role_id))]
+            roles = list(set(roles) & set(member_roles))
+        if len(roles) < 2:
+            raise commands.CommandError('not enough games in common')
+
+        # send the message
+        message = await self.bot.get_channel(self.chat_channel_id).send('what game do you want to play?')
+
+        # add the reactions
+        for r in roles:
+            await message.add_reaction(discord.utils.get(guild.emojis, name=r.name))
+
     async def start_game_poll(self):
         # check the cooldown
         if datetime.now() - self.last_poll < timedelta(minutes=1):
@@ -144,6 +182,8 @@ class Controls(commands.Cog):
             await self.toggle_control_panel()
         elif payload.emoji.name == '🗳':
             await self.start_game_poll()
+        elif payload.emoji.name == '🔀':
+            await self.start_common_games_poll()
         elif await self.is_game_emoji():
             await self.update_roles()
 
@@ -153,7 +193,7 @@ class Controls(commands.Cog):
     async def controls(self, ctx):
         # ignore the command
         if ctx.channel.id != self.controls_channel_id:
-            raise commands.CommandError('Cannot use this command in this channel')
+            raise commands.CommandError('cannot use this command in this channel')
 
         # clear the channel
         messages = await ctx.channel.history().flatten()
@@ -178,6 +218,7 @@ class Controls(commands.Cog):
         await ctx.send('**-----------------------------------\nGENERAL CONTROLS**')
         message = await ctx.send('start game poll')
         await message.add_reaction('🗳')
+        await message.add_reaction('🔀')
         message = await ctx.send('add or remove games from your roles')
         for r in reversed(ctx.guild.roles[1:ctx.guild.roles.index(ctx.guild.get_role(self.default_role_id))]):
             await message.add_reaction(discord.utils.get(ctx.guild.emojis, name=r.name))

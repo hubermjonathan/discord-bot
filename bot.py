@@ -7,9 +7,7 @@ if os.getenv('DEV') is not None:
     load_dotenv('.env')
 
 # create the bot
-bot = commands.Bot(owner_id=int(os.getenv('OWNER_ID')),
-                   command_prefix=commands.when_mentioned,
-                   help_command=None)
+bot = commands.Bot(owner_id=196141424318611457, command_prefix=commands.when_mentioned, help_command=None)
 
 # add all the cogs
 for filename in os.listdir('./cogs'):

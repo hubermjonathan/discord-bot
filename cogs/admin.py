@@ -11,13 +11,6 @@ class Admin(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    @commands.Cog.listener()
-    async def on_ready(self):
-        # message owner
-        if os.getenv('DEV') is None:
-            user = await self.bot.fetch_user(self.bot.owner_id)
-            await user.send(f'Deployment complete at {datetime.now().time()}')
-
     @commands.command()
     @commands.is_owner()
     async def load(self, ctx, cog):
