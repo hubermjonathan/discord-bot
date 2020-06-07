@@ -88,7 +88,7 @@ class Controls(commands.Cog):
         # call the admin action
         if await self.is_not_owner():
             return
-        if payload.emoji.name == '🌴' or
+        elif (payload.emoji.name == '🌴' or
                 payload.emoji.name == '🌽' or
                 payload.emoji.name == '🐊' or
                 payload.emoji.name == '🗽'):

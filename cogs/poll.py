@@ -36,12 +36,14 @@ class Poll(commands.Cog):
         members = voice_channel.members
 
         # get the roles
-        roles = guild.roles[1:guild.roles.index(guild.get_role(self.promoted_role_id))]
+        roles = guild.roles[1:guild.roles.index(guild.get_role(self.default_role_id))]
         for m in members:
             if guild.get_role(self.promoted_role_id) in m.roles:
                 member_roles = m.roles[1:m.roles.index(guild.get_role(self.promoted_role_id))]
             else:
                 member_roles = m.roles[1:m.roles.index(guild.get_role(self.default_role_id))]
+            if len(member_roles) < 2:
+                continue
             roles = list(set(roles) & set(member_roles))
         if len(roles) < 2:
             raise commands.CommandError('not enough games in common')
