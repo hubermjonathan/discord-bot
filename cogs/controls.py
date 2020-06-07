@@ -94,6 +94,10 @@ class Controls(commands.Cog):
             await m.edit(mute=not m.voice.mute)
 
     async def toggle_control_panel(self):
+        # check if admin
+        if await self.is_not_owner():
+            return
+
         # get the channel
         channel = self.bot.get_channel(self.controls_channel_id)
 
@@ -188,6 +192,10 @@ class Controls(commands.Cog):
         elif payload.emoji.name == '👁':
             await self.toggle_control_panel()
         elif payload.emoji.name == '👋':
+            # check if admin
+            if await self.is_not_owner():
+                return
+
             await self.bot.get_cog('Hello').toggle()
         elif payload.emoji.name == '🗳':
             await self.start_game_poll()

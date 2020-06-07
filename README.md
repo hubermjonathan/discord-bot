@@ -1,8 +1,9 @@
 # manager-bot
-**v1.0.4**</br>
+**v1.0.5**</br>
 [author](#author)
 
 ## version history
+**1.0.5** - added custom statuses</br>
 **1.0.4** - added greeting</br>
 **1.0.3** - added control panel</br>
 **1.0.2** - added poll command</br>
