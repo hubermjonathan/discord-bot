@@ -62,7 +62,14 @@ class Controls(commands.Cog):
             return
 
         # change the server region
-        region = discord.VoiceRegion.us_west if self.payload.emoji.name == '🌴' else discord.VoiceRegion.us_central
+        if self.payload.emoji.name == '🌴':
+            region = discord.VoiceRegion.us_west
+        elif self.payload.emoji.name == '🌽':
+            region = discord.VoiceRegion.us_central
+        elif self.payload.emoji.name == '🐊':
+            region = discord.VoiceRegion.us_south
+        elif self.payload.emoji.name == '🗽':
+            region = discord.VoiceRegion.us_east
         await self.payload.member.guild.edit(region=region)
 
     async def toggle_priority_speaker(self):
@@ -174,7 +181,7 @@ class Controls(commands.Cog):
             return
 
         await self.remove_reaction()
-        if payload.emoji.name == '🌴' or payload.emoji.name == '🌽':
+        if payload.emoji.name == '🌴' or payload.emoji.name == '🌽' or payload.emoji.name == '🐊' or payload.emoji.name == '🗽':
             await self.change_server_region()
         elif payload.emoji.name == '🎙':
             await self.toggle_priority_speaker()
@@ -197,6 +204,9 @@ class Controls(commands.Cog):
         if ctx.channel.id != self.controls_channel_id:
             raise commands.CommandError('cannot use this command in this channel')
 
+        # toggle visibility
+        await self.toggle_control_panel()
+
         # clear the channel
         messages = await ctx.channel.history().flatten()
         await ctx.channel.delete_messages(messages)
@@ -211,6 +221,8 @@ class Controls(commands.Cog):
         message = await ctx.send('change server region')
         await message.add_reaction('🌴')
         await message.add_reaction('🌽')
+        await message.add_reaction('🐊')
+        await message.add_reaction('🗽')
         message = await ctx.send('admin toggles')
         await message.add_reaction('🎙')
         await message.add_reaction('👁')
@@ -224,3 +236,6 @@ class Controls(commands.Cog):
         message = await ctx.send('add or remove games from your roles')
         for r in reversed(ctx.guild.roles[1:ctx.guild.roles.index(ctx.guild.get_role(self.default_role_id))]):
             await message.add_reaction(discord.utils.get(ctx.guild.emojis, name=r.name))
+
+        # toggle visibility
+        await self.toggle_control_panel()
