@@ -7,23 +7,19 @@ from discord.ext import commands
 
 
 def setup(bot):
-    return
     bot.add_cog(Hello(bot))
 
 
 class Hello(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
-        self.enabled = True
+        self.enabled = False
         self.speaking = False
         self.queue = []
 
     async def toggle(self):
         # toggle the greeting
         self.enabled = not self.enabled
-
-        # update status
-        await self.bot.change_presence(status=discord.Status.online if self.enabled else discord.Status.dnd)
 
     @commands.Cog.listener()
     async def on_voice_state_update(self, member, before, after):

@@ -93,7 +93,7 @@ class Controls(commands.Cog):
                 payload.emoji.name == '🐊' or
                 payload.emoji.name == '🗽'):
             await self.bot.get_cog('Region').change(payload)
-        elif payload.emoji.name == '🎙':
+        elif payload.emoji.name == '📢':
             await self.bot.get_cog('Priority').toggle(payload)
         elif payload.emoji.name == '👁':
             await self.toggle_control_panel()
@@ -128,7 +128,7 @@ class Controls(commands.Cog):
         await message.add_reaction('🐊')
         await message.add_reaction('🗽')
         message = await ctx.send('toggles')
-        await message.add_reaction('🎙')
+        await message.add_reaction('📢')
         await message.add_reaction('👁')
         await message.add_reaction('👋')
 
