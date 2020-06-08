@@ -18,6 +18,9 @@ class Hello(commands.Cog):
         self.queue = []
 
     async def toggle(self):
+        # log the event
+        print(f'BOT LOG: toggled greeting')
+
         # toggle the greeting
         self.enabled = not self.enabled
 

@@ -53,6 +53,9 @@ class Controls(commands.Cog):
         await reaction_to_remove.remove(self.payload.member)
 
     async def toggle_control_panel(self):
+        # log the event
+        print(f'BOT LOG: toggled control panel visibility')
+
         # get the channel
         channel = self.bot.get_channel(self.controls_channel_id)
 
@@ -107,6 +110,9 @@ class Controls(commands.Cog):
         # ignore the command
         if ctx.channel.id != self.controls_channel_id:
             raise commands.CommandError('cannot use this command in this channel')
+
+        # log the event
+        print(f'BOT LOG: controls created')
 
         # toggle visibility
         await self.toggle_control_panel()

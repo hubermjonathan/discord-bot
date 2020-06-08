@@ -17,6 +17,9 @@ class Poll(commands.Cog):
         self.promoted_role_id = int(os.getenv('PROMOTED_ROLE_ID'))
 
     async def start_common(self, payload):
+        # log the event
+        print(f'BOT LOG: started common games poll')
+
         # check the cooldown
         if datetime.now() - self.last_poll < timedelta(minutes=1):
             return
@@ -56,6 +59,9 @@ class Poll(commands.Cog):
             await message.add_reaction(discord.utils.get(guild.emojis, name=r.name))
 
     async def start(self, payload):
+        # log the event
+        print(f'BOT LOG: started games poll')
+
         # check the cooldown
         if datetime.now() - self.last_poll < timedelta(minutes=1):
             return

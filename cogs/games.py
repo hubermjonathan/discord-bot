@@ -11,6 +11,9 @@ class Games(commands.Cog):
         self.bot = bot
 
     async def update(self, payload):
+        # log the event
+        print(f'BOT LOG: updated games')
+
         # find the role
         role = discord.utils.get(payload.member.guild.roles, name=payload.emoji.name)
 

@@ -25,5 +25,8 @@ class Status(commands.Cog):
             return
         self.last_change = datetime.now()
 
+        # log the event
+        print(f'BOT LOG: updated status')
+
         # change the activity
         await self.bot.change_presence(activity=random.choice(self.activities))

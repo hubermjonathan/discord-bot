@@ -17,5 +17,8 @@ class Welcome(commands.Cog):
         if member.bot:
             return
 
+        # log the event
+        print(f'BOT LOG: udpated new member')
+
         # change nickname and add the default role
         await member.edit(nick='???\'s Friend', roles=[member.guild.get_role(self.default_role_id)])

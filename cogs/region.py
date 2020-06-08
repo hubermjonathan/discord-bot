@@ -11,6 +11,9 @@ class Region(commands.Cog):
         self.bot = bot
 
     async def change(self, payload):
+        # log the event
+        print(f'BOT LOG: changed server region')
+
         # change the server region
         if payload.emoji.name == '🌴':
             region = discord.VoiceRegion.us_west

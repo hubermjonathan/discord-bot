@@ -22,6 +22,9 @@ class Admin(commands.Cog):
         # acknowledge the command
         await ctx.message.add_reaction('👍')
 
+        # log the event
+        print(f'BOT LOG: {cog} loaded')
+
     @commands.command(aliases=['ul'])
     @commands.is_owner()
     async def unload(self, ctx, cog):
@@ -35,6 +38,9 @@ class Admin(commands.Cog):
         # acknowledge the command
         await ctx.message.add_reaction('👍')
 
+        # log the event
+        print(f'BOT LOG: {cog} unloaded')
+
     @commands.command(aliases=['rl'])
     @commands.is_owner()
     async def reload(self, ctx, cog):
@@ -47,3 +53,6 @@ class Admin(commands.Cog):
 
         # acknowledge the command
         await ctx.message.add_reaction('👍')
+
+        # log the event
+        print(f'BOT LOG: {cog} reloaded')
