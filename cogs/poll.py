@@ -29,7 +29,7 @@ class Poll(commands.Cog):
                 voice_channel = vc
                 break
         if voice_channel is None:
-            raise commands.CommandError
+            return
         members = voice_channel.members
 
         roles = guild.roles[1:guild.roles.index(guild.get_role(self.default_role_id))]
@@ -42,7 +42,7 @@ class Poll(commands.Cog):
                 continue
             roles = list(set(roles) & set(member_roles))
         if len(roles) < 2:
-            raise commands.CommandError('not enough games in common')
+            return
 
         message = await self.bot.get_channel(self.chat_channel_id).send('what game do you want to play?')
 

@@ -11,13 +11,7 @@ class Errors(commands.Cog):
 
     @commands.Cog.listener()
     async def on_command_error(self, ctx, error):
-        if isinstance(error, commands.NotOwner):
-            await ctx.message.add_reaction('🔒')
-        elif isinstance(error, commands.CommandNotFound):
-            await ctx.message.add_reaction('❔')
-        elif isinstance(error, commands.MissingRequiredArgument):
-            await ctx.message.add_reaction('❔')
-        elif isinstance(error, commands.PrivateMessageOnly):
+        if isinstance(error, commands.PrivateMessageOnly):
             return
         elif isinstance(error, commands.NoPrivateMessage):
             return
