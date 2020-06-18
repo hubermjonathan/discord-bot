@@ -17,18 +17,12 @@ class Poll(commands.Cog):
         self.promoted_role_id = int(os.getenv('PROMOTED_ROLE_ID'))
 
     async def start_common(self, payload):
-        # log the event
-        print(f'BOT LOG: started common games poll')
-
-        # check the cooldown
         if datetime.now() - self.last_poll < timedelta(minutes=1):
             return
         self.last_poll = datetime.now()
 
-        # get the guild
         guild = payload.member.guild
 
-        # get the members
         voice_channel = None
         for vc in guild.voice_channels:
             if payload.member in vc.members:
@@ -38,7 +32,6 @@ class Poll(commands.Cog):
             raise commands.CommandError
         members = voice_channel.members
 
-        # get the roles
         roles = guild.roles[1:guild.roles.index(guild.get_role(self.default_role_id))]
         for m in members:
             if guild.get_role(self.promoted_role_id) in m.roles:
@@ -51,28 +44,18 @@ class Poll(commands.Cog):
         if len(roles) < 2:
             raise commands.CommandError('not enough games in common')
 
-        # send the message
         message = await self.bot.get_channel(self.chat_channel_id).send('what game do you want to play?')
 
-        # add the reactions
         for r in roles:
             await message.add_reaction(discord.utils.get(guild.emojis, name=r.name))
 
     async def start(self, payload):
-        # log the event
-        print(f'BOT LOG: started games poll')
-
-        # check the cooldown
         if datetime.now() - self.last_poll < timedelta(minutes=1):
             return
         self.last_poll = datetime.now()
 
-        # get the guild
-        guild = payload.member.guild
-
-        # send the message
         message = await self.bot.get_channel(self.chat_channel_id).send('what game do you want to play?')
 
-        # add the reactions
+        guild = payload.member.guild
         for r in reversed(guild.roles[1:guild.roles.index(guild.get_role(self.default_role_id))]):
             await message.add_reaction(discord.utils.get(guild.emojis, name=r.name))

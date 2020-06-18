@@ -20,13 +20,8 @@ class Status(commands.Cog):
 
     @commands.Cog.listener()
     async def on_voice_state_update(self, member, before, after):
-        # check the cooldown
         if datetime.now() - self.last_change < timedelta(minutes=5):
             return
         self.last_change = datetime.now()
 
-        # log the event
-        print(f'BOT LOG: updated status')
-
-        # change the activity
         await self.bot.change_presence(activity=random.choice(self.activities))

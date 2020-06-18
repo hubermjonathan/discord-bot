@@ -11,14 +11,8 @@ class Games(commands.Cog):
         self.bot = bot
 
     async def update(self, payload):
-        # log the event
-        print(f'BOT LOG: updated games')
-
-        # find the role
-        role = discord.utils.get(payload.member.guild.roles, name=payload.emoji.name)
-
-        # add or remove the role
-        if role in payload.member.roles:
-            await payload.member.remove_roles(role)
+        game = discord.utils.get(payload.member.guild.roles, name=payload.emoji.name)
+        if game in payload.member.roles:
+            await payload.member.remove_roles(game)
         else:
-            await payload.member.add_roles(role)
+            await payload.member.add_roles(game)

@@ -10,10 +10,6 @@ class Priority(commands.Cog):
         self.bot = bot
 
     async def toggle(self, payload):
-        # log the event
-        print(f'BOT LOG: toggled priority speaker')
-
-        # get the members
         voice_channel = None
         for vc in payload.member.guild.voice_channels:
             if payload.member.guild.owner in vc.members:
@@ -23,7 +19,6 @@ class Priority(commands.Cog):
             return
         members = voice_channel.members
 
-        # mute or unmute all the members
         for m in members:
             if m == payload.member.guild.owner:
                 continue

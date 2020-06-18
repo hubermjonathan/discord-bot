@@ -12,47 +12,29 @@ class Admin(commands.Cog):
     @commands.command(aliases=['l'])
     @commands.is_owner()
     async def load(self, ctx, cog):
-        # reload the extension
         try:
             self.bot.load_extension(f'cogs.{cog}')
         except Exception as e:
             await ctx.message.add_reaction('👎')
             return
-
-        # acknowledge the command
         await ctx.message.add_reaction('👍')
-
-        # log the event
-        print(f'BOT LOG: {cog} loaded')
 
     @commands.command(aliases=['ul'])
     @commands.is_owner()
     async def unload(self, ctx, cog):
-        # reload the extension
         try:
             self.bot.unload_extension(f'cogs.{cog}')
         except Exception as e:
             await ctx.message.add_reaction('👎')
             return
-
-        # acknowledge the command
         await ctx.message.add_reaction('👍')
-
-        # log the event
-        print(f'BOT LOG: {cog} unloaded')
 
     @commands.command(aliases=['rl'])
     @commands.is_owner()
     async def reload(self, ctx, cog):
-        # reload the extension
         try:
             self.bot.reload_extension(f'cogs.{cog}')
         except Exception as e:
             await ctx.message.add_reaction('👎')
             return
-
-        # acknowledge the command
         await ctx.message.add_reaction('👍')
-
-        # log the event
-        print(f'BOT LOG: {cog} reloaded')

@@ -13,12 +13,7 @@ class Welcome(commands.Cog):
 
     @commands.Cog.listener()
     async def on_member_join(self, member):
-        # ignore the event
         if member.bot:
             return
 
-        # log the event
-        print(f'BOT LOG: udpated new member')
-
-        # change nickname and add the default role
         await member.edit(nick='???\'s Friend', roles=[member.guild.get_role(self.default_role_id)])
