@@ -17,4 +17,3 @@ class Errors(commands.Cog):
             return
         else:
             print(f'BOT ERROR: {error}')
-            await ctx.message.add_reaction('👎')
