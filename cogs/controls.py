@@ -69,7 +69,9 @@ class Controls(commands.Cog):
             return
 
         await self.remove_reaction()
-        if payload.emoji.name == '🗳':
+        if payload.emoji.name == '💵':
+            await self.bot.get_cog('Economy').send_balance(payload)
+        elif payload.emoji.name == '🗳':
             await self.bot.get_cog('Poll').start(payload)
         elif payload.emoji.name == '🔀':
             await self.bot.get_cog('Poll').start_common(payload)
@@ -95,11 +97,12 @@ class Controls(commands.Cog):
     @commands.is_owner()
     async def controls(self, ctx):
         if ctx.channel.id != self.controls_channel_id:
-            raise commands.CommandError('cannot use this command in this channel')
+            return
 
         messages = await ctx.channel.history().flatten()
         await ctx.channel.delete_messages(messages)
 
+        await ctx.send('**-----------------------------------**')
         await ctx.send(file=discord.File('assets/header.png'))
         await ctx.send('**PURDOODOO GLOBAL\n* now with social distancing! ***\n\n'
                        ':small_orange_diamond:   there are no rules I don\'t give a shit')
@@ -122,3 +125,11 @@ class Controls(commands.Cog):
         message = await ctx.send('add or remove games from your roles')
         for r in reversed(ctx.guild.roles[1:ctx.guild.roles.index(ctx.guild.get_role(self.default_role_id))]):
             await message.add_reaction(discord.utils.get(ctx.guild.emojis, name=r.name))
+        message = await ctx.send('check your balance')
+        await message.add_reaction('💵')
+
+        await ctx.send('**-----------------------------------\nSHOP INFO**\n'
+                       'buy an item by typing `hey mitch [item] {user}`\n\n'
+                       '**🔇 mute (20)** - server mute a user for a minute\n')
+        await ctx.send('**-----------------------------------**')
+
