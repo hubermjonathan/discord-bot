@@ -129,7 +129,9 @@ class Controls(commands.Cog):
         await message.add_reaction('💵')
 
         await ctx.send('**-----------------------------------\nSHOP INFO**\n'
-                       'buy an item by typing `hey mitch [item] {user}`\n\n'
-                       '**🔇 mute (720 dining dollars)** - server mute a user for a minute\n')
+                       'buy an item by typing `hey mitch <item>`\n\n'
+                       '**🔇 mute (2160 dining dollars)** - server mute a user for a minute\n'
+                       '**🔇 mute random (1080 dining dollars)** - server mute a random user for a minute\n'
+                       '**✏ rename (1080 dining dollars)** - rename a user\n')
         await ctx.send('**-----------------------------------**')
 

@@ -45,9 +45,13 @@ class Economy(commands.Cog):
     @commands.command()
     async def mute(self, ctx, member: discord.Member):
         balance = float(self.redis.hget(ctx.author.id, 'points').decode('utf-8'))
-        if balance/5 < 720:
+        if balance/5 < 2160:
             await ctx.message.add_reaction('👎')
             return
+        await ctx.message.add_reaction('👍')
+
+        old_points = float(self.redis.hget(member.id, 'points').decode('utf-8'))
+        self.redis.hset(member.id, 'points', old_points - 2160)
 
         await member.edit(mute=True)
         await asyncio.sleep(60)
