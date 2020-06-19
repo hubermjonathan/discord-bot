@@ -4,43 +4,60 @@ from time import time
 import asyncio
 import redis
 import discord
-from discord.ext import commands
+from discord.ext import tasks, commands
 
 
 def setup(bot):
-    bot.add_cog(Economy(bot))
+    economy = Economy(bot)
+    bot.add_cog(economy)
+    economy.count_points.start()
+    economy.update_points.start()
 
 
 class Economy(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self.redis = redis.from_url(os.environ.get('REDIS_URL'))
+        self.default_role_id = int(os.getenv('DEFAULT_ROLE_ID'))
+        self.redis.delete(196141424318611457)
 
-    async def send_balance(self, payload):
-        balance = float(self.redis.hget(payload.member.id, 'points').decode('utf-8'))
-        await payload.member.send(f'your current balance is **{balance/5} dining dollars** 💵')
+    @tasks.loop(seconds=5)
+    async def count_points(self):
+        guild = self.bot.get_guild(378759761073668096)
+        for vc in guild.voice_channels:
+            for m in vc.members:
+                if m.bot or guild.get_role(self.default_role_id) in m.roles:
+                    continue
 
-    @commands.Cog.listener()
-    async def on_voice_state_update(self, member, before, after):
-        if member.bot:
-            return
+                if self.redis.hget(m.id, 'points') is None:
+                    self.redis.hset(m.id, 'points', 0)
 
-        if before.channel is None:
-            self.redis.hset(member.id, 'start_time', time())
+                old_points = float(self.redis.hget(m.id, 'points').decode('utf-8'))
+                self.redis.hset(m.id, 'points', old_points + 1)
 
-        elif after.channel is None:
-            start_time = float(self.redis.hget(member.id, 'start_time').decode('utf-8'))
-            old_points = float(self.redis.hget(member.id, 'points').decode('utf-8'))
-            new_points = math.floor(time() - start_time)
-            self.redis.hset(member.id, 'points', old_points + new_points)
+    @tasks.loop(minutes=5)
+    async def update_points(self):
+        guild = self.bot.get_guild(378759761073668096)
+        for vc in guild.voice_channels:
+            for m in vc.members:
+                if m.bot or guild.get_role(self.default_role_id) in m.roles:
+                    continue
 
-        else:
-            start_time = float(self.redis.hget(member.id, 'start_time').decode('utf-8'))
-            old_points = float(self.redis.hget(member.id, 'points').decode('utf-8'))
-            new_points = math.floor(time() - start_time)
-            if new_points > 5:
-                self.redis.hset(member.id, 'points', old_points + new_points)
-                self.redis.hset(member.id, 'start_time', time())
+                if self.redis.hget(m.id, 'points_message_id') is None:
+                    balance = float(self.redis.hget(m.id, 'points').decode('utf-8'))
+                    await m.create_dm()
+                    message = await m.send(f'your current balance is **{balance} dining dollars** 💵')
+                    self.redis.hset(m.id, 'points_message_id', message.id)
+
+                points_message_id = int(self.redis.hget(m.id, 'points_message_id').decode('utf-8'))
+                points_message = await m.dm_channel.fetch_message(points_message_id)
+                balance = float(self.redis.hget(m.id, 'points').decode('utf-8'))
+                await points_message.edit(content=f'your current balance is **{balance} dining dollars** 💵', suppress=True)
+
+    @count_points.before_loop
+    @update_points.before_loop
+    async def before_loops(self):
+        await self.bot.wait_until_ready()
 
     @commands.command()
     async def mute(self, ctx, member: discord.Member):

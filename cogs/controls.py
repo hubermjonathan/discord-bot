@@ -69,9 +69,7 @@ class Controls(commands.Cog):
             return
 
         await self.remove_reaction()
-        if payload.emoji.name == '💵':
-            await self.bot.get_cog('Economy').send_balance(payload)
-        elif payload.emoji.name == '🗳':
+        if payload.emoji.name == '🗳':
             await self.bot.get_cog('Poll').start(payload)
         elif payload.emoji.name == '🔀':
             await self.bot.get_cog('Poll').start_common(payload)
@@ -125,8 +123,6 @@ class Controls(commands.Cog):
         message = await ctx.send('add or remove games from your roles')
         for r in reversed(ctx.guild.roles[1:ctx.guild.roles.index(ctx.guild.get_role(self.default_role_id))]):
             await message.add_reaction(discord.utils.get(ctx.guild.emojis, name=r.name))
-        message = await ctx.send('check your balance')
-        await message.add_reaction('💵')
 
         await ctx.send('**-----------------------------------\nSHOP INFO**\n'
                        'buy an item by typing `hey mitch <item>`\n\n'
