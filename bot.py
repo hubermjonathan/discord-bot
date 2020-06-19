@@ -16,7 +16,7 @@ for filename in os.listdir('./cogs'):
 
 # add the error logger
 @bot.event
-async def on_command_error(self, ctx, error):
+async def on_command_error(ctx, error):
     print(f'BOT ERROR: {error}')
 
 # run the bot

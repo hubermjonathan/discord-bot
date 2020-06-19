@@ -17,9 +17,6 @@ class Hello(commands.Cog):
         self.speaking = False
         self.queue = []
 
-    async def toggle(self):
-        self.enabled = not self.enabled
-
     @commands.Cog.listener()
     async def on_voice_state_update(self, member, before, after):
         if member.bot or before.channel is not None or not self.enabled:
@@ -51,3 +48,13 @@ class Hello(commands.Cog):
 
         await voice_channel.disconnect()
         self.speaking = False
+
+    @commands.group(aliases=['h'])
+    async def hello(self, ctx):
+        if ctx.invoked_subcommand is None:
+            await ctx.message.add_reaction('❔')
+
+    @hello.command(aliases=['t'])
+    async def toggle(self, ctx):
+        self.enabled = not self.enabled
+        await ctx.message.add_reaction('👍')

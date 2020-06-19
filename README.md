@@ -1,8 +1,9 @@
 # mitch-bot
-**v1.0.6**</br>
+**v1.0.7**</br>
 [author](#author)
 
 ## version history
+**1.0.7** - removed control panel</br>
 **1.0.6** - added economy and shop</br>
 **1.0.5** - added custom statuses</br>
 **1.0.4** - added greeting</br>
