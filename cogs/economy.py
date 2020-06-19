@@ -17,12 +17,11 @@ class Economy(commands.Cog):
         self.redis = redis.from_url(os.environ.get('REDIS_URL'))
 
     async def send_balance(self, payload):
-        balance = self.redis.hget(payload.member.id, 'points').decode('utf-8')
-        await payload.member.send(f'your current balance is **{float(balance)/5} dining dollars** 💵')
+        balance = float(self.redis.hget(payload.member.id, 'points').decode('utf-8'))
+        await payload.member.send(f'your current balance is **{balance/5} dining dollars** 💵')
 
     @commands.Cog.listener()
     async def on_voice_state_update(self, member, before, after):
-        self.redis.hset(member.id, 'points', 0)
         if member.bot:
             return
 
@@ -30,23 +29,23 @@ class Economy(commands.Cog):
             self.redis.hset(member.id, 'start_time', time())
 
         elif after.channel is None:
-            start_time = self.redis.hget(member.id, 'start_time').decode('utf-8')
+            start_time = float(self.redis.hget(member.id, 'start_time').decode('utf-8'))
             old_points = float(self.redis.hget(member.id, 'points').decode('utf-8'))
-            new_points = math.floor(time() - float(start_time))
+            new_points = math.floor(time() - start_time)
             self.redis.hset(member.id, 'points', old_points + new_points)
 
         else:
-            start_time = self.redis.hget(member.id, 'start_time').decode('utf-8')
+            start_time = float(self.redis.hget(member.id, 'start_time').decode('utf-8'))
             old_points = float(self.redis.hget(member.id, 'points').decode('utf-8'))
-            new_points = math.floor(time() - float(start_time))
+            new_points = math.floor(time() - start_time)
             if new_points > 5:
                 self.redis.hset(member.id, 'points', old_points + new_points)
                 self.redis.hset(member.id, 'start_time', time())
 
     @commands.command()
     async def mute(self, ctx, member: discord.Member):
-        balance = self.redis.hget(ctx.author.id, 'points').decode('utf-8')
-        if float(balance)/5 < 720:
+        balance = float(self.redis.hget(ctx.author.id, 'points').decode('utf-8'))
+        if balance/5 < 720:
             await ctx.message.add_reaction('👎')
             return
 
