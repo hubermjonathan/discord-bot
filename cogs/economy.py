@@ -18,12 +18,15 @@ class Economy(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self.redis = redis.from_url(os.environ.get('REDIS_URL'))
+        self.guild_id = int(os.getenv('DEFAULT_ROLE_ID'))
         self.default_role_id = int(os.getenv('DEFAULT_ROLE_ID'))
+
+        # TESTING
         self.redis.delete(196141424318611457)
 
     @tasks.loop(seconds=5)
     async def count_points(self):
-        guild = self.bot.get_guild(378759761073668096)
+        guild = self.bot.get_guild(self.guild_id)
         for vc in guild.voice_channels:
             for m in vc.members:
                 if m.bot or guild.get_role(self.default_role_id) in m.roles:
@@ -39,7 +42,7 @@ class Economy(commands.Cog):
 
     @tasks.loop(minutes=5)
     async def update_points(self):
-        guild = self.bot.get_guild(378759761073668096)
+        guild = self.bot.get_guild(self.guild_id)
         for vc in guild.voice_channels:
             for m in vc.members:
                 if m.bot or guild.get_role(self.default_role_id) in m.roles:
@@ -72,7 +75,7 @@ class Economy(commands.Cog):
     async def mute(self, ctx, member: discord.Member):
         balance = float(self.redis.hget(ctx.author.id, 'points').decode('utf-8'))
         last_mute = float(self.redis.hget(ctx.author.id, 'last_mute').decode('utf-8'))
-        if balance < 2160 or time() - last_mute < 60:
+        if balance < 2160 or time() - last_mute < 60 or member.voice.mute:
             await ctx.message.add_reaction('👎')
             return
         await ctx.message.add_reaction('👍')
