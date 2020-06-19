@@ -130,6 +130,6 @@ class Controls(commands.Cog):
 
         await ctx.send('**-----------------------------------\nSHOP INFO**\n'
                        'buy an item by typing `hey mitch [item] {user}`\n\n'
-                       '**🔇 mute (20)** - server mute a user for a minute\n')
+                       '**🔇 mute (720 dining dollars)** - server mute a user for a minute\n')
         await ctx.send('**-----------------------------------**')
 

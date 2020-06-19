@@ -46,7 +46,7 @@ class Economy(commands.Cog):
     @commands.command()
     async def mute(self, ctx, member: discord.Member):
         balance = self.redis.hget(ctx.author.id, 'points').decode('utf-8')
-        if float(balance)/5 < 20:
+        if float(balance)/5 < 720:
             await ctx.message.add_reaction('👎')
             return
 
