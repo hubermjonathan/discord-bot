@@ -33,6 +33,7 @@ class Economy(commands.Cog):
                 if self.redis.hget(m.id, 'points') is None:
                     self.redis.hset(m.id, 'points', 0)
                     self.redis.hset(m.id, 'last_mute', time())
+                    self.redis.hset(m.id, 'last_rmute', time())
                     self.redis.hset(m.id, 'last_muted', time())
 
                 old_points = float(self.redis.hget(m.id, 'points').decode('utf-8'))
