@@ -36,7 +36,7 @@ class Games(commands.Cog):
 
     async def send(self):
         message = await ctx.send('add or remove games from your roles')
-        for r in reversed(ctx.guild.roles[1:ctx.guild.roles.index(ctx.guild.get_role(self.default_role_id))]):
+        for r in reversed(ctx.guild.roles[1:ctx.guild.roles.index(ctx.guild.get_role(globals.DEFAULT_ROLE_ID))]):
             await message.add_reaction(discord.utils.get(ctx.guild.emojis, name=r.name))
 
     async def update(self, payload):

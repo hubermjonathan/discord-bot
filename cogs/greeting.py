@@ -7,10 +7,10 @@ from discord.ext import commands
 
 
 def setup(bot):
-    bot.add_cog(Hello(bot))
+    bot.add_cog(Greeting(bot))
 
 
-class Hello(commands.Cog):
+class Greeting(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self.enabled = False
@@ -49,12 +49,12 @@ class Hello(commands.Cog):
         await voice_channel.disconnect()
         self.speaking = False
 
-    @commands.group(aliases=['h'])
-    async def hello(self, ctx):
+    @commands.group(aliases=['g'])
+    async def greeting(self, ctx):
         if ctx.invoked_subcommand is None:
             await ctx.message.add_reaction('❔')
 
-    @hello.command(aliases=['t'])
+    @greeting.command(aliases=['t'])
     async def toggle(self, ctx):
         self.enabled = not self.enabled
         await ctx.message.add_reaction('👍')
