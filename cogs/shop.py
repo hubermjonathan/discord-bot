@@ -26,15 +26,15 @@ class Shop(commands.Cog):
     @commands.group(aliases=['s'])
     async def shop(self, ctx):
         if ctx.invoked_subcommand is None:
-            await ctx.send('**🎲 random mute (1080 dining dollars)** - `rmute` - server mute someone random for a minute\n'
-                '**🔇 mute (2160 dining dollars)** - `mute <person>` - server mute someone for a minute\n'
-                '**✏ rename (1080 dining dollars)** - `rename <person> <name>` - rename someone\n')
+            await ctx.send('**🎲 random mute (175 dining dollars)** - `rmute` - server mute someone random for a minute\n'
+                '**🔇 mute (350 dining dollars)** - `mute <person>` - server mute someone for a minute\n'
+                '**✏ rename (150 dining dollars)** - `rename <person> <name>` - rename someone\n')
 
     @shop.command()
     async def rmute(self, ctx):
         balance = float(self.redis.hget(ctx.author.id, 'points').decode('utf-8'))
         last_mute = float(self.redis.hget(ctx.author.id, 'last_rmute').decode('utf-8'))
-        if balance < 2160:
+        if balance < 175:
             await ctx.message.add_reaction('💵')
             return
         elif time() - last_rmute < 60:
@@ -60,7 +60,7 @@ class Shop(commands.Cog):
 
         await ctx.message.add_reaction('👍')
         old_points = float(self.redis.hget(ctx.author.id, 'points').decode('utf-8'))
-        self.redis.hset(ctx.author.id, 'points', old_points - 2160)
+        self.redis.hset(ctx.author.id, 'points', old_points - 175)
         self.redis.hset(ctx.author.id, 'last_rmute', time())
         self.redis.hset(member.id, 'last_muted', time())
 
@@ -72,7 +72,7 @@ class Shop(commands.Cog):
     async def mute(self, ctx, member: discord.Member):
         balance = float(self.redis.hget(ctx.author.id, 'points').decode('utf-8'))
         last_mute = float(self.redis.hget(ctx.author.id, 'last_mute').decode('utf-8'))
-        if balance < 2160:
+        if balance < 350:
             await ctx.message.add_reaction('💵')
             return
         elif time() - last_mute < 300:
@@ -84,7 +84,7 @@ class Shop(commands.Cog):
 
         await ctx.message.add_reaction('👍')
         old_points = float(self.redis.hget(ctx.author.id, 'points').decode('utf-8'))
-        self.redis.hset(ctx.author.id, 'points', old_points - 2160)
+        self.redis.hset(ctx.author.id, 'points', old_points - 350)
         self.redis.hset(ctx.author.id, 'last_mute', time())
         self.redis.hset(member.id, 'last_muted', time())
 
@@ -95,12 +95,12 @@ class Shop(commands.Cog):
     @shop.command()
     async def rename(self, ctx, member: discord.Member, name):
         balance = float(self.redis.hget(ctx.author.id, 'points').decode('utf-8'))
-        if balance < 2160:
+        if balance < 150:
             await ctx.message.add_reaction('💵')
             return
 
         await ctx.message.add_reaction('👍')
         old_points = float(self.redis.hget(ctx.author.id, 'points').decode('utf-8'))
-        self.redis.hset(ctx.author.id, 'points', old_points - 2160)
+        self.redis.hset(ctx.author.id, 'points', old_points - 150)
 
         await member.edit(nick=name)
