@@ -1,4 +1,3 @@
-import os
 from datetime import datetime, timedelta
 import discord
 from discord.ext import commands
@@ -12,9 +11,6 @@ class Poll(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self.last_poll = datetime.now()
-        self.chat_channel_id = int(os.getenv('CHAT_CHANNEL_ID'))
-        self.default_role_id = int(os.getenv('DEFAULT_ROLE_ID'))
-        self.promoted_role_id = int(os.getenv('PROMOTED_ROLE_ID'))
 
     @commands.group(aliases=['p'])
     async def poll(self, ctx):
@@ -24,7 +20,7 @@ class Poll(commands.Cog):
                 return
             self.last_poll = datetime.now()
 
-            message = await self.bot.get_channel(self.chat_channel_id).send('what game do you want to play?')
+            message = await self.bot.get_channel(globals.chat_channel_id).send('what game do you want to play?')
             for r in reversed(ctx.guild.roles[1:ctx.guild.roles.index(ctx.guild.get_role(self.default_role_id))]):
                 await message.add_reaction(discord.utils.get(ctx.guild.emojis, name=r.name))
 
@@ -49,8 +45,8 @@ class Poll(commands.Cog):
 
         roles = ctx.guild.roles[1:ctx.guild.roles.index(ctx.guild.get_role(self.default_role_id))]
         for m in members:
-            if ctx.guild.get_role(self.promoted_role_id) in m.roles:
-                member_roles = m.roles[1:m.roles.index(ctx.guild.get_role(self.promoted_role_id))]
+            if ctx.guild.get_role(globals.promoted_role_id) in m.roles:
+                member_roles = m.roles[1:m.roles.index(ctx.guild.get_role(globals.promoted_role_id))]
             else:
                 member_roles = m.roles[1:m.roles.index(ctx.guild.get_role(self.default_role_id))]
             if len(member_roles) < 2:
@@ -60,7 +56,7 @@ class Poll(commands.Cog):
             await ctx.message.add_reaction('🤏')
             return
 
-        message = await self.bot.get_channel(self.chat_channel_id).send('what game do you want to play?')
+        message = await self.bot.get_channel(globals.chat_channel_id).send('what game do you want to play?')
 
         for r in roles:
             await message.add_reaction(discord.utils.get(ctx.guild.emojis, name=r.name))

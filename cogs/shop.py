@@ -1,8 +1,6 @@
-import os
 from time import time
 import random
 import asyncio
-import redis
 import discord
 from discord.ext import tasks, commands
 
@@ -14,12 +12,11 @@ def setup(bot):
 class Shop(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
-        self.redis = redis.from_url(os.environ.get('REDIS_URL'))
 
     @commands.Cog.listener()
     async def on_voice_state_update(self, member, before, after):
         if not member.bot and before.channel is None and member.voice.mute:
-            last_muted = float(self.redis.hget(member.id, 'last_muted').decode('utf-8'))
+            last_muted = float(globals.redis.hget(member.id, 'last_muted').decode('utf-8'))
             if time() - last_muted > 60:
                 await member.edit(mute=False)
 
@@ -32,8 +29,8 @@ class Shop(commands.Cog):
 
     @shop.command()
     async def rmute(self, ctx):
-        balance = float(self.redis.hget(ctx.author.id, 'points').decode('utf-8'))
-        last_mute = float(self.redis.hget(ctx.author.id, 'last_rmute').decode('utf-8'))
+        balance = float(globals.redis.hget(ctx.author.id, 'points').decode('utf-8'))
+        last_mute = float(globals.redis.hget(ctx.author.id, 'last_rmute').decode('utf-8'))
         if balance < 175:
             await ctx.message.add_reaction('💵')
             return
@@ -59,10 +56,10 @@ class Shop(commands.Cog):
             return
 
         await ctx.message.add_reaction('👍')
-        old_points = float(self.redis.hget(ctx.author.id, 'points').decode('utf-8'))
-        self.redis.hset(ctx.author.id, 'points', old_points - 175)
-        self.redis.hset(ctx.author.id, 'last_rmute', time())
-        self.redis.hset(member.id, 'last_muted', time())
+        old_points = float(globals.redis.hget(ctx.author.id, 'points').decode('utf-8'))
+        globals.redis.hset(ctx.author.id, 'points', old_points - 175)
+        globals.redis.hset(ctx.author.id, 'last_rmute', time())
+        globals.redis.hset(member.id, 'last_muted', time())
 
         await member.edit(mute=True)
         await asyncio.sleep(60)
@@ -70,8 +67,8 @@ class Shop(commands.Cog):
 
     @shop.command()
     async def mute(self, ctx, member: discord.Member):
-        balance = float(self.redis.hget(ctx.author.id, 'points').decode('utf-8'))
-        last_mute = float(self.redis.hget(ctx.author.id, 'last_mute').decode('utf-8'))
+        balance = float(globals.redis.hget(ctx.author.id, 'points').decode('utf-8'))
+        last_mute = float(globals.redis.hget(ctx.author.id, 'last_mute').decode('utf-8'))
         if balance < 350:
             await ctx.message.add_reaction('💵')
             return
@@ -83,10 +80,10 @@ class Shop(commands.Cog):
             return
 
         await ctx.message.add_reaction('👍')
-        old_points = float(self.redis.hget(ctx.author.id, 'points').decode('utf-8'))
-        self.redis.hset(ctx.author.id, 'points', old_points - 350)
-        self.redis.hset(ctx.author.id, 'last_mute', time())
-        self.redis.hset(member.id, 'last_muted', time())
+        old_points = float(globals.redis.hget(ctx.author.id, 'points').decode('utf-8'))
+        globals.redis.hset(ctx.author.id, 'points', old_points - 350)
+        globals.redis.hset(ctx.author.id, 'last_mute', time())
+        globals.redis.hset(member.id, 'last_muted', time())
 
         await member.edit(mute=True)
         await asyncio.sleep(60)
@@ -94,13 +91,13 @@ class Shop(commands.Cog):
 
     @shop.command()
     async def rename(self, ctx, member: discord.Member, name):
-        balance = float(self.redis.hget(ctx.author.id, 'points').decode('utf-8'))
+        balance = float(globals.redis.hget(ctx.author.id, 'points').decode('utf-8'))
         if balance < 150:
             await ctx.message.add_reaction('💵')
             return
 
         await ctx.message.add_reaction('👍')
-        old_points = float(self.redis.hget(ctx.author.id, 'points').decode('utf-8'))
-        self.redis.hset(ctx.author.id, 'points', old_points - 150)
+        old_points = float(globals.redis.hget(ctx.author.id, 'points').decode('utf-8'))
+        globals.redis.hset(ctx.author.id, 'points', old_points - 150)
 
         await member.edit(nick=name)

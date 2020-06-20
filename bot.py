@@ -11,7 +11,7 @@ bot = commands.Bot(owner_id=196141424318611457, command_prefix=commands.when_men
 
 # add all the cogs
 for filename in os.listdir('./cogs'):
-    if filename.endswith('.py'):
+    if filename.endswith('.py') and 'globals' not in filename:
         bot.load_extension(f'cogs.{filename[:-3]}')
 
 # add the error logger
