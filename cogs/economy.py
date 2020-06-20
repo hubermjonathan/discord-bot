@@ -1,4 +1,5 @@
 from time import time
+import discord
 from discord.ext import tasks, commands
 import globals
 
@@ -38,15 +39,6 @@ class Economy(commands.Cog):
                 new_total_points = old_total_points + (82.5/(60/10))
                 globals.redis.hset(m.id, 'total_points', new_total_points)
 
-                if globals.redis.hget(m.id, 'points_message_id') is None:
-                    await m.create_dm()
-                    message = await m.send(f'your current balance is **{new_points} dining dollars** 💵')
-                    globals.redis.hset(m.id, 'points_message_id', message.id)
-
-                points_message_id = int(globals.redis.hget(m.id, 'points_message_id').decode('utf-8'))
-                points_message = await m.dm_channel.fetch_message(points_message_id)
-                await points_message.edit(content=f'your current balance is **{new_points} dining dollars** 💵', suppress=True)
-
     @count_points.before_loop
     async def before_loop(self):
         await self.bot.wait_until_ready()
@@ -56,10 +48,24 @@ class Economy(commands.Cog):
         if ctx.invoked_subcommand is None:
             await ctx.message.add_reaction('❔')
 
+    @economy.command(aliases=['b'])
+    async def balance(self, ctx):
+        balance = float(globals.redis.hget(ctx.author.id, 'points').decode('utf-8'))
+        await ctx.author.send(f'your current balance is **{balance} dining dollars** 💵')
+        await ctx.message.add_reaction('👍')
+
     @economy.command()
+    @commands.is_owner()
     async def reset(self, ctx):
         guild = self.bot.get_guild(globals.guild_id)
         for m in guild.get_role(globals.promoted_role_id).members:
             globals.redis.delete(m.id)
 
+        await ctx.message.add_reaction('👍')
+
+    @economy.command()
+    @commands.is_owner()
+    async def set(self, ctx, member: discord.Member, amount):
+        globals.redis.hset(member.id, 'points', int(amount))
+        await member.send(f'your current balance is **{amount} dining dollars** 💵')
         await ctx.message.add_reaction('👍')
