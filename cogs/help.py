@@ -19,7 +19,8 @@ class Help(commands.Cog):
                     'shop (s) - `shop {command}`\n',
             )
             embed.add_field(name='**economy commands**',
-                value='check balance (b) - `economy balance`\n',
+                value='check balance (b) - `economy balance`\n'
+                    'send money - `economy send [person] [amount]`\n',
                 inline=True
             )
             embed.add_field(name='**poll commands**',

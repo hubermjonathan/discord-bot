@@ -28,8 +28,9 @@ class Economy(commands.Cog):
                 if globals.REDIS.hget(m.id, 'points') is None:
                     globals.REDIS.hset(m.id, 'points', 0)
                     globals.REDIS.hset(m.id, 'total_points', 0)
-                    globals.REDIS.hset(m.id, 'last_mute', time())
                     globals.REDIS.hset(m.id, 'last_rmute', time())
+                    globals.REDIS.hset(m.id, 'last_mute', time())
+                    globals.REDIS.hset(m.id, 'last_shield', time())
                     globals.REDIS.hset(m.id, 'last_muted', time())
 
                 old_points = float(globals.REDIS.hget(m.id, 'points').decode('utf-8'))
@@ -86,9 +87,35 @@ class Economy(commands.Cog):
             globals.REDIS.delete(m.id)
             globals.REDIS.hset(m.id, 'points', 0)
             globals.REDIS.hset(m.id, 'total_points', 0)
-            globals.REDIS.hset(m.id, 'last_mute', time())
             globals.REDIS.hset(m.id, 'last_rmute', time())
+            globals.REDIS.hset(m.id, 'last_mute', time())
+            globals.REDIS.hset(m.id, 'last_shield', time())
             globals.REDIS.hset(m.id, 'last_muted', time())
+
+        await ctx.message.add_reaction('👍')
+
+    @economy.command()
+    @commands.is_owner()
+    async def repair(self, ctx):
+        guild = self.bot.get_guild(globals.GUILD_ID)
+        for m in guild.get_role(globals.PROMOTED_ROLE_ID).members:
+            if globals.REDIS.hget(m.id, 'points') is None:
+                globals.REDIS.hset(m.id, 'points', 0)
+
+            if globals.REDIS.hget(m.id, 'total_points') is None:
+                globals.REDIS.hset(m.id, 'total_points', 0)
+
+            if globals.REDIS.hget(m.id, 'last_rmute') is None:
+                globals.REDIS.hset(m.id, 'last_rmute', time())
+
+            if globals.REDIS.hget(m.id, 'last_mute') is None:
+                globals.REDIS.hset(m.id, 'last_mute', time())
+
+            if globals.REDIS.hget(m.id, 'last_shield') is None:
+                globals.REDIS.hset(m.id, 'last_shield', time())
+
+            if globals.REDIS.hget(m.id, 'last_muted') is None:
+                globals.REDIS.hset(m.id, 'last_muted', time())
 
         await ctx.message.add_reaction('👍')
 
