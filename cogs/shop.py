@@ -61,7 +61,7 @@ class Shop(commands.Cog):
             'points': balance - 175,
             'last_rmute': time()
         }
-        constants.REDIS.hset(ctx.author.id, new_mapping)
+        constants.REDIS.hset(ctx.author.id, mapping=new_mapping)
 
         member = random.choice(voice_channel.members)
         if member.voice.mute:
@@ -102,7 +102,7 @@ class Shop(commands.Cog):
             'points': balance - 350,
             'last_mute': time()
         }
-        constants.REDIS.hset(ctx.author.id, new_mapping)
+        constants.REDIS.hset(ctx.author.id, mapping=new_mapping)
 
         last_shield = float(constants.REDIS.hget(member.id, 'last_shield').decode('utf-8'))
         if time() - last_shield < 1800:
@@ -132,7 +132,7 @@ class Shop(commands.Cog):
             'points': balance - 1800,
             'last_shield': time()
         }
-        constants.REDIS.hset(ctx.author.id, new_mapping)
+        constants.REDIS.hset(ctx.author.id, mapping=new_mapping)
 
         await ctx.message.add_reaction(constants.CONFIRM)
 

@@ -35,7 +35,7 @@ class Economy(commands.Cog):
                         'last_shield': time(),
                         'last_muted': time()
                     }
-                    constants.REDIS.hset(m.id, defaults)
+                    constants.REDIS.hset(m.id, mapping=defaults)
 
                 old_points = float(old_mapping[b'points'].decode('utf-8'))
                 old_total_points = float(old_mapping[b'total_points'].decode('utf-8'))
@@ -43,7 +43,7 @@ class Economy(commands.Cog):
                     'points': old_points + (82.5/(60/10)),
                     'total_points': old_total_points + (82.5/(60/10))
                 }
-                constants.REDIS.hset(m.id, new_mapping)
+                constants.REDIS.hset(m.id, mapping=new_mapping)
 
     @count_points.before_loop
     async def before_loop(self):
@@ -80,7 +80,7 @@ class Economy(commands.Cog):
             'points': old_points + float(amount),
             'total_points': old_total_points + float(amount)
         }
-        constants.REDIS.hset(member.id, new_mapping)
+        constants.REDIS.hset(member.id, mapping=new_mapping)
 
         embed = discord.Embed(title='balance', description=f'{ctx.author.display_name} sent you dining dollars! your current balance is now **{new_points} dining dollars** 💵')
         await member.send(embed=embed)
@@ -102,7 +102,7 @@ class Economy(commands.Cog):
                 'last_shield': time(),
                 'last_muted': time()
             }
-            constants.REDIS.hset(m.id, defaults)
+            constants.REDIS.hset(m.id, mapping=defaults)
 
         await ctx.message.add_reaction(constants.CONFIRM)
 
@@ -132,14 +132,19 @@ class Economy(commands.Cog):
             if b'last_muted' not in old_mapping:
                 new_mapping['last_muted'] = time()
 
-            constants.REDIS.hset(m.id, new_mapping)
+            if new_mapping:
+                constants.REDIS.hset(m.id, mapping=new_mapping)
 
         await ctx.message.add_reaction(constants.CONFIRM)
 
     @economy.command()
     @commands.is_owner()
     async def set(self, ctx, member: discord.Member, amount):
-        constants.REDIS.hset(member.id, 'points', float(amount))
+        mapping = {
+            'points': float(amount),
+            'total_points': float(amount)
+        }
+        constants.REDIS.hset(member.id, mapping=mapping)
 
         embed = discord.Embed(title='balance', description=f'your balance has been manually set, it is now **{float(amount)} dining dollars** 💵')
         await member.send(embed=embed)
