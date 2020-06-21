@@ -13,6 +13,7 @@ def setup(bot):
 class Economy(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
+        self.double_enabled = False
 
     @tasks.loop(minutes=10)
     async def count_points(self):
@@ -39,9 +40,10 @@ class Economy(commands.Cog):
 
                 old_points = float(old_mapping[b'points'].decode('utf-8'))
                 old_total_points = float(old_mapping[b'total_points'].decode('utf-8'))
+                multiplier = 2 if self.double_enabled else 1
                 new_mapping = {
-                    'points': old_points + (82.5/(60/10)),
-                    'total_points': old_total_points + (82.5/(60/10))
+                    'points': old_points + (82.5*multiplier/(60/10)),
+                    'total_points': old_total_points + (82.5*multiplier/(60/10))
                 }
                 constants.REDIS.hset(m.id, mapping=new_mapping)
 
@@ -86,6 +88,15 @@ class Economy(commands.Cog):
         await member.send(embed=embed)
 
         await ctx.message.add_reaction(constants.CONFIRM)
+
+    @economy.command()
+    @commands.is_owner()
+    async def double(self, ctx):
+        self.double_enabled = not self.double_enabled
+        if self.double_enabled:
+            await ctx.message.add_reaction('🟢')
+        else:
+            await ctx.message.add_reaction('🔴')
 
     @economy.command()
     @commands.is_owner()
