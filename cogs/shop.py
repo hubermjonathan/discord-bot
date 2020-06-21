@@ -60,8 +60,7 @@ class Shop(commands.Cog):
             return
 
         await ctx.message.add_reaction('👍')
-        old_points = float(globals.REDIS.hget(ctx.author.id, 'points').decode('utf-8'))
-        globals.REDIS.hset(ctx.author.id, 'points', old_points - 175)
+        globals.REDIS.hset(ctx.author.id, 'points', balance - 175)
         globals.REDIS.hset(ctx.author.id, 'last_rmute', time())
         globals.REDIS.hset(member.id, 'last_muted', time())
 
@@ -84,8 +83,7 @@ class Shop(commands.Cog):
             return
 
         await ctx.message.add_reaction('👍')
-        old_points = float(globals.REDIS.hget(ctx.author.id, 'points').decode('utf-8'))
-        globals.REDIS.hset(ctx.author.id, 'points', old_points - 350)
+        globals.REDIS.hset(ctx.author.id, 'points', balance - 350)
         globals.REDIS.hset(ctx.author.id, 'last_mute', time())
         globals.REDIS.hset(member.id, 'last_muted', time())
 
@@ -101,7 +99,6 @@ class Shop(commands.Cog):
             return
 
         await ctx.message.add_reaction('👍')
-        old_points = float(globals.REDIS.hget(ctx.author.id, 'points').decode('utf-8'))
-        globals.REDIS.hset(ctx.author.id, 'points', old_points - 150)
+        globals.REDIS.hset(ctx.author.id, 'points', balance - 150)
 
         await member.edit(nick=name)

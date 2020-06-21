@@ -56,18 +56,48 @@ class Economy(commands.Cog):
         await ctx.message.add_reaction('👍')
 
     @economy.command()
+    async def send(self, ctx, member: discord.Member, amount):
+        balance = float(globals.REDIS.hget(ctx.author.id, 'points').decode('utf-8'))
+        if ctx.author.id == member.id:
+            await ctx.message.add_reaction('👎')
+            return
+        if balance < float(amount):
+            await ctx.message.add_reaction('💵')
+            return
+
+        globals.REDIS.hset(ctx.author.id, 'points', balance - float(amount))
+
+        old_points = float(globals.REDIS.hget(member.id, 'points').decode('utf-8'))
+        new_points = old_points + float(amount)
+        globals.REDIS.hset(member.id, 'points', new_points)
+        old_total_points = float(globals.REDIS.hget(member.id, 'total_points').decode('utf-8'))
+        globals.REDIS.hset(member.id, 'total_points', old_total_points + float(amount))
+
+        embed = discord.Embed(title='balance', description=f'{ctx.author.display_name} sent you dining dollars! your current balance is now **{new_points} dining dollars** 💵')
+        await member.send(embed=embed)
+
+        await ctx.message.add_reaction('👍')
+
+    @economy.command()
     @commands.is_owner()
     async def reset(self, ctx):
         guild = self.bot.get_guild(globals.GUILD_ID)
         for m in guild.get_role(globals.PROMOTED_ROLE_ID).members:
             globals.REDIS.delete(m.id)
+            globals.REDIS.hset(m.id, 'points', 0)
+            globals.REDIS.hset(m.id, 'total_points', 0)
+            globals.REDIS.hset(m.id, 'last_mute', time())
+            globals.REDIS.hset(m.id, 'last_rmute', time())
+            globals.REDIS.hset(m.id, 'last_muted', time())
 
         await ctx.message.add_reaction('👍')
 
     @economy.command()
     @commands.is_owner()
     async def set(self, ctx, member: discord.Member, amount):
-        globals.REDIS.hset(member.id, 'points', int(amount))
-        embed = discord.Embed(title='balance', description=f'your current balance is **{amount} dining dollars** 💵')
+        globals.REDIS.hset(member.id, 'points', float(amount))
+
+        embed = discord.Embed(title='balance', description=f'your balance has been manually set, it is now **{float(amount)} dining dollars** 💵')
         await member.send(embed=embed)
+
         await ctx.message.add_reaction('👍')
