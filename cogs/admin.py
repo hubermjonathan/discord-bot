@@ -1,5 +1,6 @@
 import discord
 from discord.ext import commands
+import constants
 
 
 def setup(bot):
@@ -14,22 +15,22 @@ class Admin(commands.Cog):
     @commands.is_owner()
     async def admin(self, ctx):
         if ctx.invoked_subcommand is None:
-            await ctx.message.add_reaction('❔')
+            await ctx.message.add_reaction(constants.NO_COMMAND)
 
     @admin.command(aliases=['e'])
     async def enable(self, ctx, cog):
         self.bot.load_extension(f'cogs.{cog}')
-        await ctx.message.add_reaction('👍')
+        await ctx.message.add_reaction(constants.CONFIRM)
 
     @admin.command(aliases=['d'])
     async def disable(self, ctx, cog):
         self.bot.unload_extension(f'cogs.{cog}')
-        await ctx.message.add_reaction('👍')
+        await ctx.message.add_reaction(constants.CONFIRM)
 
     @admin.command(aliases=['rl'])
     async def reload(self, ctx, cog):
         self.bot.reload_extension(f'cogs.{cog}')
-        await ctx.message.add_reaction('👍')
+        await ctx.message.add_reaction(constants.CONFIRM)
 
     @admin.command(aliases=['r'])
     async def region(self, ctx, region):
@@ -44,7 +45,7 @@ class Admin(commands.Cog):
         else:
             await ctx.guild.edit(region=discord.VoiceRegion.us_central)
 
-        await ctx.message.add_reaction('👍')
+        await ctx.message.add_reaction(constants.CONFIRM)
 
     @admin.command(aliases=['p'])
     async def priority(self, ctx):
@@ -54,7 +55,7 @@ class Admin(commands.Cog):
                 voice_channel = vc
                 break
         if voice_channel is None:
-            await ctx.message.add_reaction('🔇')
+            await ctx.message.add_reaction(constants.NOT_IN_VC)
             return
         members = voice_channel.members
 
@@ -63,4 +64,4 @@ class Admin(commands.Cog):
                 continue
             await m.edit(mute=not m.voice.mute)
 
-        await ctx.message.add_reaction('👍')
+        await ctx.message.add_reaction(constants.CONFIRM)

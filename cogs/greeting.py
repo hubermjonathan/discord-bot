@@ -4,6 +4,7 @@ import asyncio
 from gtts import gTTS
 import discord
 from discord.ext import commands
+import constants
 
 
 def setup(bot):
@@ -52,9 +53,9 @@ class Greeting(commands.Cog):
     @commands.group(aliases=['g'])
     async def greeting(self, ctx):
         if ctx.invoked_subcommand is None:
-            await ctx.message.add_reaction('❔')
+            await ctx.message.add_reaction(constants.NO_COMMAND)
 
     @greeting.command(aliases=['t'])
     async def toggle(self, ctx):
         self.enabled = not self.enabled
-        await ctx.message.add_reaction('👍')
+        await ctx.message.add_reaction(constants.CONFIRM)

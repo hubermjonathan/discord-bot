@@ -3,7 +3,7 @@ import random
 import asyncio
 import discord
 from discord.ext import tasks, commands
-import globals
+import constants
 
 
 def setup(bot):
@@ -17,7 +17,7 @@ class Shop(commands.Cog):
     @commands.Cog.listener()
     async def on_voice_state_update(self, member, before, after):
         if not member.bot and before.channel is None and member.voice.mute:
-            last_muted = float(globals.REDIS.hget(member.id, 'last_muted').decode('utf-8'))
+            last_muted = float(constants.REDIS.hget(member.id, 'last_muted').decode('utf-8'))
             if time() - last_muted > 60:
                 await member.edit(mute=False)
 
@@ -35,13 +35,13 @@ class Shop(commands.Cog):
     @shop.command()
     @commands.guild_only()
     async def rmute(self, ctx):
-        balance = float(globals.REDIS.hget(ctx.author.id, 'points').decode('utf-8'))
-        last_mute = float(globals.REDIS.hget(ctx.author.id, 'last_rmute').decode('utf-8'))
+        balance = float(constants.REDIS.hget(ctx.author.id, 'points').decode('utf-8'))
+        last_mute = float(constants.REDIS.hget(ctx.author.id, 'last_rmute').decode('utf-8'))
         if balance < 175:
-            await ctx.message.add_reaction('💵')
+            await ctx.message.add_reaction(constants.NOT_ENOUGH_POINTS)
             return
         elif time() - last_rmute < 60:
-            await ctx.message.add_reaction('⏲')
+            await ctx.message.add_reaction(constants.ON_COOLDOWN)
             return
 
         voice_channel = None
@@ -49,28 +49,28 @@ class Shop(commands.Cog):
             if ctx.author in vc.members:
                 voice_channel = vc
                 if len(vc.members) < 3:
-                    await ctx.message.add_reaction('👥')
+                    await ctx.message.add_reaction(constants.DENY)
                     return
                 break
         if voice_channel is None:
-            await ctx.message.add_reaction('🔇')
+            await ctx.message.add_reaction(constants.NOT_IN_VC)
             return
 
         member = random.choice(voice_channel.members)
         if member.voice.mute:
-            await ctx.message.add_reaction('👎')
+            await ctx.message.add_reaction(constants.DENY)
             return
 
-        globals.REDIS.hset(ctx.author.id, 'points', balance - 175)
-        globals.REDIS.hset(ctx.author.id, 'last_rmute', time())
+        constants.REDIS.hset(ctx.author.id, 'points', balance - 175)
+        constants.REDIS.hset(ctx.author.id, 'last_rmute', time())
 
-        last_shield = float(globals.REDIS.hget(member.id, 'last_shield').decode('utf-8'))
+        last_shield = float(constants.REDIS.hget(member.id, 'last_shield').decode('utf-8'))
         if time() - last_shield < 1800:
-            await ctx.message.add_reaction('🛡')
+            await ctx.message.add_reaction(constants.SHIELD)
             return
 
-        await ctx.message.add_reaction('👍')
-        globals.REDIS.hset(member.id, 'last_muted', time())
+        await ctx.message.add_reaction(constants.CONFIRM)
+        constants.REDIS.hset(member.id, 'last_muted', time())
         await member.edit(mute=True)
         await asyncio.sleep(60)
         await member.edit(mute=False)
@@ -78,28 +78,28 @@ class Shop(commands.Cog):
     @shop.command()
     @commands.guild_only()
     async def mute(self, ctx, member: discord.Member):
-        balance = float(globals.REDIS.hget(ctx.author.id, 'points').decode('utf-8'))
-        last_mute = float(globals.REDIS.hget(ctx.author.id, 'last_mute').decode('utf-8'))
+        balance = float(constants.REDIS.hget(ctx.author.id, 'points').decode('utf-8'))
+        last_mute = float(constants.REDIS.hget(ctx.author.id, 'last_mute').decode('utf-8'))
         if balance < 350:
-            await ctx.message.add_reaction('💵')
+            await ctx.message.add_reaction(constants.NOT_ENOUGH_POINTS)
             return
         elif time() - last_mute < 300:
-            await ctx.message.add_reaction('⏲')
+            await ctx.message.add_reaction(constants.ON_COOLDOWN)
             return
         elif member.voice.mute:
-            await ctx.message.add_reaction('👎')
+            await ctx.message.add_reaction(constants.DENY)
             return
 
-        globals.REDIS.hset(ctx.author.id, 'points', balance - 350)
-        globals.REDIS.hset(ctx.author.id, 'last_mute', time())
+        constants.REDIS.hset(ctx.author.id, 'points', balance - 350)
+        constants.REDIS.hset(ctx.author.id, 'last_mute', time())
 
-        last_shield = float(globals.REDIS.hget(member.id, 'last_shield').decode('utf-8'))
+        last_shield = float(constants.REDIS.hget(member.id, 'last_shield').decode('utf-8'))
         if time() - last_shield < 1800:
-            await ctx.message.add_reaction('🛡')
+            await ctx.message.add_reaction(constants.SHIELD)
             return
 
-        await ctx.message.add_reaction('👍')
-        globals.REDIS.hset(member.id, 'last_muted', time())
+        await ctx.message.add_reaction(constants.CONFIRM)
+        constants.REDIS.hset(member.id, 'last_muted', time())
         await member.edit(mute=True)
         await asyncio.sleep(60)
         await member.edit(mute=False)
@@ -107,28 +107,31 @@ class Shop(commands.Cog):
     @shop.command()
     @commands.dm_only()
     async def shield(self, ctx):
-        balance = float(globals.REDIS.hget(ctx.author.id, 'points').decode('utf-8'))
-        last_shield = float(globals.REDIS.hget(ctx.author.id, 'last_shield').decode('utf-8'))
+        balance = float(constants.REDIS.hget(ctx.author.id, 'points').decode('utf-8'))
+        last_shield = float(constants.REDIS.hget(ctx.author.id, 'last_shield').decode('utf-8'))
         if balance < 500:
-            await ctx.message.add_reaction('💵')
+            await ctx.message.add_reaction(constants.NOT_ENOUGH_POINTS)
             return
         elif time() - last_shield < 1800:
-            await ctx.message.add_reaction('⏲')
+            await ctx.message.add_reaction(constants.ON_COOLDOWN)
             return
 
-        await ctx.message.add_reaction('👍')
-        globals.REDIS.hset(ctx.author.id, 'points', balance - 1800)
-        globals.REDIS.hset(ctx.author.id, 'last_shield', time())
+        await ctx.message.add_reaction(constants.CONFIRM)
+        constants.REDIS.hset(ctx.author.id, 'points', balance - 1800)
+        constants.REDIS.hset(ctx.author.id, 'last_shield', time())
 
     @shop.command()
     @commands.guild_only()
     async def rename(self, ctx, member: discord.Member, name):
-        balance = float(globals.REDIS.hget(ctx.author.id, 'points').decode('utf-8'))
+        balance = float(constants.REDIS.hget(ctx.author.id, 'points').decode('utf-8'))
         if balance < 150:
-            await ctx.message.add_reaction('💵')
+            await ctx.message.add_reaction(constants.NOT_ENOUGH_POINTS)
+            return
+        elif guild.get_role(constants.DEFAULT_ROLE_ID) in m.roles:
+            await ctx.message.add_reaction(constants.DENY)
             return
 
-        await ctx.message.add_reaction('👍')
-        globals.REDIS.hset(ctx.author.id, 'points', balance - 150)
+        await ctx.message.add_reaction(constants.CONFIRM)
+        constants.REDIS.hset(ctx.author.id, 'points', balance - 150)
 
         await member.edit(nick=name)

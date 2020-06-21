@@ -1,5 +1,5 @@
 from discord.ext import commands
-import globals
+import constants
 
 
 def setup(bot):
@@ -15,4 +15,4 @@ class Welcome(commands.Cog):
         if member.bot:
             return
 
-        await member.edit(nick='???\'s Friend', roles=[member.guild.get_role(globals.DEFAULT_ROLE_ID)])
+        await member.edit(nick='???\'s Friend', roles=[member.guild.get_role(constants.DEFAULT_ROLE_ID)])
