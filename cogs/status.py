@@ -16,6 +16,11 @@ class Status(commands.Cog):
             discord.Activity(type=discord.ActivityType.listening, name='Daniel\'s flame'),
             discord.Activity(type=discord.ActivityType.watching, name='Sammie\'s stream'),
             discord.Activity(type=discord.ActivityType.listening, name='Collin simp'),
+            discord.Activity(type=discord.ActivityType.listening, name='Aulos Reloaded'),
+            discord.Activity(type=discord.ActivityType.listening, name='Andy give bad clues'),
+            discord.Activity(type=discord.ActivityType.playing, name='with my Amazon friends'),
+            discord.Activity(type=discord.ActivityType.listening, name='the fight song'),
+            discord.Activity(type=discord.ActivityType.playing, name='against IU'),
         ]
 
     @tasks.loop(hours=1)

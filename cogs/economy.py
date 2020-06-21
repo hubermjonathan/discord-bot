@@ -93,10 +93,7 @@ class Economy(commands.Cog):
     @commands.is_owner()
     async def double(self, ctx):
         self.double_enabled = not self.double_enabled
-        if self.double_enabled:
-            await ctx.message.add_reaction('🟢')
-        else:
-            await ctx.message.add_reaction('🔴')
+        await ctx.message.add_reaction('🟢' if self.double_enabled else '🔴')
 
     @economy.command()
     @commands.is_owner()
