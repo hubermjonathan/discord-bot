@@ -14,7 +14,8 @@ class Help(commands.Cog):
     async def help(self, ctx):
         if ctx.invoked_subcommand is None:
             embed = discord.Embed(title='commands',
-                description='economy (e) - `economy [command]`\n'
+                description='**ex: command (alias) - **`command_name [required_argument] {optional_argument}`\n'
+                    'economy (e) - `economy [command]`\n'
                     'poll (p) - `poll {command}`\n'
                     'shop (s) - `shop {command}`\n',
             )
