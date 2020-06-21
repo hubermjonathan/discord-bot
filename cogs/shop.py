@@ -33,6 +33,7 @@ class Shop(commands.Cog):
             await ctx.send(embed=embed)
 
     @shop.command()
+    @commands.guild_only()
     async def rmute(self, ctx):
         balance = float(globals.REDIS.hget(ctx.author.id, 'points').decode('utf-8'))
         last_mute = float(globals.REDIS.hget(ctx.author.id, 'last_rmute').decode('utf-8'))
@@ -75,6 +76,7 @@ class Shop(commands.Cog):
         await member.edit(mute=False)
 
     @shop.command()
+    @commands.guild_only()
     async def mute(self, ctx, member: discord.Member):
         balance = float(globals.REDIS.hget(ctx.author.id, 'points').decode('utf-8'))
         last_mute = float(globals.REDIS.hget(ctx.author.id, 'last_mute').decode('utf-8'))
@@ -103,6 +105,7 @@ class Shop(commands.Cog):
         await member.edit(mute=False)
 
     @shop.command()
+    @commands.dm_only()
     async def shield(self, ctx):
         balance = float(globals.REDIS.hget(ctx.author.id, 'points').decode('utf-8'))
         last_shield = float(globals.REDIS.hget(ctx.author.id, 'last_shield').decode('utf-8'))
@@ -118,6 +121,7 @@ class Shop(commands.Cog):
         globals.REDIS.hset(ctx.author.id, 'last_shield', time())
 
     @shop.command()
+    @commands.guild_only()
     async def rename(self, ctx, member: discord.Member, name):
         balance = float(globals.REDIS.hget(ctx.author.id, 'points').decode('utf-8'))
         if balance < 150:
