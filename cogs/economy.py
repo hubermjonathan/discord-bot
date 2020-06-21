@@ -25,20 +25,25 @@ class Economy(commands.Cog):
                 if m.bot or guild.get_role(constants.DEFAULT_ROLE_ID) in m.roles:
                     continue
 
-                if constants.REDIS.hget(m.id, 'points') is None:
-                    constants.REDIS.hset(m.id, 'points', 0)
-                    constants.REDIS.hset(m.id, 'total_points', 0)
-                    constants.REDIS.hset(m.id, 'last_rmute', time())
-                    constants.REDIS.hset(m.id, 'last_mute', time())
-                    constants.REDIS.hset(m.id, 'last_shield', time())
-                    constants.REDIS.hset(m.id, 'last_muted', time())
+                old_mapping = constants.REDIS.hgetall(m.id)
+                if b'points' not in old_mapping:
+                    defaults = {
+                        'points': 0,
+                        'total_points': 0,
+                        'last_rmute': time(),
+                        'last_mute': time(),
+                        'last_shield': time(),
+                        'last_muted': time()
+                    }
+                    constants.REDIS.hset(m.id, defaults)
 
-                old_points = float(constants.REDIS.hget(m.id, 'points').decode('utf-8'))
-                new_points = old_points + (82.5/(60/10))
-                constants.REDIS.hset(m.id, 'points', new_points)
-                old_total_points = float(constants.REDIS.hget(m.id, 'total_points').decode('utf-8'))
-                new_total_points = old_total_points + (82.5/(60/10))
-                constants.REDIS.hset(m.id, 'total_points', new_total_points)
+                old_points = float(old_mapping[b'points'].decode('utf-8'))
+                old_total_points = float(old_mapping[b'total_points'].decode('utf-8'))
+                new_mapping = {
+                    'points': old_points + (82.5/(60/10)),
+                    'total_points': old_total_points + (82.5/(60/10))
+                }
+                constants.REDIS.hset(m.id, new_mapping)
 
     @count_points.before_loop
     async def before_loop(self):
@@ -68,11 +73,14 @@ class Economy(commands.Cog):
 
         constants.REDIS.hset(ctx.author.id, 'points', balance - float(amount))
 
-        old_points = float(constants.REDIS.hget(member.id, 'points').decode('utf-8'))
-        new_points = old_points + float(amount)
-        constants.REDIS.hset(member.id, 'points', new_points)
-        old_total_points = float(constants.REDIS.hget(member.id, 'total_points').decode('utf-8'))
-        constants.REDIS.hset(member.id, 'total_points', old_total_points + float(amount))
+        old_mapping = constants.REDIS.hgetall(member.id)
+        old_points = float(old_mapping[b'points'].decode('utf-8'))
+        old_total_points = float(old_mapping[b'total_points'].decode('utf-8'))
+        new_mapping = {
+            'points': old_points + float(amount),
+            'total_points': old_total_points + float(amount)
+        }
+        constants.REDIS.hset(member.id, new_mapping)
 
         embed = discord.Embed(title='balance', description=f'{ctx.author.display_name} sent you dining dollars! your current balance is now **{new_points} dining dollars** 💵')
         await member.send(embed=embed)
@@ -82,15 +90,19 @@ class Economy(commands.Cog):
     @economy.command()
     @commands.is_owner()
     async def reset(self, ctx):
+        constants.REDIS.flushdb()
+
         guild = self.bot.get_guild(constants.GUILD_ID)
         for m in guild.get_role(constants.PROMOTED_ROLE_ID).members:
-            constants.REDIS.delete(m.id)
-            constants.REDIS.hset(m.id, 'points', 0)
-            constants.REDIS.hset(m.id, 'total_points', 0)
-            constants.REDIS.hset(m.id, 'last_rmute', time())
-            constants.REDIS.hset(m.id, 'last_mute', time())
-            constants.REDIS.hset(m.id, 'last_shield', time())
-            constants.REDIS.hset(m.id, 'last_muted', time())
+            defaults = {
+                'points': 0,
+                'total_points': 0,
+                'last_rmute': time(),
+                'last_mute': time(),
+                'last_shield': time(),
+                'last_muted': time()
+            }
+            constants.REDIS.hset(m.id, defaults)
 
         await ctx.message.add_reaction(constants.CONFIRM)
 
@@ -99,23 +111,28 @@ class Economy(commands.Cog):
     async def repair(self, ctx):
         guild = self.bot.get_guild(constants.GUILD_ID)
         for m in guild.get_role(constants.PROMOTED_ROLE_ID).members:
-            if constants.REDIS.hget(m.id, 'points') is None:
-                constants.REDIS.hset(m.id, 'points', 0)
+            old_mapping = constants.REDIS.hgetall(m.id)
+            new_mapping = {}
 
-            if constants.REDIS.hget(m.id, 'total_points') is None:
-                constants.REDIS.hset(m.id, 'total_points', 0)
+            if b'points' not in old_mapping:
+                new_mapping['points'] = 0
 
-            if constants.REDIS.hget(m.id, 'last_rmute') is None:
-                constants.REDIS.hset(m.id, 'last_rmute', time())
+            if b'total_points' not in old_mapping:
+                new_mapping['total_points'] = 0
 
-            if constants.REDIS.hget(m.id, 'last_mute') is None:
-                constants.REDIS.hset(m.id, 'last_mute', time())
+            if b'last_rmute' not in old_mapping:
+                new_mapping['last_rmute'] = time()
 
-            if constants.REDIS.hget(m.id, 'last_shield') is None:
-                constants.REDIS.hset(m.id, 'last_shield', time())
+            if b'last_mute' not in old_mapping:
+                new_mapping['last_mute'] = time()
 
-            if constants.REDIS.hget(m.id, 'last_muted') is None:
-                constants.REDIS.hset(m.id, 'last_muted', time())
+            if b'last_shield' not in old_mapping:
+                new_mapping['last_shield'] = time()
+
+            if b'last_muted' not in old_mapping:
+                new_mapping['last_muted'] = time()
+
+            constants.REDIS.hset(m.id, new_mapping)
 
         await ctx.message.add_reaction(constants.CONFIRM)
 

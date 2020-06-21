@@ -35,8 +35,9 @@ class Shop(commands.Cog):
     @shop.command()
     @commands.guild_only()
     async def rmute(self, ctx):
-        balance = float(constants.REDIS.hget(ctx.author.id, 'points').decode('utf-8'))
-        last_mute = float(constants.REDIS.hget(ctx.author.id, 'last_rmute').decode('utf-8'))
+        old_mapping = constants.REDIS.hgetall(ctx.author.id)
+        balance = float(old_mapping[b'points'].decode('utf-8'))
+        last_rmute = float(old_mapping[b'last_rmute'].decode('utf-8'))
         if balance < 175:
             await ctx.message.add_reaction(constants.NOT_ENOUGH_POINTS)
             return
@@ -56,13 +57,16 @@ class Shop(commands.Cog):
             await ctx.message.add_reaction(constants.NOT_IN_VC)
             return
 
+        new_mapping = {
+            'points': balance - 175,
+            'last_rmute': time()
+        }
+        constants.REDIS.hset(ctx.author.id, new_mapping)
+
         member = random.choice(voice_channel.members)
         if member.voice.mute:
             await ctx.message.add_reaction(constants.DENY)
             return
-
-        constants.REDIS.hset(ctx.author.id, 'points', balance - 175)
-        constants.REDIS.hset(ctx.author.id, 'last_rmute', time())
 
         last_shield = float(constants.REDIS.hget(member.id, 'last_shield').decode('utf-8'))
         if time() - last_shield < 1800:
@@ -78,20 +82,27 @@ class Shop(commands.Cog):
     @shop.command()
     @commands.guild_only()
     async def mute(self, ctx, member: discord.Member):
-        balance = float(constants.REDIS.hget(ctx.author.id, 'points').decode('utf-8'))
-        last_mute = float(constants.REDIS.hget(ctx.author.id, 'last_mute').decode('utf-8'))
+        old_mapping = constants.REDIS.hgetall(ctx.author.id)
+        balance = float(old_mapping[b'points'].decode('utf-8'))
+        last_mute = float(old_mapping[b'last_mute'].decode('utf-8'))
         if balance < 350:
             await ctx.message.add_reaction(constants.NOT_ENOUGH_POINTS)
             return
         elif time() - last_mute < 300:
             await ctx.message.add_reaction(constants.ON_COOLDOWN)
             return
+        elif member.voice is None:
+            await ctx.message.add_reaction(constants.NOT_IN_VC)
+            return
         elif member.voice.mute:
             await ctx.message.add_reaction(constants.DENY)
             return
 
-        constants.REDIS.hset(ctx.author.id, 'points', balance - 350)
-        constants.REDIS.hset(ctx.author.id, 'last_mute', time())
+        new_mapping = {
+            'points': balance - 350,
+            'last_mute': time()
+        }
+        constants.REDIS.hset(ctx.author.id, new_mapping)
 
         last_shield = float(constants.REDIS.hget(member.id, 'last_shield').decode('utf-8'))
         if time() - last_shield < 1800:
@@ -107,8 +118,9 @@ class Shop(commands.Cog):
     @shop.command()
     @commands.dm_only()
     async def shield(self, ctx):
-        balance = float(constants.REDIS.hget(ctx.author.id, 'points').decode('utf-8'))
-        last_shield = float(constants.REDIS.hget(ctx.author.id, 'last_shield').decode('utf-8'))
+        old_mapping = constants.REDIS.hgetall(ctx.author.id)
+        balance = float(old_mapping[b'points'].decode('utf-8'))
+        last_shield = float(old_mapping[b'last_shield'].decode('utf-8'))
         if balance < 500:
             await ctx.message.add_reaction(constants.NOT_ENOUGH_POINTS)
             return
@@ -116,9 +128,13 @@ class Shop(commands.Cog):
             await ctx.message.add_reaction(constants.ON_COOLDOWN)
             return
 
+        new_mapping = {
+            'points': balance - 1800,
+            'last_shield': time()
+        }
+        constants.REDIS.hset(ctx.author.id, new_mapping)
+
         await ctx.message.add_reaction(constants.CONFIRM)
-        constants.REDIS.hset(ctx.author.id, 'points', balance - 1800)
-        constants.REDIS.hset(ctx.author.id, 'last_shield', time())
 
     @shop.command()
     @commands.guild_only()
@@ -131,7 +147,7 @@ class Shop(commands.Cog):
             await ctx.message.add_reaction(constants.DENY)
             return
 
-        await ctx.message.add_reaction(constants.CONFIRM)
         constants.REDIS.hset(ctx.author.id, 'points', balance - 150)
 
+        await ctx.message.add_reaction(constants.CONFIRM)
         await member.edit(nick=name)
