@@ -25,10 +25,10 @@ class Shop(commands.Cog):
     async def shop(self, ctx):
         if ctx.invoked_subcommand is None:
             embed = discord.Embed(title='shop items',
-                description='**🎲 random mute (175 dining dollars)** - `rmute` - server mute someone random for a minute\n'
-                    '**🔇 mute (350 dining dollars)** - `mute [person]` - server mute someone for a minute\n'
-                    '**✏ rename (150 dining dollars)** - `rename [person] [name]` - rename someone\n'
-                    '**🛡 mute shield (500 dining dollars)** - `shield` - block mutes for 30 minutes\n',
+                description='**🎲 random mute (350 dining dollars)** - `rmute` - server mute someone random for a minute\n'
+                    '**🔇 mute (700 dining dollars)** - `mute [person]` - server mute someone for a minute\n'
+                    '**✏ rename (300 dining dollars)** - `rename [person] [name]` - rename someone\n'
+                    '**🛡 mute shield (1000 dining dollars)** - `shield` - block mutes for 30 minutes\n',
             )
             await ctx.send(embed=embed)
 
@@ -38,7 +38,7 @@ class Shop(commands.Cog):
         old_mapping = constants.REDIS.hgetall(ctx.author.id)
         balance = float(old_mapping[b'points'].decode('utf-8'))
         last_rmute = float(old_mapping[b'last_rmute'].decode('utf-8'))
-        if balance < 175:
+        if balance < 350:
             await ctx.message.add_reaction(constants.NOT_ENOUGH_POINTS)
             return
         elif time() - last_rmute < 60:
@@ -58,7 +58,7 @@ class Shop(commands.Cog):
             return
 
         new_mapping = {
-            'points': balance - 175,
+            'points': balance - 350,
             'last_rmute': time()
         }
         constants.REDIS.hset(ctx.author.id, mapping=new_mapping)
@@ -85,7 +85,7 @@ class Shop(commands.Cog):
         old_mapping = constants.REDIS.hgetall(ctx.author.id)
         balance = float(old_mapping[b'points'].decode('utf-8'))
         last_mute = float(old_mapping[b'last_mute'].decode('utf-8'))
-        if balance < 350:
+        if balance < 700:
             await ctx.message.add_reaction(constants.NOT_ENOUGH_POINTS)
             return
         elif time() - last_mute < 300:
@@ -99,7 +99,7 @@ class Shop(commands.Cog):
             return
 
         new_mapping = {
-            'points': balance - 350,
+            'points': balance - 700,
             'last_mute': time()
         }
         constants.REDIS.hset(ctx.author.id, mapping=new_mapping)
@@ -116,12 +116,28 @@ class Shop(commands.Cog):
         await member.edit(mute=False)
 
     @shop.command()
+    @commands.guild_only()
+    async def rename(self, ctx, member: discord.Member, name):
+        balance = float(constants.REDIS.hget(ctx.author.id, 'points').decode('utf-8'))
+        if balance < 300:
+            await ctx.message.add_reaction(constants.NOT_ENOUGH_POINTS)
+            return
+        elif guild.get_role(constants.DEFAULT_ROLE_ID) in m.roles:
+            await ctx.message.add_reaction(constants.DENY)
+            return
+
+        constants.REDIS.hset(ctx.author.id, 'points', balance - 300)
+
+        await ctx.message.add_reaction(constants.CONFIRM)
+        await member.edit(nick=name)
+
+    @shop.command()
     @commands.dm_only()
     async def shield(self, ctx):
         old_mapping = constants.REDIS.hgetall(ctx.author.id)
         balance = float(old_mapping[b'points'].decode('utf-8'))
         last_shield = float(old_mapping[b'last_shield'].decode('utf-8'))
-        if balance < 500:
+        if balance < 1000:
             await ctx.message.add_reaction(constants.NOT_ENOUGH_POINTS)
             return
         elif time() - last_shield < 1800:
@@ -129,25 +145,9 @@ class Shop(commands.Cog):
             return
 
         new_mapping = {
-            'points': balance - 1800,
+            'points': balance - 1000,
             'last_shield': time()
         }
         constants.REDIS.hset(ctx.author.id, mapping=new_mapping)
 
         await ctx.message.add_reaction(constants.CONFIRM)
-
-    @shop.command()
-    @commands.guild_only()
-    async def rename(self, ctx, member: discord.Member, name):
-        balance = float(constants.REDIS.hget(ctx.author.id, 'points').decode('utf-8'))
-        if balance < 150:
-            await ctx.message.add_reaction(constants.NOT_ENOUGH_POINTS)
-            return
-        elif guild.get_role(constants.DEFAULT_ROLE_ID) in m.roles:
-            await ctx.message.add_reaction(constants.DENY)
-            return
-
-        constants.REDIS.hset(ctx.author.id, 'points', balance - 150)
-
-        await ctx.message.add_reaction(constants.CONFIRM)
-        await member.edit(nick=name)
