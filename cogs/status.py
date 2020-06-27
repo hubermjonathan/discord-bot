@@ -21,6 +21,7 @@ class Status(commands.Cog):
             discord.Activity(type=discord.ActivityType.playing, name='with my Amazon friends'),
             discord.Activity(type=discord.ActivityType.listening, name='the fight song'),
             discord.Activity(type=discord.ActivityType.playing, name='against IU'),
+            discord.Activity(type=discord.ActivityType.listening, name='Jay\'s sass'),
         ]
 
     @tasks.loop(hours=1)

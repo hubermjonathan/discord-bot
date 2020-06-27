@@ -10,29 +10,14 @@ class Help(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    @commands.group(aliases=['h'])
+    @commands.group()
     async def help(self, ctx):
         if ctx.invoked_subcommand is None:
             embed = discord.Embed(title='commands',
                 description='**ex: command (alias) - **`command_name [required_argument] {optional_argument}`\n'
-                    'economy (e) - `economy [command]`\n'
-                    'poll (p) - `poll {command}`\n'
-                    'shop (s) - `shop {command}`\n',
-            )
-            embed.add_field(name='**economy commands**',
-                value='check balance (b) - `economy balance`\n'
-                    'send money - `economy send [person] [amount]`\n',
-                inline=True
-            )
-            embed.add_field(name='**poll commands**',
-                value='all games - `poll`\n'
-                    'games in common (c) - `poll common`\n',
-                inline=True
-            )
-            embed.add_field(name='**shop commands**',
-                value='view items - `shop`\n'
-                    'buy something - `shop [item]`\n',
-                inline=True
+                    'check your balance - `balance`\n'
+                    'send someone money - `send [person] [amount]`\n'
+                    'show the shop - `shop`\n',
             )
 
             await ctx.send(embed=embed)

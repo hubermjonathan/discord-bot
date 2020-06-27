@@ -21,18 +21,17 @@ class Shop(commands.Cog):
             if time() - last_muted > 60:
                 await member.edit(mute=False)
 
-    @commands.group(aliases=['s'])
+    @commands.command()
     async def shop(self, ctx):
-        if ctx.invoked_subcommand is None:
-            embed = discord.Embed(title='shop items',
-                description='**🎲 random mute (350 dining dollars)** - `rmute` - server mute someone random for a minute\n'
-                    '**🔇 mute (700 dining dollars)** - `mute [person]` - server mute someone for a minute\n'
-                    '**✏ rename (300 dining dollars)** - `rename [person] [name]` - rename someone\n'
-                    '**🛡 mute shield (1000 dining dollars)** - `shield` - block mutes for 30 minutes\n',
-            )
-            await ctx.send(embed=embed)
+        embed = discord.Embed(title='shop items',
+            description='**🎲 random mute (350 dining dollars)** - `rmute` - server mute someone random for a minute\n'
+                '**🔇 mute (700 dining dollars)** - `mute [person]` - server mute someone for a minute\n'
+                '**✏ rename (300 dining dollars)** - `rename [person] [name]` - rename someone\n'
+                '**🛡 mute shield (1000 dining dollars)** - `shield` - block mutes for 30 minutes\n',
+        )
+        await ctx.send(embed=embed)
 
-    @shop.command()
+    @commands.command()
     @commands.guild_only()
     async def rmute(self, ctx):
         old_mapping = constants.REDIS.hgetall(ctx.author.id)
@@ -79,7 +78,7 @@ class Shop(commands.Cog):
         await asyncio.sleep(60)
         await member.edit(mute=False)
 
-    @shop.command()
+    @commands.command()
     @commands.guild_only()
     async def mute(self, ctx, member: discord.Member):
         old_mapping = constants.REDIS.hgetall(ctx.author.id)
@@ -115,7 +114,7 @@ class Shop(commands.Cog):
         await asyncio.sleep(60)
         await member.edit(mute=False)
 
-    @shop.command()
+    @commands.command()
     @commands.guild_only()
     async def rename(self, ctx, member: discord.Member, name):
         balance = float(constants.REDIS.hget(ctx.author.id, 'points').decode('utf-8'))
@@ -131,7 +130,7 @@ class Shop(commands.Cog):
         await ctx.message.add_reaction(constants.CONFIRM)
         await member.edit(nick=name)
 
-    @shop.command()
+    @commands.command()
     @commands.dm_only()
     async def shield(self, ctx):
         old_mapping = constants.REDIS.hgetall(ctx.author.id)
