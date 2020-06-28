@@ -56,16 +56,16 @@ class Shop(commands.Cog):
             await ctx.message.add_reaction(constants.NOT_IN_VC)
             return
 
+        member = random.choice(voice_channel.members)
+        if member.voice.mute or guild.get_role(constants.DEFAULT_ROLE_ID) in member.roles:
+            await ctx.message.add_reaction(constants.DENY)
+            return
+
         new_mapping = {
             'points': balance - 350,
             'last_rmute': time()
         }
         constants.REDIS.hset(ctx.author.id, mapping=new_mapping)
-
-        member = random.choice(voice_channel.members)
-        if member.voice.mute:
-            await ctx.message.add_reaction(constants.DENY)
-            return
 
         last_shield = float(constants.REDIS.hget(member.id, 'last_shield').decode('utf-8'))
         if time() - last_shield < 1800:
@@ -93,7 +93,7 @@ class Shop(commands.Cog):
         elif member.voice is None:
             await ctx.message.add_reaction(constants.NOT_IN_VC)
             return
-        elif member.voice.mute:
+        elif member.voice.mute or guild.get_role(constants.DEFAULT_ROLE_ID) in member.roles:
             await ctx.message.add_reaction(constants.DENY)
             return
 
