@@ -57,7 +57,7 @@ class Shop(commands.Cog):
             return
 
         member = random.choice(voice_channel.members)
-        if member.voice.mute or guild.get_role(constants.DEFAULT_ROLE_ID) in member.roles:
+        if member.voice.mute or ctx.guild.get_role(constants.DEFAULT_ROLE_ID) in member.roles:
             await ctx.message.add_reaction(constants.DENY)
             return
 
@@ -93,7 +93,7 @@ class Shop(commands.Cog):
         elif member.voice is None:
             await ctx.message.add_reaction(constants.NOT_IN_VC)
             return
-        elif member.voice.mute or guild.get_role(constants.DEFAULT_ROLE_ID) in member.roles:
+        elif member.voice.mute or ctx.guild.get_role(constants.DEFAULT_ROLE_ID) in member.roles:
             await ctx.message.add_reaction(constants.DENY)
             return
 
@@ -121,7 +121,7 @@ class Shop(commands.Cog):
         if balance < 300:
             await ctx.message.add_reaction(constants.NOT_ENOUGH_POINTS)
             return
-        elif guild.get_role(constants.DEFAULT_ROLE_ID) in m.roles:
+        elif ctx.guild.get_role(constants.DEFAULT_ROLE_ID) in m.roles:
             await ctx.message.add_reaction(constants.DENY)
             return
 
