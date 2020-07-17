@@ -7,7 +7,7 @@ import constants
 def setup(bot):
     economy = Economy(bot)
     bot.add_cog(economy)
-    economy.count_points.start()
+    economy.distribute_points.start()
 
 
 class Economy(commands.Cog):
@@ -16,7 +16,7 @@ class Economy(commands.Cog):
         self.double_enabled = False
 
     @tasks.loop(minutes=10)
-    async def count_points(self):
+    async def distribute_points(self):
         guild = self.bot.get_guild(constants.GUILD_ID)
         for vc in guild.voice_channels:
             if len(vc.members) < 2:
@@ -47,7 +47,7 @@ class Economy(commands.Cog):
                 }
                 constants.REDIS.hset(m.id, mapping=new_mapping)
 
-    @count_points.before_loop
+    @distribute_points.before_loop
     async def before_loop(self):
         await self.bot.wait_until_ready()
 
