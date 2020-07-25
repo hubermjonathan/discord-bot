@@ -12,8 +12,7 @@ class Welcome(commands.Cog):
         self.bot = bot
 
     @commands.Cog.listener()
-    async def on_message(self, message):
-        member = message.author
+    async def on_member_join(self, member):
         if member.bot:
             return
 
