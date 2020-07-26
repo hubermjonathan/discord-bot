@@ -27,6 +27,8 @@ public class CommandHandler extends ListenerAdapter {
             case ("economy"):
                 break;
             case ("help"):
+                Help help = new Help(event);
+                help.dispatch();
                 break;
             case ("shop"):
                 break;
