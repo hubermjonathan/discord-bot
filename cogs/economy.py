@@ -154,7 +154,7 @@ class Economy(commands.Cog):
         }
         constants.REDIS.hset(member.id, mapping=new_mapping)
 
-        embed = discord.Embed(title='balance', description=f'{ctx.author.display_name} sent you dining dollars! your current balance is now **{new_mapping.points} dining dollars** 💵')
+        embed = discord.Embed(title='balance', description=f'{ctx.author.display_name} sent you dining dollars! your current balance is now **{old_points + float(amount)} dining dollars** 💵')
         await member.send(embed=embed)
 
         await ctx.message.add_reaction(constants.CONFIRM)
