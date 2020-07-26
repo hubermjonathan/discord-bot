@@ -121,7 +121,7 @@ class Shop(commands.Cog):
         if balance < 300:
             await ctx.message.add_reaction(constants.NOT_ENOUGH_POINTS)
             return
-        elif ctx.guild.get_role(constants.DEFAULT_ROLE_ID) in m.roles:
+        elif ctx.guild.get_role(constants.DEFAULT_ROLE_ID) in member.roles:
             await ctx.message.add_reaction(constants.DENY)
             return
 
