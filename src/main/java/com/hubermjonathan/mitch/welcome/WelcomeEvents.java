@@ -1,6 +1,5 @@
 package com.hubermjonathan.mitch.welcome;
 
-
 import com.hubermjonathan.mitch.Constants;
 import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.events.guild.member.GuildMemberJoinEvent;

@@ -1,6 +1,5 @@
 package com.hubermjonathan.mitch.admin;
 
-
 import com.hubermjonathan.mitch.CommandSet;
 import com.hubermjonathan.mitch.Constants;
 import net.dv8tion.jda.api.Region;

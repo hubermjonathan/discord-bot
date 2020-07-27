@@ -1,6 +1,5 @@
 package com.hubermjonathan.mitch;
 
-
 import com.hubermjonathan.mitch.admin.AdminCommands;
 import com.hubermjonathan.mitch.help.HelpCommands;
 import net.dv8tion.jda.api.entities.Message;

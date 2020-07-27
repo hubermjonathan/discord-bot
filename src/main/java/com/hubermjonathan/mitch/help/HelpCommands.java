@@ -1,6 +1,5 @@
 package com.hubermjonathan.mitch.help;
 
-
 import com.hubermjonathan.mitch.CommandSet;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageChannel;
