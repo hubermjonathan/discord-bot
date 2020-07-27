@@ -2,7 +2,7 @@ package com.hubermjonathan.mitch.admin;
 
 
 import com.hubermjonathan.mitch.CommandSet;
-import com.hubermjonathan.mitch.Emoji;
+import com.hubermjonathan.mitch.Constants;
 import net.dv8tion.jda.api.Region;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
@@ -30,7 +30,7 @@ public class AdminCommands extends CommandSet {
                     break;
             }
         } catch (ArrayIndexOutOfBoundsException e) {
-            message.addReaction(Emoji.DENY).queue();
+            message.addReaction(Constants.DENY).queue();
         }
     }
 
@@ -49,7 +49,7 @@ public class AdminCommands extends CommandSet {
         }
 
         Message message = getEvent().getMessage();
-        message.addReaction(Emoji.CONFRIM).queue();
+        message.addReaction(Constants.CONFIRM).queue();
     }
 
     private void togglePriority() {
@@ -63,7 +63,7 @@ public class AdminCommands extends CommandSet {
         }
         if (voiceChannel == null) {
             Message message = getEvent().getMessage();
-            message.addReaction(Emoji.NOT_IN_VC).queue();
+            message.addReaction(Constants.NOT_IN_VC).queue();
             return;
         }
 
@@ -73,6 +73,6 @@ public class AdminCommands extends CommandSet {
         }
 
         Message message = getEvent().getMessage();
-        message.addReaction(Emoji.CONFRIM).queue();
+        message.addReaction(Constants.CONFIRM).queue();
     }
 }

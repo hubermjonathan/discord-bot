@@ -19,7 +19,7 @@ public class Dispatcher extends ListenerAdapter {
         String[] tokens = content.split(" ");
 
         if (event.getAuthor().isBot()) return;
-        if (!channel.getId().equals(System.getenv("BOT_CHANNEL_ID"))) return;
+        if (!channel.getId().equals(Constants.BOT_CHANNEL_ID)) return;
 
         switch (tokens[0]) {
             case ("admin"):
@@ -35,7 +35,7 @@ public class Dispatcher extends ListenerAdapter {
             case ("shop"):
                 break;
             default:
-                System.out.println("HANDLE NO COMMAND");
+                message.addReaction(Constants.NO_COMMAND).queue();
         }
     }
 }

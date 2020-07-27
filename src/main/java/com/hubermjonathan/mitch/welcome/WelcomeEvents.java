@@ -1,6 +1,7 @@
 package com.hubermjonathan.mitch.welcome;
 
 
+import com.hubermjonathan.mitch.Constants;
 import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.events.guild.member.GuildMemberJoinEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
@@ -53,7 +54,7 @@ public class WelcomeEvents extends ListenerAdapter {
 
         Member member = event.getMember();
         member.modifyNickname(name).queue();
-        Role defaultRole = guild.getRoleById(System.getenv("DEFAULT_ROLE_ID"));
+        Role defaultRole = guild.getRoleById(Constants.DEFAULT_ROLE_ID);
         guild.addRoleToMember(member, defaultRole).queue();
     }
 }
