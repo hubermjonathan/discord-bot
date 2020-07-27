@@ -6,7 +6,7 @@ public class Constants {
     public static final String DEFAULT_ROLE_ID = "701162007981981771";
     public static final String PROMOTED_ROLE_ID = "70117011701161990919422002";
     
-    public static final String REDIS_URL = "redis:/redis://h:p1107cf4202f9fba2545ecf06d63a57614c8ed8609c495f7c2979dc82f83ef1dd@ec2-54-164-156-5.compute-1.amazonaws.com:8979/h:p39d4c3c5eac0e1254ceb6a02e419a5bc497e8b28f4496a64c5ee700a1eb67052@ec2-54-243-171-95.compute-1.amazonaws.com:26299redis://h:p1107cf4202f9fba2545ecf06d63a57614c8ed8609c495f7c2979dc82f83ef1dd@ec2-54-164-156-5.compute-1.amazonaws.com:8979";
+    public static final String REDIS_URL = "redis://h:p1107cf4202f9fba2545ecf06d63a57614c8ed8609c495f7c2979dc82f83ef1dd@ec2-54-164-156-5.compute-1.amazonaws.com:8979";
 
     public static final String CONFIRM = "\uD83D\uDC4D";
     public static final String DENY = "\uD83D\uDC4E";

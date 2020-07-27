@@ -3,6 +3,7 @@ package com.hubermjonathan.mitch.admin;
 import com.hubermjonathan.mitch.Commands;
 import com.hubermjonathan.mitch.Constants;
 import net.dv8tion.jda.api.Region;
+import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.VoiceChannel;
@@ -55,12 +56,12 @@ public class AdminCommands extends Commands {
     }
 
     private void togglePriority() {
+        Guild guild = getEvent().getGuild();
         VoiceChannel voiceChannel = null;
-        for (VoiceChannel vc : getEvent().getGuild().getVoiceChannels()) {
-            for (Member m : vc.getMembers()) {
-                if (m.getId().equals(getEvent().getAuthor().getId())) {
-                    voiceChannel = vc;
-                }
+        for (VoiceChannel vc : guild.getVoiceChannels()) {
+            if (vc.getMembers().contains(guild.getOwner())) {
+                voiceChannel = vc;
+                break;
             }
         }
         if (voiceChannel == null) {
