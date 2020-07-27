@@ -1,6 +1,8 @@
 package com.hubermjonathan.mitch;
 
 
+import com.hubermjonathan.mitch.admin.AdminCommands;
+import com.hubermjonathan.mitch.help.HelpCommands;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
@@ -8,7 +10,7 @@ import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
 import javax.annotation.Nonnull;
 
-public class CommandHandler extends ListenerAdapter {
+public class Dispatcher extends ListenerAdapter {
     @Override
     public void onMessageReceived(@Nonnull MessageReceivedEvent event) {
         Message message = event.getMessage();
@@ -21,14 +23,14 @@ public class CommandHandler extends ListenerAdapter {
 
         switch (tokens[0]) {
             case ("admin"):
-                Admin admin = new Admin(event);
-                admin.dispatch();
+                AdminCommands adminCommands = new AdminCommands(event);
+                adminCommands.dispatch();
                 break;
             case ("economy"):
                 break;
             case ("help"):
-                Help help = new Help(event);
-                help.dispatch();
+                HelpCommands helpCommands = new HelpCommands(event);
+                helpCommands.dispatch();
                 break;
             case ("shop"):
                 break;

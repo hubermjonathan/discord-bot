@@ -3,10 +3,10 @@ package com.hubermjonathan.mitch;
 
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
-public class Feature {
+public class CommandSet {
     private final MessageReceivedEvent event;
 
-    public Feature(MessageReceivedEvent event) {
+    public CommandSet(MessageReceivedEvent event) {
         this.event = event;
     }
 

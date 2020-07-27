@@ -1,12 +1,13 @@
-package com.hubermjonathan.mitch;
+package com.hubermjonathan.mitch.help;
 
 
+import com.hubermjonathan.mitch.CommandSet;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
-public class Help extends Feature {
-    public Help(MessageReceivedEvent event) {
+public class HelpCommands extends CommandSet {
+    public HelpCommands(MessageReceivedEvent event) {
         super(event);
     }
 

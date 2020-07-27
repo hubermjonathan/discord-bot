@@ -1,6 +1,8 @@
-package com.hubermjonathan.mitch;
+package com.hubermjonathan.mitch.admin;
 
 
+import com.hubermjonathan.mitch.CommandSet;
+import com.hubermjonathan.mitch.Emoji;
 import net.dv8tion.jda.api.Region;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
@@ -8,8 +10,8 @@ import net.dv8tion.jda.api.entities.VoiceChannel;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.managers.GuildManager;
 
-public class Admin extends Feature {
-    public Admin(MessageReceivedEvent event) {
+public class AdminCommands extends CommandSet {
+    public AdminCommands(MessageReceivedEvent event) {
         super(event);
     }
 
