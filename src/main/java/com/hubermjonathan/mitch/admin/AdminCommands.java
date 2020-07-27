@@ -1,6 +1,6 @@
 package com.hubermjonathan.mitch.admin;
 
-import com.hubermjonathan.mitch.CommandSet;
+import com.hubermjonathan.mitch.Commands;
 import com.hubermjonathan.mitch.Constants;
 import net.dv8tion.jda.api.Region;
 import net.dv8tion.jda.api.entities.Member;
@@ -9,11 +9,12 @@ import net.dv8tion.jda.api.entities.VoiceChannel;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.managers.GuildManager;
 
-public class AdminCommands extends CommandSet {
+public class AdminCommands extends Commands {
     public AdminCommands(MessageReceivedEvent event) {
         super(event);
     }
 
+    @Override
     public void dispatch() {
         Message message = getEvent().getMessage();
         String content = message.getContentRaw();
@@ -27,6 +28,8 @@ public class AdminCommands extends CommandSet {
                 case ("priority"):
                     togglePriority();
                     break;
+                default:
+                    message.addReaction(Constants.DENY).queue();
             }
         } catch (ArrayIndexOutOfBoundsException e) {
             message.addReaction(Constants.DENY).queue();

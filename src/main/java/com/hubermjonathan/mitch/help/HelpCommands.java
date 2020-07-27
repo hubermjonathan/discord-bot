@@ -1,15 +1,16 @@
 package com.hubermjonathan.mitch.help;
 
-import com.hubermjonathan.mitch.CommandSet;
+import com.hubermjonathan.mitch.Commands;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
-public class HelpCommands extends CommandSet {
+public class HelpCommands extends Commands {
     public HelpCommands(MessageReceivedEvent event) {
         super(event);
     }
 
+    @Override
     public void dispatch() {
         sendHelpMessage();
     }
