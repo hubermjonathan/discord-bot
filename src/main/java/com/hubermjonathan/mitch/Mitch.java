@@ -1,6 +1,7 @@
 package com.hubermjonathan.mitch;
 
 import com.hubermjonathan.mitch.economy.EconomyLoop;
+import com.hubermjonathan.mitch.shop.ShopEvents;
 import com.hubermjonathan.mitch.status.StatusLoop;
 import com.hubermjonathan.mitch.welcome.WelcomeEvents;
 import net.dv8tion.jda.api.JDA;
@@ -17,6 +18,7 @@ public class Mitch {
 
         jda.addEventListener(new Dispatcher());
         jda.addEventListener(new WelcomeEvents());
+        jda.addEventListener(new ShopEvents());
 
         Timer timer = new Timer();
         timer.schedule(new StatusLoop(jda.getPresence()), 0, 60 * 60 * 1000);

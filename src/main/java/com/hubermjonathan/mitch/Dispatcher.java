@@ -3,6 +3,7 @@ package com.hubermjonathan.mitch;
 import com.hubermjonathan.mitch.admin.AdminCommands;
 import com.hubermjonathan.mitch.economy.EconomyCommands;
 import com.hubermjonathan.mitch.help.HelpCommands;
+import com.hubermjonathan.mitch.shop.ShopCommands;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
@@ -39,6 +40,8 @@ public class Dispatcher extends ListenerAdapter {
                 break;
             case ("shop"):
             case ("s"):
+                ShopCommands shopCommands = new ShopCommands(event);
+                shopCommands.dispatch();
                 break;
             default:
                 message.addReaction(Constants.NO_COMMAND).queue();
