@@ -12,7 +12,7 @@ import javax.security.auth.login.LoginException;
 import java.util.Timer;
 
 public class Mitch {
-    public static void main(String[] args) throws LoginException, InterruptedException {
+    public static void main(String[] args) throws InterruptedException, LoginException {
         JDA jda = JDABuilder.createDefault(System.getenv("TOKEN")).enableIntents(GatewayIntent.GUILD_MEMBERS).build();
         jda.awaitReady();
 

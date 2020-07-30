@@ -35,13 +35,10 @@ public class ShopCommands extends Commands {
                     buyRandomMute();
                     break;
                 case ("mute"):
-//                    buyMute();
                     break;
                 case ("rename"):
-//                    buyRename();
                     break;
                 case ("shield"):
-//                    buyShield();
                     break;
                 default:
                     message.addReaction(Constants.DENY).queue();
@@ -122,8 +119,4 @@ public class ShopCommands extends Commands {
         Thread.sleep(60 * 1000);
         member.mute(false).queue();
     }
-
-//    private void buyMute() {
-//
-//    }
 }
