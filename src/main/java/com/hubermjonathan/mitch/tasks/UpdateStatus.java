@@ -1,4 +1,4 @@
-package com.hubermjonathan.mitch.status;
+package com.hubermjonathan.mitch.tasks;
 
 import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.managers.Presence;
@@ -6,7 +6,7 @@ import net.dv8tion.jda.api.managers.Presence;
 import java.util.Random;
 import java.util.TimerTask;
 
-public class StatusLoop extends TimerTask {
+public class UpdateStatus extends TimerTask {
     Presence presence;
     Activity[] activities = {
             Activity.listening("Daniel's flame"),
@@ -20,7 +20,7 @@ public class StatusLoop extends TimerTask {
             Activity.listening("Jay's sass"),
     };
 
-    public StatusLoop(Presence presence) {
+    public UpdateStatus(Presence presence) {
         this.presence = presence;
     }
 
