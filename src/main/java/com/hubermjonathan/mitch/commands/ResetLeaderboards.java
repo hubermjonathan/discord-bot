@@ -7,7 +7,7 @@ import redis.clients.jedis.Jedis;
 import java.util.Arrays;
 
 public class ResetLeaderboards extends AdminCommand {
-    Jedis jedis;
+    private final Jedis jedis;
 
     public ResetLeaderboards() {
         super("reset", Arrays.asList());

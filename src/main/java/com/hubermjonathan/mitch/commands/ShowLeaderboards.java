@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Set;
 
 public class ShowLeaderboards extends Command {
-    Jedis jedis;
+    private final Jedis jedis;
 
     public ShowLeaderboards() {
         super("leaderboards", Arrays.asList("l"));

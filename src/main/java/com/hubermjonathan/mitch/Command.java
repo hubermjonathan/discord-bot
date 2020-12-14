@@ -36,7 +36,7 @@ public abstract class Command extends ListenerAdapter {
         this.event = event;
     }
 
-    boolean isNotCorrectCommand(String token) {
+    public boolean isNotCorrectCommand(String token) {
         boolean isCorrect = false;
 
         if (token.equals(command)) isCorrect = true;

@@ -10,7 +10,7 @@ import redis.clients.jedis.Jedis;
 import java.util.Map;
 
 public class TrackConnectionTime extends ListenerAdapter {
-    Jedis jedis;
+    private final Jedis jedis;
 
     public TrackConnectionTime() {
         this.jedis = Constants.JEDIS;

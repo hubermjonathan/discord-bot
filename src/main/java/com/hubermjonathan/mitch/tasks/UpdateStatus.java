@@ -7,8 +7,8 @@ import java.util.Random;
 import java.util.TimerTask;
 
 public class UpdateStatus extends TimerTask {
-    Presence presence;
-    Activity[] activities = {
+    private final Presence presence;
+    private final Activity[] activities = {
             Activity.listening("Daniel's flame"),
             Activity.watching("Sammie's stream"),
             Activity.listening("Collin simp"),
