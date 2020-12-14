@@ -3,51 +3,14 @@ package com.hubermjonathan.mitch;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
-import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
 import java.util.List;
 
-public abstract class Command extends ListenerAdapter {
-    private final String command;
-    private final List<String> aliases;
-    private String[] args;
-    private MessageReceivedEvent event;
-
-    public Command(String command, List<String> aliases) {
-        this.command = command;
-        this.aliases = aliases;
-    }
-
-    public String[] getArgs() {
-        return args;
-    }
-
-    public void setArgs(String[] args) {
-        this.args = args;
-    }
-
-    public MessageReceivedEvent getEvent() {
-        return event;
-    }
-
-    public void setEvent(MessageReceivedEvent event) {
-        this.event = event;
-    }
-
-    boolean isNotCorrectCommand(String token) {
-        boolean isCorrect = false;
-
-        if (token.equals(command)) isCorrect = true;
-        for (String alias : aliases) {
-            if (token.equals(alias)) {
-                isCorrect = true;
-                break;
-            }
-        }
-
-        return !isCorrect;
+public abstract class AdminCommand extends Command {
+    public AdminCommand(String command, List<String> aliases) {
+        super(command, aliases);
     }
 
     @Override
@@ -61,6 +24,10 @@ public abstract class Command extends ListenerAdapter {
         if (!tokens[0].equals(String.format("<@!%s>", channel.getJDA().getSelfUser().getId()))) return;
         if (tokens.length == 1) return;
         if (isNotCorrectCommand(tokens[1])) return;
+        if (!message.getAuthor().getId().equals(message.getGuild().getOwnerId())) {
+            message.addReaction(Constants.DENY).queue();
+            return;
+        }
 
         setArgs(Arrays.copyOfRange(tokens, 1, tokens.length));
         setEvent(event);
@@ -71,6 +38,4 @@ public abstract class Command extends ListenerAdapter {
         } catch (Exception ignored) {
         }
     }
-
-    public abstract void executeCommand() throws Exception;
 }
