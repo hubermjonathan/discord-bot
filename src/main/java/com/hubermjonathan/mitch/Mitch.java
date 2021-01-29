@@ -20,6 +20,7 @@ public class Mitch {
         jda.addEventListener(new LeaveGroup());
         jda.addEventListener(new SetUpChannel());
         jda.addEventListener(new TogglePriority());
+        jda.addEventListener(new UploadEmoji());
 
         jda.addEventListener(new NewMemberActions());
 
