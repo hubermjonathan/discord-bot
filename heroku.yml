@@ -3,5 +3,3 @@ build:
     worker: Dockerfile
 run:
   worker: /bin/sh -c java -jar mitch-*-jar-with-dependencies.jar
-scale:
-  worker: 1
