@@ -6,11 +6,9 @@ import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.VoiceChannel;
 
-import java.util.Arrays;
-
 public class TogglePriority extends AdminCommand {
     public TogglePriority() {
-        super("priority", Arrays.asList("p"));
+        super("priority", "p");
     }
 
     @Override
@@ -23,11 +21,9 @@ public class TogglePriority extends AdminCommand {
             throw new Exception();
         }
 
-        for (Member m : voiceChannel.getMembers()) {
-            if (m.isOwner()) continue;
-            m.mute(!m.getVoiceState().isGuildMuted()).queue();
+        for (Member member : voiceChannel.getMembers()) {
+            if (member.isOwner()) continue;
+            member.mute(!member.getVoiceState().isGuildMuted()).queue();
         }
-
-        message.addReaction(Constants.CONFIRM).queue();
     }
 }

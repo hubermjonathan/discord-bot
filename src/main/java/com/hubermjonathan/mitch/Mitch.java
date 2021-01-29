@@ -16,14 +16,15 @@ public class Mitch {
         jda.awaitReady();
 
         jda.addEventListener(new ChangeRegion());
-        jda.addEventListener(new ResetLeaderboards());
-        jda.addEventListener(new ShowLeaderboards());
+        jda.addEventListener(new JoinGroup());
+        jda.addEventListener(new LeaveGroup());
+        jda.addEventListener(new SetUpChannel());
         jda.addEventListener(new TogglePriority());
 
         jda.addEventListener(new NewMemberActions());
-        jda.addEventListener(new TrackConnectionTime());
 
         Timer timer = new Timer();
         timer.schedule(new UpdateStatus(jda.getPresence()), 0, 60 * 60 * 1000);
+        timer.schedule(new CleanUpChannel(jda), 0, 10 * 1000);
     }
 }

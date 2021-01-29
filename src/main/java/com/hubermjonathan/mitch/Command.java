@@ -7,17 +7,16 @@ import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
-import java.util.List;
 
 public abstract class Command extends ListenerAdapter {
     private final String command;
-    private final List<String> aliases;
+    private final String alias;
     private String[] args;
     private MessageReceivedEvent event;
 
-    public Command(String command, List<String> aliases) {
+    public Command(String command, String alias) {
         this.command = command;
-        this.aliases = aliases;
+        this.alias = alias;
     }
 
     public String[] getArgs() {
@@ -37,17 +36,11 @@ public abstract class Command extends ListenerAdapter {
     }
 
     public boolean isNotCorrectCommand(String token) {
-        boolean isCorrect = false;
-
-        if (token.equals(command)) isCorrect = true;
-        for (String alias : aliases) {
-            if (token.equals(alias)) {
-                isCorrect = true;
-                break;
-            }
+        if (alias == null) {
+            return !token.equals(command);
+        } else {
+            return !token.equals(command) && !token.equals(alias);
         }
-
-        return !isCorrect;
     }
 
     @Override
@@ -62,7 +55,7 @@ public abstract class Command extends ListenerAdapter {
         if (tokens.length == 1) return;
         if (isNotCorrectCommand(tokens[1])) return;
 
-        setArgs(Arrays.copyOfRange(tokens, 1, tokens.length));
+        setArgs(Arrays.copyOfRange(tokens, 2, tokens.length));
         setEvent(event);
 
         try {

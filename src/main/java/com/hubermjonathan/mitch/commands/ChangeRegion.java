@@ -1,18 +1,22 @@
 package com.hubermjonathan.mitch.commands;
 
 import com.hubermjonathan.mitch.AdminCommand;
+import com.hubermjonathan.mitch.Constants;
 import net.dv8tion.jda.api.Region;
 import net.dv8tion.jda.api.managers.GuildManager;
 
-import java.util.Arrays;
-
 public class ChangeRegion extends AdminCommand {
     public ChangeRegion() {
-        super("region", Arrays.asList("r"));
+        super("region", "r");
     }
 
     @Override
-    public void executeCommand() {
+    public void executeCommand() throws Exception {
+        if (getArgs().length != 1) {
+            getEvent().getMessage().addReaction(Constants.DENY).queue();
+            throw new Exception();
+        }
+
         String newRegion = getArgs()[0];
         GuildManager guildManager = getEvent().getMessage().getGuild().getManager();
 

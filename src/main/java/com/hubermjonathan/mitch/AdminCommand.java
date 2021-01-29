@@ -6,11 +6,10 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
-import java.util.List;
 
 public abstract class AdminCommand extends Command {
-    public AdminCommand(String command, List<String> aliases) {
-        super(command, aliases);
+    public AdminCommand(String command, String alias) {
+        super(command, alias);
     }
 
     @Override
@@ -29,7 +28,7 @@ public abstract class AdminCommand extends Command {
             return;
         }
 
-        setArgs(Arrays.copyOfRange(tokens, 1, tokens.length));
+        setArgs(Arrays.copyOfRange(tokens, 2, tokens.length));
         setEvent(event);
 
         try {
