@@ -21,7 +21,7 @@ public class SetUpChannel extends AdminCommand {
     public void executeCommand() {
         TextChannel textChannel = getEvent().getTextChannel();
         Collection<Message> messages = textChannel.getHistoryFromBeginning(100).complete().getRetrievedHistory();
-        List<String> groups = getEvent().getGuild().getRoles().subList(6, getEvent().getGuild().getRoles().size() - 1).stream().map(Role::getName).collect(Collectors.toList());
+        List<String> groups = getEvent().getGuild().getRoles().subList(7, getEvent().getGuild().getRoles().size() - 1).stream().map(Role::getName).collect(Collectors.toList());
 
         EmbedBuilder embedBuilder = new EmbedBuilder();
         embedBuilder.setTitle("Mitch");

@@ -23,7 +23,7 @@ public class JoinGroup extends Command {
         }
 
         Guild guild = getEvent().getGuild();
-        List<String> groups = guild.getRoles().subList(6, guild.getRoles().size() - 1).stream().map(Role::getName).collect(Collectors.toList());
+        List<String> groups = guild.getRoles().subList(7, guild.getRoles().size() - 1).stream().map(Role::getName).collect(Collectors.toList());
         String group = getArgs()[0];
         Message message = getEvent().getMessage();
         Member member = getEvent().getMember();
