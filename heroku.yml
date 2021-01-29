@@ -2,4 +2,4 @@ build:
   docker:
     worker: Dockerfile
 run:
-  worker: /bin/sh -c java -jar mitch-*-jar-with-dependencies.jar
+  worker: java -jar mitch-*-jar-with-dependencies.jar
