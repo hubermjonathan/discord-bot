@@ -15,10 +15,6 @@ public class Kick extends Button {
     public void execute() throws Exception {
         Category category = getEvent().getChannel().getParent();
 
-        if (category.getTextChannels().get(0).getName().contains(Constants.FIRE)) {
-            throw new Exception();
-        }
-
         VoiceChannel newVoiceChannel = null;
         for (VoiceChannel voiceChannel : getEvent().getGuild().getVoiceChannels()) {
             if (voiceChannel.getName().equals(Constants.MAIN_VOICE_CHANNEL_NAME)) {

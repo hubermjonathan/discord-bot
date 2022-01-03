@@ -16,10 +16,6 @@ public class Lock extends Button {
     public void execute() throws Exception {
         Category category = getEvent().getChannel().getParent();
 
-        if (category.getTextChannels().get(0).getName().contains(Constants.FIRE)) {
-            throw new Exception();
-        }
-
         category.getVoiceChannels().get(0).getManager()
                 .clearOverridesAdded()
                 .putPermissionOverride(getEvent().getGuild().getPublicRole(), null, EnumSet.of(Permission.VOICE_CONNECT))

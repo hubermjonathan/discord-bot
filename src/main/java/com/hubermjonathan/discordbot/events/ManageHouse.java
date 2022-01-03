@@ -38,7 +38,6 @@ public class ManageHouse extends ListenerAdapter {
         message.addReaction(Constants.LOCK).queue();
         message.addReaction(Constants.UNLOCK).queue();
         message.addReaction(Constants.KICK).queue();
-        message.addReaction(Constants.FIRE).queue();
     }
 
     private void deleteRoom(@NotNull GenericGuildMemberEvent event) {

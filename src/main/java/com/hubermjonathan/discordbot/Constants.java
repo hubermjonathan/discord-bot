@@ -8,7 +8,6 @@ public class Constants {
     public static final String LOCK = "\uD83D\uDD12";
     public static final String UNLOCK = "\uD83D\uDD11";
     public static final String KICK = "✌";
-    public static final String FIRE = "\uD83D\uDD25";
 
     public static final String BOT_OWNER_ID = "196141424318611457";
 
