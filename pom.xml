@@ -39,7 +39,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>com.hubermjonathan.discordbot.DiscordBot</mainClass>
+                            <mainClass>com.hubermjonathan.discord.runner.BotRunner</mainClass>
                         </manifest>
                     </archive>
                     <descriptorRefs>
