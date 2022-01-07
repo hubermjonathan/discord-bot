@@ -13,6 +13,7 @@ public class Poke extends GuestButton {
     @Override
     public void execute() throws Exception {
         if (!getEvent().getMember().getVoiceState().inVoiceChannel()
+                || getEvent().getMember().getVoiceState().getChannel().equals(getEvent().getTextChannel().getParent().getVoiceChannels().get(0))
                 || getEvent().getGuild().getSelfMember().getVoiceState().inVoiceChannel()) {
             throw new Exception();
         }
@@ -20,6 +21,7 @@ public class Poke extends GuestButton {
         Member owner = getEvent().getGuild().getMembersByEffectiveName(getEvent().getTextChannel().getName().substring(0, getEvent().getTextChannel().getName().indexOf('-')), true).get(0);
         if (owner.getVoiceState().inVoiceChannel()
                 && owner.getVoiceState().getChannel().equals(getEvent().getTextChannel().getParent().getVoiceChannels().get(0))) {
+            owner.getUser().openPrivateChannel().complete().sendMessage("hey " + owner.getAsMention() + ", " + getEvent().getMember().getAsMention() + " poked you!").queue();
             getEvent().deferEdit().queue();
             PlayerManager.getInstance().loadAndPlay(getEvent().getGuild(), owner.getVoiceState().getChannel(), Constants.POKE_SOUND);
         }
