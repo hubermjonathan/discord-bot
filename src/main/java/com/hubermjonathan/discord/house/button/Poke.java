@@ -18,8 +18,7 @@ public class Poke extends GuestButton {
         }
 
         Member owner = getEvent().getGuild().getMembersByEffectiveName(getEvent().getTextChannel().getName().substring(0, getEvent().getTextChannel().getName().indexOf('-')), true).get(0);
-        if (owner.getVoiceState().inVoiceChannel()
-                && owner.getVoiceState().getChannel().equals(getEvent().getTextChannel().getParent().getVoiceChannels().get(0))) {
+        if (owner.getVoiceState().inVoiceChannel()) {
             owner.getUser().openPrivateChannel().complete().sendMessage("hey " + owner.getAsMention() + ", " + getEvent().getMember().getAsMention() + " poked you!").queue();
             getEvent().deferEdit().queue();
             PlayerManager.getInstance().loadAndPlay(getEvent().getGuild(), owner.getVoiceState().getChannel(), Constants.POKE_SOUND);
