@@ -13,7 +13,6 @@ public class Poke extends GuestButton {
     @Override
     public void execute() throws Exception {
         if (!getEvent().getMember().getVoiceState().inVoiceChannel()
-                || getEvent().getMember().getVoiceState().getChannel().equals(getEvent().getTextChannel().getParent().getVoiceChannels().get(0))
                 || getEvent().getGuild().getSelfMember().getVoiceState().inVoiceChannel()) {
             throw new Exception();
         }
