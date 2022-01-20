@@ -21,7 +21,7 @@ public class Poke extends GuestButton {
         if (owner.getVoiceState().inVoiceChannel()) {
             owner.getUser().openPrivateChannel().complete().sendMessage("hey " + owner.getAsMention() + ", " + getEvent().getMember().getAsMention() + " poked you!").queue();
             getEvent().deferEdit().queue();
-            PlayerManager.getInstance().loadAndPlay(getEvent().getGuild(), owner.getVoiceState().getChannel(), Constants.POKE_SOUND);
+            PlayerManager.getInstance().loadAndPlay(getEvent().getGuild(), owner.getVoiceState().getChannel(), Constants.POKE_SOUND_MALE);
         }
     }
 }
