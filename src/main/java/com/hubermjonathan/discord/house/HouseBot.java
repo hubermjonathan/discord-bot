@@ -48,7 +48,7 @@ public class HouseBot {
             guild.updateCommands().addCommands(build.getCommandData(), room.getCommandData()).queue();
 
             Timer timer = new Timer();
-            timer.schedule(new KickVisitors(guild), 1000 * 60 * 60, 1000 * 60 * 60);
+            timer.schedule(new KickVisitors(guild), 1000 * 60 * 60 * 24, 1000 * 60 * 60 * 24);
         }
     }
 }
