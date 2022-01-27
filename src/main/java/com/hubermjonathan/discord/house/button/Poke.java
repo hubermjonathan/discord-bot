@@ -3,6 +3,7 @@ package com.hubermjonathan.discord.house.button;
 import com.hubermjonathan.discord.house.Constants;
 import com.hubermjonathan.discord.house.model.ResidentButton;
 import com.hubermjonathan.discord.house.player.PlayerManager;
+import net.dv8tion.jda.api.entities.Emoji;
 import net.dv8tion.jda.api.interactions.commands.build.Commands;
 
 public class Poke extends ResidentButton {
@@ -14,15 +15,18 @@ public class Poke extends ResidentButton {
     }
 
     @Override
-    public void execute() throws Exception {
-//        if (!getEvent().getMember().getVoiceState().inAudioChannel()
-//                || getEvent().getGuild().getSelfMember().getVoiceState().inAudioChannel()) {
-//            throw new Exception();
-//        }
+    public String execute() throws Exception {
+        if (getEvent().getMember().equals(getEvent().getTargetMember())
+                || getEvent().getGuild().getSelfMember().getVoiceState().inAudioChannel()) {
+            throw new Exception();
+        }
+
+        getEvent().getTargetMember().getUser().openPrivateChannel().complete().sendMessage(getEvent().getMember().getAsMention() + " poked you! " + Emoji.fromUnicode(Constants.POKE).getName()).queue();
 
         if (getEvent().getTargetMember().getVoiceState().inAudioChannel()) {
-            getEvent().getTargetMember().getUser().openPrivateChannel().complete().sendMessage(getEvent().getMember().getAsMention() + " poked you!").queue();
             PlayerManager.getInstance().loadAndPlay(getEvent().getGuild(), getEvent().getTargetMember().getVoiceState().getChannel(), Constants.POKE_SOUND_FEMALE);
         }
+
+        return " you poked " + getEvent().getTargetMember().getAsMention() + "! " + Emoji.fromUnicode(Constants.POKE).getName();
     }
 }

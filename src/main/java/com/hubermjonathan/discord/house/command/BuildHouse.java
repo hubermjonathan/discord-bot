@@ -49,18 +49,18 @@ public class BuildHouse extends BotOwnerCommand {
 
         getEvent().getGuild().getPublicRole().getManager()
                 .revokePermissions(Permission.NICKNAME_CHANGE)
-                .givePermissions(Permission.USE_APPLICATION_COMMANDS)
                 .queue();
         Role residentRole = getEvent().getGuild().createRole()
+                .setPermissions(Permission.USE_APPLICATION_COMMANDS)
                 .setName(Constants.RESIDENT_ROLE_NAME)
                 .setColor(Integer.parseInt(Constants.RESIDENT_ROLE_COLOR, 16))
                 .setHoisted(true)
                 .complete();
-        getEvent().getGuild().createRole()
+        Role friendRole = getEvent().getGuild().createRole()
                 .setName(Constants.FRIEND_ROLE_NAME)
                 .setColor(Integer.parseInt(Constants.FRIEND_ROLE_COLOR, 16))
                 .setHoisted(true)
-                .queue();
+                .complete();
         Role visitorRole = getEvent().getGuild().createRole()
                 .setName(Constants.VISITOR_ROLE_NAME)
                 .setColor(Integer.parseInt(Constants.VISITOR_ROLE_COLOR, 16))
@@ -74,10 +74,16 @@ public class BuildHouse extends BotOwnerCommand {
         }
 
         Category mainCategory = getEvent().getGuild().createCategory(Constants.MAIN_CATEGORY_NAME).complete();
+        mainCategory.createTextChannel(Constants.MENTION_TEXT_CHANNEL_NAME)
+                .addRolePermissionOverride(getEvent().getGuild().getPublicRole().getIdLong(), null, EnumSet.of(Permission.MESSAGE_SEND))
+                .addRolePermissionOverride(residentRole.getIdLong(), EnumSet.of(Permission.MESSAGE_SEND), null)
+                .addRolePermissionOverride(friendRole.getIdLong(), EnumSet.of(Permission.MESSAGE_SEND), null)
+                .queue();
         if (oldTextChannel == null) {
             mainCategory.createTextChannel(Constants.MAIN_TEXT_CHANNEL_NAME)
                     .addRolePermissionOverride(getEvent().getGuild().getPublicRole().getIdLong(), null, EnumSet.of(Permission.VIEW_CHANNEL))
                     .addRolePermissionOverride(residentRole.getIdLong(), EnumSet.of(Permission.VIEW_CHANNEL), null)
+                    .addRolePermissionOverride(friendRole.getIdLong(), EnumSet.of(Permission.VIEW_CHANNEL), null)
                     .queue();
         } else {
             oldTextChannel.getManager()
@@ -86,8 +92,10 @@ public class BuildHouse extends BotOwnerCommand {
                     .clearOverridesAdded()
                     .putPermissionOverride(getEvent().getGuild().getPublicRole(), null, EnumSet.of(Permission.VIEW_CHANNEL))
                     .putPermissionOverride(residentRole, EnumSet.of(Permission.VIEW_CHANNEL), null)
+                    .putPermissionOverride(friendRole, EnumSet.of(Permission.VIEW_CHANNEL), null)
                     .queue();
         }
-        mainCategory.createVoiceChannel(Constants.MAIN_VOICE_CHANNEL_NAME).queue();
+
+        getEvent().getGuild().createCategory(Constants.ROOMS_CATEGORY_NAME).queue();
     }
 }

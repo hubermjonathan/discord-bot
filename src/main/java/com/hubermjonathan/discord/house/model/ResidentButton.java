@@ -29,7 +29,6 @@ public abstract class ResidentButton extends ListenerAdapter {
     public void onUserContextInteraction(@NotNull UserContextInteractionEvent event) {
         if (event.getUser().isBot()
                 || !event.getName().equals(name)
-                || event.getMember().equals(event.getTargetMember())
                 || !event.getTargetMember().getRoles().get(0).getName().equals(Constants.RESIDENT_ROLE_NAME)) {
             event.reply(Emoji.fromUnicode(Constants.DENY).getName()).setEphemeral(true).queue();
             return;
@@ -38,13 +37,13 @@ public abstract class ResidentButton extends ListenerAdapter {
         this.event = event;
 
         try {
-            execute();
-            getEvent().reply(Emoji.fromUnicode(Constants.POKE).getName()).setEphemeral(true).queue();
+            String replyMessage = execute();
+            getEvent().reply(replyMessage).setEphemeral(true).queue();
         } catch (Exception e) {
             e.printStackTrace();
             getEvent().reply(Emoji.fromUnicode(Constants.DENY).getName()).setEphemeral(true).queue();
         }
     }
 
-    public abstract void execute() throws Exception;
+    public abstract String execute() throws Exception;
 }
