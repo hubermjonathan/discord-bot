@@ -1,7 +1,7 @@
 package com.hubermjonathan.discord.house;
 
 import net.dv8tion.jda.api.entities.Emoji;
-import net.dv8tion.jda.api.interactions.components.Button;
+import net.dv8tion.jda.api.interactions.components.buttons.Button;
 
 import java.util.Arrays;
 import java.util.List;

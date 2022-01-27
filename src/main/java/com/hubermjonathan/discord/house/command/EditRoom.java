@@ -7,14 +7,14 @@ import net.dv8tion.jda.api.entities.Category;
 
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
-import net.dv8tion.jda.api.interactions.commands.build.CommandData;
+import net.dv8tion.jda.api.interactions.commands.build.Commands;
 import net.dv8tion.jda.api.interactions.commands.build.SubcommandData;
 
 public class EditRoom extends ResidentCommand {
     public EditRoom(String name, String description) {
         super(
                 name,
-                new CommandData(name, description).addSubcommands(
+                Commands.slash(name, description).addSubcommands(
                         new SubcommandData("name", "edit the name of your room").addOption(
                                 OptionType.STRING, "value", "the new name for your room", true
                         ),
@@ -30,7 +30,7 @@ public class EditRoom extends ResidentCommand {
 
     @Override
     public void execute() throws Exception {
-        Category roomCategory = getEvent().getGuild().getTextChannelsByName(Constants.getResidentDoorName(getEvent().getMember().getEffectiveName()), true).get(0).getParent();
+        Category roomCategory = getEvent().getGuild().getTextChannelsByName(Constants.getResidentDoorName(getEvent().getMember().getEffectiveName()), true).get(0).getParentCategory();
         Message doorMessage = roomCategory.getTextChannels().get(0).retrievePinnedMessages().complete().get(0);
         EmbedBuilder embedBuilder = new EmbedBuilder(doorMessage.getEmbeds().get(0));
 

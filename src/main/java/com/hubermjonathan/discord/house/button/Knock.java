@@ -5,7 +5,7 @@ import com.hubermjonathan.discord.house.model.GuestButton;
 import net.dv8tion.jda.api.entities.Emoji;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
-import net.dv8tion.jda.api.interactions.components.Button;
+import net.dv8tion.jda.api.interactions.components.buttons.Button;
 
 public class Knock extends GuestButton {
     public Knock(String name) {
@@ -14,8 +14,8 @@ public class Knock extends GuestButton {
 
     @Override
     public void execute() throws Exception {
-        if (!getEvent().getMember().getVoiceState().inVoiceChannel()
-                || getEvent().getMember().getVoiceState().getChannel().equals(getEvent().getTextChannel().getParent().getVoiceChannels().get(0))) {
+        if (!getEvent().getMember().getVoiceState().inAudioChannel()
+                || getEvent().getMember().getVoiceState().getChannel().equals(getEvent().getTextChannel().getParentCategory().getVoiceChannels().get(0))) {
             throw new Exception();
         }
 

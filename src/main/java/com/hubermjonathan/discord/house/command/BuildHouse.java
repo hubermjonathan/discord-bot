@@ -5,8 +5,8 @@ import com.hubermjonathan.discord.house.model.BotOwnerCommand;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
-import net.dv8tion.jda.api.interactions.commands.build.CommandData;
-import net.dv8tion.jda.api.managers.ChannelManager;
+import net.dv8tion.jda.api.interactions.commands.build.Commands;
+import net.dv8tion.jda.api.managers.channel.ChannelManager;
 
 import java.util.EnumSet;
 
@@ -14,7 +14,7 @@ public class BuildHouse extends BotOwnerCommand {
     public BuildHouse(String name, String description) {
         super(
                 name,
-                new CommandData(name, description).addOption(
+                Commands.slash(name, description).addOption(
                         OptionType.STRING, "id", "the id of the main chat channel to save", false
                 )
         );
@@ -49,7 +49,7 @@ public class BuildHouse extends BotOwnerCommand {
 
         getEvent().getGuild().getPublicRole().getManager()
                 .revokePermissions(Permission.NICKNAME_CHANGE)
-                .givePermissions(Permission.USE_SLASH_COMMANDS)
+                .givePermissions(Permission.USE_APPLICATION_COMMANDS)
                 .queue();
         Role residentRole = getEvent().getGuild().createRole()
                 .setName(Constants.RESIDENT_ROLE_NAME)
@@ -76,16 +76,16 @@ public class BuildHouse extends BotOwnerCommand {
         Category mainCategory = getEvent().getGuild().createCategory(Constants.MAIN_CATEGORY_NAME).complete();
         if (oldTextChannel == null) {
             mainCategory.createTextChannel(Constants.MAIN_TEXT_CHANNEL_NAME)
-                    .addRolePermissionOverride(getEvent().getGuild().getPublicRole().getIdLong(), null, EnumSet.of(Permission.MESSAGE_READ))
-                    .addRolePermissionOverride(residentRole.getIdLong(), EnumSet.of(Permission.MESSAGE_READ), null)
+                    .addRolePermissionOverride(getEvent().getGuild().getPublicRole().getIdLong(), null, EnumSet.of(Permission.VIEW_CHANNEL))
+                    .addRolePermissionOverride(residentRole.getIdLong(), EnumSet.of(Permission.VIEW_CHANNEL), null)
                     .queue();
         } else {
             oldTextChannel.getManager()
                     .setParent(mainCategory)
                     .setName(Constants.MAIN_TEXT_CHANNEL_NAME)
                     .clearOverridesAdded()
-                    .putPermissionOverride(getEvent().getGuild().getPublicRole(), null, EnumSet.of(Permission.MESSAGE_READ))
-                    .putPermissionOverride(residentRole, EnumSet.of(Permission.MESSAGE_READ), null)
+                    .putPermissionOverride(getEvent().getGuild().getPublicRole(), null, EnumSet.of(Permission.VIEW_CHANNEL))
+                    .putPermissionOverride(residentRole, EnumSet.of(Permission.VIEW_CHANNEL), null)
                     .queue();
         }
         mainCategory.createVoiceChannel(Constants.MAIN_VOICE_CHANNEL_NAME).queue();

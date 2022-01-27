@@ -9,8 +9,8 @@ public class Confirm extends Button {
 
     @Override
     public void execute() throws Exception {
-        if (getEvent().getMessage().getMentionedMembers().get(1).getVoiceState().inVoiceChannel()) {
-            getEvent().getGuild().moveVoiceMember(getEvent().getMessage().getMentionedMembers().get(1), getEvent().getTextChannel().getParent().getVoiceChannels().get(0)).queue();
+        if (getEvent().getMessage().getMentionedMembers().get(1).getVoiceState().inAudioChannel()) {
+            getEvent().getGuild().moveVoiceMember(getEvent().getMessage().getMentionedMembers().get(1), getEvent().getTextChannel().getParentCategory().getVoiceChannels().get(0)).queue();
         }
 
         getEvent().deferEdit().queue();

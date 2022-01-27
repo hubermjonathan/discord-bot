@@ -7,8 +7,8 @@ import com.sedmelluq.discord.lavaplayer.source.AudioSourceManagers;
 import com.sedmelluq.discord.lavaplayer.tools.FriendlyException;
 import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
+import net.dv8tion.jda.api.entities.AudioChannel;
 import net.dv8tion.jda.api.entities.Guild;
-import net.dv8tion.jda.api.entities.VoiceChannel;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -36,13 +36,13 @@ public class PlayerManager {
         });
     }
 
-    public void loadAndPlay(Guild guild, VoiceChannel voiceChannel, String trackUrl) {
+    public void loadAndPlay(Guild guild, AudioChannel audioChannel, String trackUrl) {
         final GuildAudioManager guildAudioManager = this.getGuildAudioManager(guild);
 
         this.audioPlayerManager.loadItem(trackUrl, new AudioLoadResultHandler() {
             @Override
             public void trackLoaded(AudioTrack track) {
-                guild.getAudioManager().openAudioConnection(voiceChannel);
+                guild.getAudioManager().openAudioConnection(audioChannel);
                 guildAudioManager.audioPlayer.startTrack(track, true);
             }
 

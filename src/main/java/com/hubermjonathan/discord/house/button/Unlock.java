@@ -12,7 +12,7 @@ public class Unlock extends Button {
 
     @Override
     public void execute() throws Exception {
-        getEvent().getTextChannel().getParent().getVoiceChannels().get(0).getManager()
+        getEvent().getTextChannel().getParentCategory().getVoiceChannels().get(0).getManager()
                 .clearOverridesAdded()
                 .putPermissionOverride(getEvent().getGuild().getPublicRole(), EnumSet.of(Permission.VOICE_CONNECT), null)
                 .queue();

@@ -21,7 +21,7 @@ public class ManageRooms extends ListenerAdapter {
     private void createRoom(@NotNull GenericGuildMemberEvent event) {
         Category roomCategory = event.getGuild().createCategory(Constants.ROOM_CATEGORY_NAME).complete();
         TextChannel doorChannel = roomCategory.createTextChannel(Constants.getResidentDoorName(event.getMember().getEffectiveName()))
-                .addRolePermissionOverride(event.getGuild().getPublicRole().getIdLong(), null, EnumSet.of(Permission.MESSAGE_WRITE))
+                .addRolePermissionOverride(event.getGuild().getPublicRole().getIdLong(), null, EnumSet.of(Permission.MESSAGE_SEND))
                 .complete();
         roomCategory.createVoiceChannel(Constants.getResidentRoomDefaultName(event.getMember().getEffectiveName()))
                 .addRolePermissionOverride(event.getGuild().getPublicRole().getIdLong(), null, EnumSet.of(Permission.VOICE_CONNECT))
@@ -43,14 +43,14 @@ public class ManageRooms extends ListenerAdapter {
     }
 
     private void deleteRoom(@NotNull GenericGuildMemberEvent event) {
-        Category roomCategory = event.getGuild().getTextChannelsByName(Constants.getResidentDoorName(event.getMember().getEffectiveName()), true).get(0).getParent();
+        Category roomCategory = event.getGuild().getTextChannelsByName(Constants.getResidentDoorName(event.getMember().getEffectiveName()), true).get(0).getParentCategory();
         roomCategory.getTextChannels().get(0).delete().queue();
         roomCategory.getVoiceChannels().get(0).delete().queue();
         roomCategory.delete().queue();
     }
 
     private void deleteRoom(@NotNull GuildMemberRemoveEvent event) {
-        Category roomCategory = event.getGuild().getTextChannelsByName(Constants.getResidentDoorName(event.getMember().getEffectiveName()), true).get(0).getParent();
+        Category roomCategory = event.getGuild().getTextChannelsByName(Constants.getResidentDoorName(event.getMember().getEffectiveName()), true).get(0).getParentCategory();
         roomCategory.getTextChannels().get(0).delete().queue();
         roomCategory.getVoiceChannels().get(0).delete().queue();
         roomCategory.delete().queue();
