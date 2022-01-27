@@ -23,7 +23,7 @@ public class HouseBot {
         Kick kick = new Kick(Constants.KICK);
         Knock knock = new Knock(Constants.KNOCK);
         Lock lock = new Lock(Constants.LOCK);
-        Poke poke = new Poke(Constants.POKE);
+        Poke poke = new Poke("poke");
         Unlock unlock = new Unlock(Constants.UNLOCK);
 
         BuildHouse build = new BuildHouse("build", "build the house");
@@ -36,7 +36,8 @@ public class HouseBot {
                 .setMemberCachePolicy(MemberCachePolicy.ALL)
                 .enableIntents(GatewayIntent.GUILD_MEMBERS)
                 .addEventListeners(
-                        cancel, confirm, deny, kick, knock, lock, poke, unlock,
+                        cancel, confirm, deny, kick, knock, lock, unlock,
+                        poke,
                         build, room,
                         manageRooms
                 )
@@ -45,7 +46,10 @@ public class HouseBot {
         jda.awaitReady();
 
         for (Guild guild : jda.getGuilds()) {
-            guild.updateCommands().addCommands(build.getCommandData(), room.getCommandData()).queue();
+            guild.updateCommands().addCommands(
+                    poke.getCommandData(),
+                    build.getCommandData(), room.getCommandData()
+            ).queue();
 
             Timer timer = new Timer();
             timer.schedule(new KickVisitors(guild), 1000 * 60 * 60 * 24, 1000 * 60 * 60 * 24);
