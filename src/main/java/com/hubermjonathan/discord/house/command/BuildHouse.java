@@ -74,11 +74,6 @@ public class BuildHouse extends BotOwnerCommand {
         }
 
         Category mainCategory = getEvent().getGuild().createCategory(Constants.MAIN_CATEGORY_NAME).complete();
-        mainCategory.createTextChannel(Constants.MENTION_TEXT_CHANNEL_NAME)
-                .addRolePermissionOverride(getEvent().getGuild().getPublicRole().getIdLong(), null, EnumSet.of(Permission.MESSAGE_SEND))
-                .addRolePermissionOverride(residentRole.getIdLong(), EnumSet.of(Permission.MESSAGE_SEND), null)
-                .addRolePermissionOverride(friendRole.getIdLong(), EnumSet.of(Permission.MESSAGE_SEND), null)
-                .queue();
         if (oldTextChannel == null) {
             mainCategory.createTextChannel(Constants.MAIN_TEXT_CHANNEL_NAME)
                     .addRolePermissionOverride(getEvent().getGuild().getPublicRole().getIdLong(), null, EnumSet.of(Permission.VIEW_CHANNEL))
@@ -95,6 +90,8 @@ public class BuildHouse extends BotOwnerCommand {
                     .putPermissionOverride(friendRole, EnumSet.of(Permission.VIEW_CHANNEL), null)
                     .queue();
         }
+        mainCategory.createVoiceChannel(Constants.MAIN_VOICE_CHANNEL_NAME)
+                        .queue();
 
         getEvent().getGuild().createCategory(Constants.ROOMS_CATEGORY_NAME).queue();
     }

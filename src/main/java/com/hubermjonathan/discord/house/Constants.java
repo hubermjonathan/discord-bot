@@ -18,8 +18,8 @@ public class Constants {
     public static final String VISITOR_ROLE_COLOR = "3498db";
 
     public static final String MAIN_CATEGORY_NAME = "__________🏠__________";
-    public static final String MENTION_TEXT_CHANNEL_NAME = "doorbell";
     public static final String MAIN_TEXT_CHANNEL_NAME = "living-room";
+    public static final String MAIN_VOICE_CHANNEL_NAME = "couch";
 
     public static final String ROOMS_CATEGORY_NAME = "__________🚪__________";
     public static final String ROOM_DEFAULT_NAME = "'s room";
