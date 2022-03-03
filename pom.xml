@@ -25,7 +25,7 @@
         <dependency>
             <groupId>com.github.DV8FromTheWorld</groupId>
             <artifactId>JDA</artifactId>
-            <version>rework~interactions-SNAPSHOT</version>
+            <version>v5.0.0-alpha.9</version>
         </dependency>
 
         <dependency>
