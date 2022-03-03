@@ -21,6 +21,7 @@ public class Lock extends ResidentButton {
         getEvent().getGuild().getVoiceChannelsByName(Constants.getResidentRoomDefaultName(getEvent().getMember().getEffectiveName()), true).get(0).getManager()
                 .clearOverridesAdded()
                 .putPermissionOverride(getEvent().getGuild().getPublicRole(), null, EnumSet.of(Permission.VIEW_CHANNEL))
+                .putMemberPermissionOverride(getEvent().getMember().getIdLong(), EnumSet.of(Permission.VIEW_CHANNEL), null)
                 .queue();
 
         return "your room is now locked!" + Emoji.fromUnicode(Constants.LOCK).getName();

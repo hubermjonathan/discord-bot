@@ -21,6 +21,7 @@ public class Unlock extends ResidentButton {
         getEvent().getGuild().getVoiceChannelsByName(Constants.getResidentRoomDefaultName(getEvent().getMember().getEffectiveName()), true).get(0).getManager()
                 .clearOverridesAdded()
                 .putPermissionOverride(getEvent().getGuild().getPublicRole(), EnumSet.of(Permission.VIEW_CHANNEL), null)
+                .putMemberPermissionOverride(getEvent().getMember().getIdLong(), EnumSet.of(Permission.VIEW_CHANNEL), null)
                 .queue();
 
         return "your room is now unlocked!" + Emoji.fromUnicode(Constants.UNLOCK).getName();
