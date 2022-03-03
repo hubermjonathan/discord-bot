@@ -17,7 +17,9 @@ import java.util.Timer;
 
 public class HouseBot {
     public static void run(String token) throws LoginException, InterruptedException {
-        Poke poke = new Poke( "poke " + Emoji.fromUnicode(Constants.POKE).getName());
+        Lock lock = new Lock( Emoji.fromUnicode(Constants.LOCK).getName() + " lock");
+        Poke poke = new Poke( Emoji.fromUnicode(Constants.POKE).getName() + " poke");
+        Unlock unlock = new Unlock( Emoji.fromUnicode(Constants.UNLOCK).getName() + " unlock");
 
         BuildHouse build = new BuildHouse("build", "build the house");
 
@@ -28,7 +30,7 @@ public class HouseBot {
                 .setMemberCachePolicy(MemberCachePolicy.ALL)
                 .enableIntents(GatewayIntent.GUILD_MEMBERS)
                 .addEventListeners(
-                        poke,
+                        lock, poke, unlock,
                         build,
                         manageRooms
                 )
@@ -38,12 +40,14 @@ public class HouseBot {
 
         for (Guild guild : jda.getGuilds()) {
             guild.updateCommands().addCommands(
+                    lock.getCommandData(),
                     poke.getCommandData(),
+                    unlock.getCommandData(),
                     build.getCommandData()
             ).queue();
 
             Timer timer = new Timer();
-            timer.schedule(new KickVisitors(guild), 1000 * 60 * 60 * 24, 1000 * 60 * 60 * 24);
+            timer.schedule(new KickVisitors(guild), 1000 * 60 * 60 * 24, 1000 * 60 * 60 * 12);
         }
     }
 }

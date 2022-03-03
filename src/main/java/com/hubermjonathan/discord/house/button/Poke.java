@@ -20,7 +20,8 @@ public class Poke extends ResidentButton {
 
     @Override
     public String execute() throws Exception {
-        if (getEvent().getMember().equals(getEvent().getTargetMember())
+        if (!getEvent().getTargetMember().getRoles().get(0).getName().equals(Constants.RESIDENT_ROLE_NAME)
+                || getEvent().getMember().equals(getEvent().getTargetMember())
                 || getEvent().getGuild().getSelfMember().getVoiceState().inAudioChannel()) {
             throw new Exception();
         }
@@ -29,12 +30,6 @@ public class Poke extends ResidentButton {
 
         if (getEvent().getTargetMember().getVoiceState().inAudioChannel()) {
             PlayerManager.getInstance().loadAndPlay(getEvent().getGuild(), getEvent().getTargetMember().getVoiceState().getChannel(), Constants.POKE_SOUND_FEMALE);
-        } else if (getEvent().getTargetMember().getId().equals("196141424318611457")) {
-            try {
-                HttpURLConnection connection = (HttpURLConnection) new URL("http://76.217.54.67:5000/poke").openConnection();
-                connection.getInputStream();
-            } catch (Exception e) {
-            }
         }
 
         return "you poked " + getEvent().getTargetMember().getAsMention() + "! " + Emoji.fromUnicode(Constants.POKE).getName();

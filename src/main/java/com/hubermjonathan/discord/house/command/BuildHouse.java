@@ -51,7 +51,7 @@ public class BuildHouse extends BotOwnerCommand {
                 .revokePermissions(Permission.NICKNAME_CHANGE)
                 .queue();
         Role residentRole = getEvent().getGuild().createRole()
-                .setPermissions(Permission.USE_APPLICATION_COMMANDS)
+                .setPermissions(Permission.USE_APPLICATION_COMMANDS, Permission.VOICE_MOVE_OTHERS)
                 .setName(Constants.RESIDENT_ROLE_NAME)
                 .setColor(Integer.parseInt(Constants.RESIDENT_ROLE_COLOR, 16))
                 .setHoisted(true)

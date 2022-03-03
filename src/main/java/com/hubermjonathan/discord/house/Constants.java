@@ -4,7 +4,9 @@ package com.hubermjonathan.discord.house;
 public class Constants {
     public static final String CONFIRM = "U+1F44D";
     public static final String DENY = "U+1F44E";
+    public static final String LOCK = "U+1F512";
     public static final String POKE = "U+1F449";
+    public static final String UNLOCK = "U+1F511";
     public static final String POKE_SOUND_FEMALE = "https://www.youtube.com/watch?v=s-KcXdYysTQ";
     public static final String POKE_SOUND_MALE = "https://www.youtube.com/watch?v=mKgoc8axmEU";
 

@@ -29,8 +29,7 @@ public abstract class ResidentButton extends ListenerAdapter {
     public void onUserContextInteraction(@NotNull UserContextInteractionEvent event) {
         if (event.getUser().isBot()
                 || !event.getName().equals(name)
-                || !event.getTargetMember().getRoles().get(0).getName().equals(Constants.RESIDENT_ROLE_NAME)) {
-            event.reply(Emoji.fromUnicode(Constants.DENY).getName()).setEphemeral(true).queue();
+                || !event.getMember().getRoles().get(0).getName().equals(Constants.RESIDENT_ROLE_NAME)) {
             return;
         }
 
