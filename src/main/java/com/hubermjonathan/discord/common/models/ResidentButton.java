@@ -1,4 +1,4 @@
-package com.hubermjonathan.discord.models;
+package com.hubermjonathan.discord.common.models;
 
 import com.hubermjonathan.discord.house.Constants;
 import net.dv8tion.jda.api.entities.emoji.Emoji;

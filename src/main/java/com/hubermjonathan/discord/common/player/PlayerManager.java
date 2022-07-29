@@ -1,4 +1,4 @@
-package com.hubermjonathan.discord.house.player;
+package com.hubermjonathan.discord.common.player;
 
 import com.sedmelluq.discord.lavaplayer.player.AudioLoadResultHandler;
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayerManager;

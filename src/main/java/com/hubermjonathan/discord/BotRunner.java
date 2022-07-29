@@ -1,4 +1,4 @@
-package com.hubermjonathan.discord.runner;
+package com.hubermjonathan.discord;
 
 import com.hubermjonathan.discord.bentley.BentleyBot;
 import com.hubermjonathan.discord.house.HouseBot;

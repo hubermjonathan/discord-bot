@@ -1,7 +1,7 @@
 package com.hubermjonathan.discord.house.buttons;
 
 import com.hubermjonathan.discord.house.Constants;
-import com.hubermjonathan.discord.models.ResidentButton;
+import com.hubermjonathan.discord.common.models.ResidentButton;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.emoji.Emoji;
 import net.dv8tion.jda.api.interactions.commands.build.Commands;

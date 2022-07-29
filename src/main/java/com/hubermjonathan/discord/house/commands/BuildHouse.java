@@ -1,7 +1,7 @@
 package com.hubermjonathan.discord.house.commands;
 
 import com.hubermjonathan.discord.house.Constants;
-import com.hubermjonathan.discord.models.BotOwnerCommand;
+import com.hubermjonathan.discord.common.models.BotOwnerCommand;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
@@ -14,9 +14,8 @@ public class BuildHouse extends BotOwnerCommand {
     public BuildHouse(String name, String description) {
         super(
                 name,
-                Commands.slash(name, description).addOption(
-                        OptionType.STRING, "id", "the id of the main chat channel to save", false
-                )
+                Commands.slash(name, description)
+                        .addOption(OptionType.STRING, "id", "the id of the main chat channel to save", false)
         );
     }
 
