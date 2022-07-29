@@ -69,7 +69,7 @@ public class BuildHouse extends BotOwnerCommand {
 
         for (Member member : getEvent().getGuild().getMembers()) {
             if (!member.getUser().isBot()) {
-                getEvent().getGuild().addRoleToMember(member.getIdLong(), visitorRole).queue();
+                getEvent().getGuild().addRoleToMember(UserSnowflake.fromId(member.getIdLong()), visitorRole).queue();
             }
         }
 
