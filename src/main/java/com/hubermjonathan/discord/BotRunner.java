@@ -2,6 +2,7 @@ package com.hubermjonathan.discord;
 
 import com.hubermjonathan.discord.bentley.BentleyBot;
 import com.hubermjonathan.discord.house.HouseBot;
+import com.hubermjonathan.discord.mitch.MitchBot;
 
 import javax.security.auth.login.LoginException;
 
@@ -12,7 +13,8 @@ public class BotRunner {
             return;
         }
 
-        HouseBot.run(System.getenv("HOUSE_TOKEN"));
         BentleyBot.run(System.getenv("BENTLEY_TOKEN"));
+        HouseBot.run(System.getenv("HOUSE_TOKEN"));
+        MitchBot.run(System.getenv("MITCH_TOKEN"));
     }
 }
