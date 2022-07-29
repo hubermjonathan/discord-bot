@@ -1,7 +1,7 @@
-package com.hubermjonathan.discord.house.command;
+package com.hubermjonathan.discord.house.commands;
 
 import com.hubermjonathan.discord.house.Constants;
-import com.hubermjonathan.discord.house.model.BotOwnerCommand;
+import com.hubermjonathan.discord.models.BotOwnerCommand;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.interactions.commands.OptionType;

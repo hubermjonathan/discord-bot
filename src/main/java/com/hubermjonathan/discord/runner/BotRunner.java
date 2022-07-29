@@ -1,5 +1,6 @@
 package com.hubermjonathan.discord.runner;
 
+import com.hubermjonathan.discord.bentley.BentleyBot;
 import com.hubermjonathan.discord.house.HouseBot;
 
 import javax.security.auth.login.LoginException;
@@ -12,5 +13,6 @@ public class BotRunner {
         }
 
         HouseBot.run(System.getenv("HOUSE_TOKEN"));
+        BentleyBot.run(System.getenv("BENTLEY_TOKEN"));
     }
 }

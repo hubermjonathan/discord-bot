@@ -1,4 +1,4 @@
-package com.hubermjonathan.discord.house.event;
+package com.hubermjonathan.discord.house.events;
 
 import com.hubermjonathan.discord.house.Constants;
 import net.dv8tion.jda.api.entities.Guild;

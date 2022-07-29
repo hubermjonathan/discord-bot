@@ -1,9 +1,9 @@
 package com.hubermjonathan.discord.house;
 
-import com.hubermjonathan.discord.house.button.*;
-import com.hubermjonathan.discord.house.command.BuildHouse;
-import com.hubermjonathan.discord.house.event.KickVisitors;
-import com.hubermjonathan.discord.house.event.ManageRooms;
+import com.hubermjonathan.discord.house.buttons.*;
+import com.hubermjonathan.discord.house.commands.BuildHouse;
+import com.hubermjonathan.discord.house.events.KickVisitors;
+import com.hubermjonathan.discord.house.events.ManageRooms;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.Guild;

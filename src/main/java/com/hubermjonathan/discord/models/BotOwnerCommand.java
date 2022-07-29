@@ -1,4 +1,4 @@
-package com.hubermjonathan.discord.house.model;
+package com.hubermjonathan.discord.models;
 
 import com.hubermjonathan.discord.house.Constants;
 import net.dv8tion.jda.api.entities.emoji.Emoji;
@@ -7,12 +7,13 @@ import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.interactions.commands.build.CommandData;
 import org.jetbrains.annotations.NotNull;
 
-public abstract class ResidentCommand extends ListenerAdapter {
+
+public abstract class BotOwnerCommand extends ListenerAdapter {
     private final String name;
     private CommandData commandData;
     private SlashCommandInteractionEvent event;
 
-    public ResidentCommand(String name, CommandData commandData) {
+    public BotOwnerCommand(String name, CommandData commandData) {
         this.name = name;
         this.commandData = commandData;
     }
@@ -28,7 +29,7 @@ public abstract class ResidentCommand extends ListenerAdapter {
     @Override
     public void onSlashCommandInteraction(@NotNull SlashCommandInteractionEvent event) {
         if (!event.getName().equals(name)
-                || !event.getMember().getRoles().get(0).getName().equals(Constants.RESIDENT_ROLE_NAME)) {
+                || !event.getUser().getId().equals(System.getenv("BOT_OWNER_ID"))) {
             return;
         }
 
