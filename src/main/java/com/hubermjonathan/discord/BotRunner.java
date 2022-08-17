@@ -1,6 +1,5 @@
 package com.hubermjonathan.discord;
 
-import com.hubermjonathan.discord.bentley.BentleyBot;
 import com.hubermjonathan.discord.house.HouseBot;
 import com.hubermjonathan.discord.mitch.MitchBot;
 
@@ -13,7 +12,6 @@ public class BotRunner {
             return;
         }
 
-        BentleyBot.run(System.getenv("BENTLEY_TOKEN"));
         HouseBot.run(System.getenv("HOUSE_TOKEN"));
         MitchBot.run(System.getenv("MITCH_TOKEN"));
     }
