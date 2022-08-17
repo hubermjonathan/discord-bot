@@ -2,6 +2,7 @@ package com.hubermjonathan.discord.mitch;
 
 import com.hubermjonathan.discord.mitch.buttons.*;
 import com.hubermjonathan.discord.mitch.commands.CreateEvent;
+import com.hubermjonathan.discord.mitch.commands.EditEvent;
 import com.hubermjonathan.discord.mitch.events.ManageMusicChannel;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
@@ -19,7 +20,8 @@ public class MitchBot {
         Maybe maybe = new Maybe("maybe");
         NotGoing notGoing = new NotGoing("notGoing");
 
-        CreateEvent event = new CreateEvent("event", "create an event");
+        CreateEvent createEvent = new CreateEvent("event", "create an event");
+        EditEvent editEvent = new EditEvent("edit", "edit an event");
 
         ManageMusicChannel manageMusicChannel = new ManageMusicChannel();
 
@@ -29,7 +31,7 @@ public class MitchBot {
                 .enableIntents(GatewayIntent.GUILD_MEMBERS)
                 .addEventListeners(
                         delete, going, maybe, notGoing,
-                        event,
+                        createEvent, editEvent,
                         manageMusicChannel
                 )
                 .build();
@@ -38,7 +40,8 @@ public class MitchBot {
 
         for (Guild guild : jda.getGuilds()) {
             guild.updateCommands().addCommands(
-                    event.getCommandData()
+                    createEvent.getCommandData(),
+                    editEvent.getCommandData()
             ).queue();
         }
     }
