@@ -22,9 +22,9 @@ public class EditEvent extends BotOwnerCommand {
 
     @Override
     public void execute() throws Exception {
-        Message message = getEvent().getChannel().asTextChannel()
+        final Message message = getEvent().getChannel().asTextChannel()
                 .retrieveMessageById(getEvent().getOption("event").getAsString()).complete();
 
-        message.editMessage(EventUtils.buildEventMessage(getEvent(), message)).queue();
+        message.editMessage(EventUtils.buildEventMessage(message, getEvent().getOptions())).queue();
     }
 }

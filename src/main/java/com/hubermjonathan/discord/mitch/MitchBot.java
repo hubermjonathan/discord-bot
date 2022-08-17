@@ -15,17 +15,17 @@ import javax.security.auth.login.LoginException;
 
 public class MitchBot {
     public static void run(String token) throws LoginException, InterruptedException {
-        Delete delete = new Delete("delete");
-        Going going = new Going("going");
-        Maybe maybe = new Maybe("maybe");
-        NotGoing notGoing = new NotGoing("notGoing");
+        final Delete delete = new Delete("delete");
+        final Going going = new Going("going");
+        final Maybe maybe = new Maybe("maybe");
+        final NotGoing notGoing = new NotGoing("notGoing");
 
-        CreateEvent createEvent = new CreateEvent("event", "create an event");
-        EditEvent editEvent = new EditEvent("edit", "edit an event");
+        final CreateEvent createEvent = new CreateEvent("event", "create an event");
+        final EditEvent editEvent = new EditEvent("edit", "edit an event");
 
-        ManageMusicChannel manageMusicChannel = new ManageMusicChannel();
+        final ManageMusicChannel manageMusicChannel = new ManageMusicChannel();
 
-        JDA jda = JDABuilder.createDefault(token)
+        final JDA jda = JDABuilder.createDefault(token)
                 .setChunkingFilter(ChunkingFilter.ALL)
                 .setMemberCachePolicy(MemberCachePolicy.ALL)
                 .enableIntents(GatewayIntent.GUILD_MEMBERS)

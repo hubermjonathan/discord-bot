@@ -23,9 +23,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class EventUtils {
-    private static LocalDate getDate(@Nullable String existingTimestamp, @Nullable String newDate) throws Exception {
-        LocalDate today = LocalDate.now(ZoneId.of(ZoneId.SHORT_IDS.get("PST")));
-        String date;
+    private static LocalDate getDate(
+            @Nullable final String existingTimestamp, @Nullable final String newDate) throws Exception {
+        final LocalDate today = LocalDate.now(ZoneId.of(ZoneId.SHORT_IDS.get("PST")));
+        final String date;
         if (newDate != null) {
             date = newDate;
         } else if (existingTimestamp != null) {
@@ -41,14 +42,14 @@ public class EventUtils {
         }
 
         try {
-            DateTimeFormatter dateTimeFormatter = new DateTimeFormatterBuilder()
+            final DateTimeFormatter dateTimeFormatter = new DateTimeFormatterBuilder()
                     .parseCaseInsensitive().appendPattern("E MMM dd yyyy").toFormatter();
             return LocalDate.parse(String.format("%s %d", date, today.getYear()), dateTimeFormatter);
         } catch (Exception ignored) {
         }
 
         try {
-            DateTimeFormatter dateTimeFormatter = new DateTimeFormatterBuilder()
+            final DateTimeFormatter dateTimeFormatter = new DateTimeFormatterBuilder()
                     .parseCaseInsensitive().appendPattern("MMM dd yyyy").toFormatter();
             return LocalDate.parse(String.format("%s %d", date, today.getYear()), dateTimeFormatter);
         } catch (Exception ignored) {
@@ -57,8 +58,9 @@ public class EventUtils {
         return today.with(TemporalAdjusters.next(DayOfWeek.valueOf(date.toUpperCase())));
     }
 
-    private static LocalTime getTime(@Nullable String existingTimestamp, @Nullable String newTime) throws Exception {
-        String time;
+    private static LocalTime getTime(
+            @Nullable final String existingTimestamp, @Nullable final String newTime) throws Exception {
+        final String time;
         if (newTime != null) {
             time = newTime;
         } else if (existingTimestamp != null) {
@@ -68,31 +70,32 @@ public class EventUtils {
         }
 
         try {
-            DateTimeFormatter dateTimeFormatter = new DateTimeFormatterBuilder()
+            final DateTimeFormatter dateTimeFormatter = new DateTimeFormatterBuilder()
                     .parseCaseInsensitive().appendPattern("ha").toFormatter();
             return LocalTime.parse(time, dateTimeFormatter);
         } catch (Exception ignored) {
         }
 
-        DateTimeFormatter dateTimeFormatter = new DateTimeFormatterBuilder()
+        final DateTimeFormatter dateTimeFormatter = new DateTimeFormatterBuilder()
                 .parseCaseInsensitive().appendPattern("h:mma").toFormatter();
         return LocalTime.parse(time, dateTimeFormatter);
     }
 
     private static String getTimestamp(
-            @Nullable String existingTimeStamp, @Nullable String newDate, @Nullable String newTime) throws Exception {
-        LocalDate date = getDate(existingTimeStamp, newDate);
-        String formattedDate = date.format(DateTimeFormatter.ofPattern("E MMM dd")).toLowerCase();
+            @Nullable final String existingTimeStamp, @Nullable final String newDate,
+            @Nullable final String newTime) throws Exception {
+        final LocalDate date = getDate(existingTimeStamp, newDate);
+        final String formattedDate = date.format(DateTimeFormatter.ofPattern("E MMM dd")).toLowerCase();
 
-        LocalTime time = getTime(existingTimeStamp, newTime);
-        String formattedTime = time.format(DateTimeFormatter.ofPattern("h:mma")).toLowerCase();
+        final LocalTime time = getTime(existingTimeStamp, newTime);
+        final String formattedTime = time.format(DateTimeFormatter.ofPattern("h:mma")).toLowerCase();
 
         return String.format("%s @ %s", formattedDate, formattedTime);
     }
 
     @Nullable
-    private static String getOption(List<OptionMapping> options, String name) {
-        for (OptionMapping option : options) {
+    private static String getOption(final List<OptionMapping> options, final String name) {
+        for (final OptionMapping option : options) {
             if (option.getName().equals(name)) {
                 return option.getAsString();
             }
@@ -101,8 +104,8 @@ public class EventUtils {
         return null;
     }
 
-    private static MessageEmbed buildEventEmbed(List<OptionMapping> options) throws Exception {
-        EmbedBuilder embedBuilder = new EmbedBuilder();
+    private static MessageEmbed buildEventEmbed(final List<OptionMapping> options) throws Exception {
+        final EmbedBuilder embedBuilder = new EmbedBuilder();
 
         embedBuilder.setTitle(getOption(options, "title"));
         embedBuilder.setDescription(getOption(options, "description"));
@@ -120,8 +123,8 @@ public class EventUtils {
     }
 
     private static MessageEmbed updateEventEmbed(
-            MessageEmbed messageEmbed, List<OptionMapping> options) throws Exception {
-        EmbedBuilder embedBuilder = new EmbedBuilder(messageEmbed);
+            final MessageEmbed messageEmbed, final List<OptionMapping> options) throws Exception {
+        final EmbedBuilder embedBuilder = new EmbedBuilder(messageEmbed);
 
         if (getOption(options, "title") != null) {
             embedBuilder.setTitle(getOption(options, "title"));
@@ -142,13 +145,13 @@ public class EventUtils {
     }
 
     public static Message buildEventMessage(
-            SlashCommandInteractionEvent event, @Nullable Message message) throws Exception {
-        MessageBuilder messageBuilder = new MessageBuilder();
+            final @Nullable Message message, final List<OptionMapping> options) throws Exception {
+        final MessageBuilder messageBuilder = new MessageBuilder();
 
         if (message != null) {
-            messageBuilder.setEmbeds(updateEventEmbed(message.getEmbeds().get(0), event.getOptions()));
+            messageBuilder.setEmbeds(updateEventEmbed(message.getEmbeds().get(0), options));
         } else {
-            messageBuilder.setEmbeds(buildEventEmbed(event.getOptions()));
+            messageBuilder.setEmbeds(buildEventEmbed(options));
         }
 
         messageBuilder.setActionRows(ActionRow.of(
@@ -161,7 +164,7 @@ public class EventUtils {
         return messageBuilder.build();
     }
 
-    private static MessageEmbed.Field addMemberToField(String member, MessageEmbed.Field field) {
+    private static MessageEmbed.Field addMemberToField(final String member, final MessageEmbed.Field field) {
         StringBuilder stringBuilder = new StringBuilder(field.getValue());
 
         if (field.getValue().contains(member)) {
@@ -177,7 +180,7 @@ public class EventUtils {
         return new MessageEmbed.Field(field.getName(), stringBuilder.toString(), true);
     }
 
-    private static MessageEmbed.Field removeMemberFromField(String member, MessageEmbed.Field field) {
+    private static MessageEmbed.Field removeMemberFromField(final String member, final MessageEmbed.Field field) {
         StringBuilder stringBuilder = new StringBuilder(field.getValue());
 
         if (field.getValue().contains(member)) {
@@ -192,23 +195,24 @@ public class EventUtils {
         return new MessageEmbed.Field(field.getName(), stringBuilder.toString(), true);
     }
 
-    private static List<MessageEmbed.Field> removeMemberFromFields(String member, List<MessageEmbed.Field> fields) {
-        List<MessageEmbed.Field> newFields = new ArrayList<>();
+    private static List<MessageEmbed.Field> removeMemberFromFields(
+            final String member, final List<MessageEmbed.Field> fields) {
+        final List<MessageEmbed.Field> newFields = new ArrayList<>();
 
-        for (MessageEmbed.Field field : fields) {
+        for (final MessageEmbed.Field field : fields) {
             newFields.add(removeMemberFromField(member, field));
         }
 
         return newFields;
     }
 
-    public static MessageEmbed addMemberToGoingField(String member, MessageEmbed messageEmbed) {
-        EmbedBuilder embedBuilder = new EmbedBuilder(messageEmbed);
-        List<MessageEmbed.Field> fields = removeMemberFromFields(member, embedBuilder.getFields());
+    public static MessageEmbed addMemberToGoingField(final String member, final MessageEmbed messageEmbed) {
+        final EmbedBuilder embedBuilder = new EmbedBuilder(messageEmbed);
+        final List<MessageEmbed.Field> fields = removeMemberFromFields(member, embedBuilder.getFields());
 
         embedBuilder.clearFields();
 
-        for (MessageEmbed.Field field : fields) {
+        for (final MessageEmbed.Field field : fields) {
             if (field.getName().equals(Constants.GOING)) {
                 embedBuilder.addField(addMemberToField(member, field));
             } else {
@@ -219,13 +223,13 @@ public class EventUtils {
         return embedBuilder.build();
     }
 
-    public static MessageEmbed addMemberToNotGoingField(String member, MessageEmbed messageEmbed) {
-        EmbedBuilder embedBuilder = new EmbedBuilder(messageEmbed);
-        List<MessageEmbed.Field> fields = removeMemberFromFields(member, embedBuilder.getFields());
+    public static MessageEmbed addMemberToNotGoingField(final String member, final MessageEmbed messageEmbed) {
+        final EmbedBuilder embedBuilder = new EmbedBuilder(messageEmbed);
+        final List<MessageEmbed.Field> fields = removeMemberFromFields(member, embedBuilder.getFields());
 
         embedBuilder.clearFields();
 
-        for (MessageEmbed.Field field : fields) {
+        for (final MessageEmbed.Field field : fields) {
             if (field.getName().equals(Constants.NOT_GOING)) {
                 embedBuilder.addField(addMemberToField(member, field));
             } else {
@@ -236,13 +240,13 @@ public class EventUtils {
         return embedBuilder.build();
     }
 
-    public static MessageEmbed addMemberToMaybeField(String member, MessageEmbed messageEmbed) {
-        EmbedBuilder embedBuilder = new EmbedBuilder(messageEmbed);
-        List<MessageEmbed.Field> fields = removeMemberFromFields(member, embedBuilder.getFields());
+    public static MessageEmbed addMemberToMaybeField(final String member, final MessageEmbed messageEmbed) {
+        final EmbedBuilder embedBuilder = new EmbedBuilder(messageEmbed);
+        final List<MessageEmbed.Field> fields = removeMemberFromFields(member, embedBuilder.getFields());
 
         embedBuilder.clearFields();
 
-        for (MessageEmbed.Field field : fields) {
+        for (final MessageEmbed.Field field : fields) {
             if (field.getName().equals(Constants.MAYBE)) {
                 embedBuilder.addField(addMemberToField(member, field));
             } else {

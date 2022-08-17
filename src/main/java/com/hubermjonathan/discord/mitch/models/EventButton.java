@@ -1,6 +1,6 @@
 package com.hubermjonathan.discord.mitch.models;
 
-import com.hubermjonathan.discord.house.Constants;
+import com.hubermjonathan.discord.mitch.Constants;
 import net.dv8tion.jda.api.entities.emoji.Emoji;
 import net.dv8tion.jda.api.events.interaction.component.ButtonInteractionEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
@@ -38,7 +38,7 @@ public abstract class EventButton extends ListenerAdapter {
             execute();
         } catch (Exception e) {
             e.printStackTrace();
-            getEvent().reply(Emoji.fromUnicode(Constants.DENY).getName()).setEphemeral(true).queue();
+            getEvent().reply(Emoji.fromUnicode(Constants.DENY_EMOJI).getName()).setEphemeral(true).queue();
         }
     }
 

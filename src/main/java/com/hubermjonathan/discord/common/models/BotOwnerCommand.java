@@ -1,6 +1,6 @@
 package com.hubermjonathan.discord.common.models;
 
-import com.hubermjonathan.discord.house.Constants;
+import com.hubermjonathan.discord.common.Constants;
 import net.dv8tion.jda.api.entities.emoji.Emoji;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
@@ -37,7 +37,7 @@ public abstract class BotOwnerCommand extends ListenerAdapter {
 
         try {
             execute();
-            getEvent().reply(Emoji.fromUnicode(Constants.CONFIRM).getName()).setEphemeral(true).queue();
+            getEvent().reply(Emoji.fromUnicode(Constants.CONFIRM_EMOJI).getName()).setEphemeral(true).queue();
         } catch (Exception e) {
             e.printStackTrace();
         }

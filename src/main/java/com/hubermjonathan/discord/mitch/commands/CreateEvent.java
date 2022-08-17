@@ -21,8 +21,8 @@ public class CreateEvent extends BotOwnerCommand {
 
     @Override
     public void execute() throws Exception {
-        Message message = getEvent().getChannel().asTextChannel()
-                .sendMessage(EventUtils.buildEventMessage(getEvent(), null)).complete();
+        final Message message = getEvent().getChannel().asTextChannel()
+                .sendMessage(EventUtils.buildEventMessage(null, getEvent().getOptions())).complete();
 
         getEvent().getChannel().asTextChannel().pinMessageById(message.getId()).queue();
     }
