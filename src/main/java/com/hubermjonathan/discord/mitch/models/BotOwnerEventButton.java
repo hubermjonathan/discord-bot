@@ -1,7 +1,7 @@
 package com.hubermjonathan.discord.mitch.models;
 
 public abstract class BotOwnerEventButton extends EventButton {
-    public BotOwnerEventButton(String name) {
+    public BotOwnerEventButton(final String name) {
         super(name);
     }
 

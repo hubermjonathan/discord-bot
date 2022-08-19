@@ -3,7 +3,7 @@ package com.hubermjonathan.discord.mitch.buttons;
 import com.hubermjonathan.discord.mitch.models.BotOwnerEventButton;
 
 public class Delete extends BotOwnerEventButton {
-    public Delete(String name) {
+    public Delete(final String name) {
         super(name);
     }
 

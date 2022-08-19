@@ -4,7 +4,7 @@ import com.hubermjonathan.discord.mitch.models.EventButton;
 import com.hubermjonathan.discord.mitch.utils.EventUtils;
 
 public class Maybe extends EventButton {
-    public Maybe(String name) {
+    public Maybe(final String name) {
         super(name);
     }
 

@@ -11,7 +11,7 @@ import java.util.EnumSet;
 
 public class ManageMusicChannel extends ListenerAdapter {
     @Override
-    public void onGuildVoiceJoin(@NotNull GuildVoiceJoinEvent event) {
+    public void onGuildVoiceJoin(@NotNull final GuildVoiceJoinEvent event) {
         if (event.getMember().getUser().isBot() || event.getMember().isOwner()) {
             return;
         }
@@ -22,7 +22,7 @@ public class ManageMusicChannel extends ListenerAdapter {
     }
 
     @Override
-    public void onGuildVoiceLeave(@NotNull GuildVoiceLeaveEvent event) {
+    public void onGuildVoiceLeave(@NotNull final GuildVoiceLeaveEvent event) {
         if (event.getMember().getUser().isBot() || event.getMember().isOwner()) {
             return;
         }

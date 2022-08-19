@@ -7,7 +7,7 @@ import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.Commands;
 
 public class EditEvent extends BotOwnerCommand {
-    public EditEvent(String name, String description) {
+    public EditEvent(final String name, final String description) {
         super(
                 name,
                 Commands.slash(name, description)

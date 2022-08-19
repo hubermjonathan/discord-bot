@@ -5,7 +5,7 @@ import com.hubermjonathan.discord.mitch.MitchBot;
 import javax.security.auth.login.LoginException;
 
 public class BotRunner {
-    public static void main(String[] args) throws LoginException, InterruptedException {
+    public static void main(final String[] args) throws LoginException, InterruptedException {
         if (System.getenv("BOT_OWNER_ID") == null) {
             System.out.println("missing environment variable: BOT_OWNER_ID");
             return;

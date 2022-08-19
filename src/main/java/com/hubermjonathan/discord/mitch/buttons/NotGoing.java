@@ -4,7 +4,7 @@ import com.hubermjonathan.discord.mitch.models.EventButton;
 import com.hubermjonathan.discord.mitch.utils.EventUtils;
 
 public class NotGoing extends EventButton {
-    public NotGoing(String name) {
+    public NotGoing(final String name) {
         super(name);
     }
 

@@ -11,7 +11,7 @@ public class GuildAudioManager {
     public final AudioPlayer audioPlayer;
     private final AudioPlayerSendHandler sendHandler;
 
-    public GuildAudioManager(AudioPlayerManager manager, Guild guild) {
+    public GuildAudioManager(final AudioPlayerManager manager, final Guild guild) {
         this.audioPlayer = manager.createPlayer();
         this.audioPlayer.addListener(new AudioEventAdapter() {
             @Override

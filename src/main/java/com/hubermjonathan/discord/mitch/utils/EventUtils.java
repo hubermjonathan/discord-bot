@@ -6,7 +6,6 @@ import net.dv8tion.jda.api.MessageBuilder;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.emoji.Emoji;
-import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.interactions.commands.OptionMapping;
 import net.dv8tion.jda.api.interactions.components.ActionRow;
 import net.dv8tion.jda.api.interactions.components.buttons.Button;
@@ -23,7 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class EventUtils {
-    private static LocalDate getDate(
+    public static LocalDate getDate(
             @Nullable final String existingTimestamp, @Nullable final String newDate) throws Exception {
         final LocalDate today = LocalDate.now(ZoneId.of(ZoneId.SHORT_IDS.get("PST")));
         final String date;
@@ -58,7 +57,7 @@ public class EventUtils {
         return today.with(TemporalAdjusters.next(DayOfWeek.valueOf(date.toUpperCase())));
     }
 
-    private static LocalTime getTime(
+    public static LocalTime getTime(
             @Nullable final String existingTimestamp, @Nullable final String newTime) throws Exception {
         final String time;
         if (newTime != null) {
@@ -145,7 +144,7 @@ public class EventUtils {
     }
 
     public static Message buildEventMessage(
-            final @Nullable Message message, final List<OptionMapping> options) throws Exception {
+            @Nullable final Message message, final List<OptionMapping> options) throws Exception {
         final MessageBuilder messageBuilder = new MessageBuilder();
 
         if (message != null) {

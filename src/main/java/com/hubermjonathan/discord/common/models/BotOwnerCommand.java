@@ -13,7 +13,7 @@ public abstract class BotOwnerCommand extends ListenerAdapter {
     private CommandData commandData;
     private SlashCommandInteractionEvent event;
 
-    public BotOwnerCommand(String name, CommandData commandData) {
+    public BotOwnerCommand(final String name, final CommandData commandData) {
         this.name = name;
         this.commandData = commandData;
     }
@@ -27,7 +27,7 @@ public abstract class BotOwnerCommand extends ListenerAdapter {
     }
 
     @Override
-    public void onSlashCommandInteraction(@NotNull SlashCommandInteractionEvent event) {
+    public void onSlashCommandInteraction(@NotNull final SlashCommandInteractionEvent event) {
         if (!event.getName().equals(name)
                 || !event.getUser().getId().equals(System.getenv("BOT_OWNER_ID"))) {
             return;
