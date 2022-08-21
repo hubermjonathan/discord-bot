@@ -22,7 +22,7 @@ public class SendDailyEvents extends TimerTask {
     @Override
     public void run() {
         for (TextChannel textChannel : guild.getTextChannels()) {
-            HashMap<LocalTime, String> events = new HashMap<>();
+            HashMap<LocalTime, Message> events = new HashMap<>();
 
             for (Message eventMessage : textChannel.retrievePinnedMessages().complete()) {
                 if (!eventMessage.getAuthor().equals(guild.getSelfMember().getUser())) {
@@ -36,7 +36,7 @@ public class SendDailyEvents extends TimerTask {
 
                     if (eventLocalDate.isEqual(
                             LocalDate.now(ZoneId.of(ZoneId.SHORT_IDS.get("PST"))))) {
-                        events.put(eventLocalTime, eventMessage.getEmbeds().get(0).getTitle());
+                        events.put(eventLocalTime, eventMessage);
                     }
                 } catch (Exception e) {
                     System.out.println("invalid event timestamp");
@@ -51,10 +51,11 @@ public class SendDailyEvents extends TimerTask {
                 Collections.sort(eventTimes);
 
                 for (LocalTime eventTime : eventTimes) {
-                    final String eventTitle = events.get(eventTime);
+                    final String eventTitle = events.get(eventTime).getEmbeds().get(0).getTitle();
+                    final String eventUrl = events.get(eventTime).getJumpUrl();
                     final String formattedTime = eventTime.format(DateTimeFormatter.ofPattern("h:mma")).toLowerCase();
 
-                    stringBuilder.append(String.format("%s @ %s\n", eventTitle, formattedTime));
+                    stringBuilder.append(String.format("[%s @ %s](%s)\n", eventTitle, formattedTime, eventUrl));
                 }
 
                 embedBuilder.setTitle("events happening today");
