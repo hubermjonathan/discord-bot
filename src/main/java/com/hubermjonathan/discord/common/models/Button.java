@@ -23,7 +23,7 @@ public abstract class Button extends ListenerAdapter {
     }
 
     protected boolean shouldIgnoreEvent() {
-        return getEvent().getUser().isBot() || !getEvent().getComponentId().equals(getId());
+        return event.getUser().isBot() || !event.getComponentId().equals(id);
     }
 
     @Override
