@@ -16,7 +16,9 @@ public class GuildAudioManager {
         this.audioPlayer.addListener(new AudioEventAdapter() {
             @Override
             public void onTrackEnd(AudioPlayer player, AudioTrack track, AudioTrackEndReason endReason) {
-                guild.getAudioManager().closeAudioConnection();
+                guild
+                        .getAudioManager()
+                        .closeAudioConnection();
             }
         });
         this.sendHandler = new AudioPlayerSendHandler(this.audioPlayer);

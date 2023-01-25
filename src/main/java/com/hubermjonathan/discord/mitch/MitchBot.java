@@ -1,6 +1,7 @@
 package com.hubermjonathan.discord.mitch;
 
 import com.hubermjonathan.discord.mitch.events.*;
+import com.hubermjonathan.discord.mitch.utils.Logger;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.Guild;
@@ -29,5 +30,11 @@ public class MitchBot {
 
             timer.schedule(new KickStrangers(guild), 1000 * 60 * 60 * 24, 1000 * 60 * 60 * 12);
         }
+
+        Logger.log(
+                jda.getUserById(System.getenv("BOT_OWNER_ID")),
+                "\uD83D\uDCC4 system",
+                "bot started"
+        );
     }
 }

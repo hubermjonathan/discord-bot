@@ -30,7 +30,9 @@ public class PlayerManager {
         return this.guildAudioManagerMap.computeIfAbsent(guild.getIdLong(), (guildId) -> {
             final GuildAudioManager guildAudioManager = new GuildAudioManager(this.audioPlayerManager, guild);
 
-            guild.getAudioManager().setSendingHandler(guildAudioManager.getSendHandler());
+            guild
+                    .getAudioManager()
+                    .setSendingHandler(guildAudioManager.getSendHandler());
 
             return guildAudioManager;
         });
@@ -42,23 +44,22 @@ public class PlayerManager {
         this.audioPlayerManager.loadItem(trackUrl, new AudioLoadResultHandler() {
             @Override
             public void trackLoaded(AudioTrack track) {
-                guild.getAudioManager().openAudioConnection(audioChannel);
+                guild
+                        .getAudioManager()
+                        .openAudioConnection(audioChannel);
                 guildAudioManager.audioPlayer.startTrack(track, true);
             }
 
             @Override
             public void playlistLoaded(AudioPlaylist playlist) {
-                //
             }
 
             @Override
             public void noMatches() {
-                //
             }
 
             @Override
             public void loadFailed(FriendlyException exception) {
-                //
             }
         });
     }

@@ -10,7 +10,7 @@ import org.jetbrains.annotations.NotNull;
 
 public abstract class BotOwnerCommand extends ListenerAdapter {
     private final String name;
-    private CommandData commandData;
+    private final CommandData commandData;
     private SlashCommandInteractionEvent event;
 
     public BotOwnerCommand(final String name, final CommandData commandData) {
@@ -37,7 +37,10 @@ public abstract class BotOwnerCommand extends ListenerAdapter {
 
         try {
             execute();
-            getEvent().reply(Emoji.fromUnicode(Constants.CONFIRM_EMOJI).getName()).setEphemeral(true).queue();
+            getEvent()
+                    .reply(Emoji.fromUnicode(Constants.CONFIRM_EMOJI).getName())
+                    .setEphemeral(true)
+                    .queue();
         } catch (Exception e) {
             e.printStackTrace();
         }

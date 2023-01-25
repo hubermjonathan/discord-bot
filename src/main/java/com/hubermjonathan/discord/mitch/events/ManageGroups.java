@@ -55,21 +55,32 @@ public class ManageGroups extends ListenerAdapter {
 
     private void addEventListeners(@NotNull final Event event) {
         for (Guild guild : event.getJDA().getGuilds()) {
-            final List<TextChannel> groupChannels = new ArrayList<>(guild.getCategoriesByName(MitchConstants.PUBLIC_GROUPS_CATEGORY_NAME, true).get(0).getTextChannels());
+            final List<TextChannel> groupChannels = new ArrayList<>(
+                    guild
+                            .getCategoriesByName(MitchConstants.PUBLIC_GROUPS_CATEGORY_NAME, true)
+                            .get(0)
+                            .getTextChannels()
+            );
 
             groupChannels.remove(0);
 
             for (TextChannel textChannel : groupChannels) {
-                event.getJDA().addEventListener(
-                        new JoinOrLeaveGroup(textChannel.getId())
-                );
+                event
+                        .getJDA()
+                        .addEventListener(
+                                new JoinOrLeaveGroup(textChannel.getId())
+                        );
             }
         }
     }
 
     private void updateGroupsMessage(@NotNull final Event event) {
         for (Guild guild : event.getJDA().getGuilds()) {
-            final List<TextChannel> groupChannels = new ArrayList<>(guild.getCategoriesByName(MitchConstants.PUBLIC_GROUPS_CATEGORY_NAME, true).get(0).getTextChannels());
+            final List<TextChannel> groupChannels = new ArrayList<>(
+                    guild.getCategoriesByName(MitchConstants.PUBLIC_GROUPS_CATEGORY_NAME, true)
+                            .get(0)
+                            .getTextChannels()
+            );
             final TextChannel groupSelectionChannel = groupChannels.get(0);
 
             groupChannels.remove(0);
@@ -78,11 +89,15 @@ public class ManageGroups extends ListenerAdapter {
             final List<ActionRow> groupActionRows = getGroupActionRows(groupButtons);
 
             try {
-                final Message groupSelectionMessage = groupSelectionChannel.retrieveMessageById(groupSelectionChannel.getLatestMessageId()).complete();
+                final Message groupSelectionMessage = groupSelectionChannel
+                        .retrieveMessageById(groupSelectionChannel.getLatestMessageId())
+                        .complete();
                 final MessageEditBuilder messageBuilder = new MessageEditBuilder();
 
                 messageBuilder.setComponents(groupActionRows);
-                groupSelectionMessage.editMessage(messageBuilder.build()).queue();
+                groupSelectionMessage
+                        .editMessage(messageBuilder.build())
+                        .queue();
             } catch (Exception e) {
                 final MessageCreateBuilder messageBuilder = new MessageCreateBuilder();
                 final EmbedBuilder embedBuilder = new EmbedBuilder();
@@ -92,7 +107,9 @@ public class ManageGroups extends ListenerAdapter {
                 embedBuilder.setColor(0xcfb991);
                 messageBuilder.setEmbeds(embedBuilder.build());
                 messageBuilder.setComponents(groupActionRows);
-                groupSelectionChannel.sendMessage(messageBuilder.build()).queue();
+                groupSelectionChannel
+                        .sendMessage(messageBuilder.build())
+                        .queue();
             }
         }
     }

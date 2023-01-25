@@ -36,10 +36,15 @@ public abstract class Button extends ListenerAdapter {
 
         try {
             execute();
-            getEvent().reply(Emoji.fromUnicode(Constants.CONFIRM_EMOJI).getName()).setEphemeral(true).queue();
+            getEvent()
+                    .deferEdit()
+                    .queue();
         } catch (Exception e) {
             e.printStackTrace();
-            getEvent().reply(Emoji.fromUnicode(Constants.DENY_EMOJI).getName()).setEphemeral(true).queue();
+            getEvent()
+                    .reply(Emoji.fromUnicode(Constants.DENY_EMOJI).getName())
+                    .setEphemeral(true)
+                    .queue();
         }
     }
 
