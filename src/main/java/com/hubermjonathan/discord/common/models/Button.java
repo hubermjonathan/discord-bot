@@ -1,21 +1,21 @@
-package com.hubermjonathan.discord.mitch.models;
+package com.hubermjonathan.discord.common.models;
 
-import com.hubermjonathan.discord.mitch.Constants;
+import com.hubermjonathan.discord.common.Constants;
 import net.dv8tion.jda.api.entities.emoji.Emoji;
 import net.dv8tion.jda.api.events.interaction.component.ButtonInteractionEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
 
-public abstract class EventButton extends ListenerAdapter {
-    private final String name;
+public abstract class Button extends ListenerAdapter {
+    private final String id;
     private ButtonInteractionEvent event;
 
-    public EventButton(final String name) {
-        this.name = name;
+    public Button(final String id) {
+        this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getId() {
+        return id;
     }
 
     public ButtonInteractionEvent getEvent() {
@@ -23,7 +23,7 @@ public abstract class EventButton extends ListenerAdapter {
     }
 
     protected boolean shouldIgnoreEvent() {
-        return getEvent().getUser().isBot() || !getEvent().getComponentId().equals(getName());
+        return getEvent().getUser().isBot() || !getEvent().getComponentId().equals(getId());
     }
 
     @Override
@@ -36,6 +36,7 @@ public abstract class EventButton extends ListenerAdapter {
 
         try {
             execute();
+            getEvent().reply(Emoji.fromUnicode(Constants.CONFIRM_EMOJI).getName()).setEphemeral(true).queue();
         } catch (Exception e) {
             e.printStackTrace();
             getEvent().reply(Emoji.fromUnicode(Constants.DENY_EMOJI).getName()).setEphemeral(true).queue();
