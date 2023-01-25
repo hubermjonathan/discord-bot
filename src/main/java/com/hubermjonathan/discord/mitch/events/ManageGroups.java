@@ -32,6 +32,9 @@ public class ManageGroups extends ListenerAdapter {
 
     @Override
     public void onChannelCreate(@NotNull final ChannelCreateEvent event) {
+        event.getJDA().addEventListener(
+                new JoinOrLeaveGroup(event.getChannel().asTextChannel().getId()));
+
         updateGroupsMessage(event);
     }
 
