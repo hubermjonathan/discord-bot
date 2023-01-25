@@ -10,13 +10,13 @@ import net.dv8tion.jda.api.utils.MemberCachePolicy;
 public class MitchBot {
     public static void run(final String token) throws  InterruptedException {
         final ManageGroups manageGroups = new ManageGroups();
-        final ManageTourGroup manageTourGroup = new ManageTourGroup();
+        final ManageStrangers manageStrangers = new ManageStrangers();
 
         final JDA jda = JDABuilder.createDefault(token)
                 .setChunkingFilter(ChunkingFilter.ALL)
                 .setMemberCachePolicy(MemberCachePolicy.ALL)
                 .enableIntents(GatewayIntent.GUILD_MEMBERS)
-                .addEventListeners(manageGroups, manageTourGroup)
+                .addEventListeners(manageGroups, manageStrangers)
                 .build();
 
         jda.awaitReady();
