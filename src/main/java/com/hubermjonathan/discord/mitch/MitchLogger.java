@@ -13,7 +13,7 @@ public class MitchLogger {
     public static void log(final User user, final String title, final String message) {
         final MessageCreateBuilder messageBuilder = new MessageCreateBuilder();
         final EmbedBuilder embedBuilder = new EmbedBuilder();
-        final SimpleDateFormat dateFormatter = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
+        final SimpleDateFormat dateFormatter = new SimpleDateFormat("MM/dd/yyyy hh:mm aa");
 
         embedBuilder.setTitle(title);
         embedBuilder.setDescription(message);
