@@ -28,7 +28,7 @@ public class MitchBot {
         features.add(new Emoji(true));
         features.add(new Events(false));
         features.add(new Groups(true));
-        features.add(new Music(false));
+        features.add(new Music(true));
         features.add(new Strangers(true));
     }
 

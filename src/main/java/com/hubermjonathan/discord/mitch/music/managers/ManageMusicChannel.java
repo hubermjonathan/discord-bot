@@ -20,7 +20,8 @@ public class ManageMusicChannel extends Manager {
 
         TextChannel musicChannel = event
                 .getGuild()
-                .getTextChannelById(Constants.MUSIC_TEXT_CHANNEL_NAME);
+                .getTextChannelsByName(Constants.MUSIC_TEXT_CHANNEL_NAME, true)
+                .get(0);
 
         if (event.getChannelJoined() != null && event.getChannelLeft() == null) {
             musicChannel
