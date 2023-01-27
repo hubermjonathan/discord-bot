@@ -26,9 +26,9 @@ public class PlayerManager {
         AudioSourceManagers.registerRemoteSources(this.audioPlayerManager);
     }
 
-    public GuildAudioManager getGuildAudioManager(final Guild guild) {
+    public GuildAudioManager getGuildAudioManager(Guild guild) {
         return this.guildAudioManagerMap.computeIfAbsent(guild.getIdLong(), (guildId) -> {
-            final GuildAudioManager guildAudioManager = new GuildAudioManager(this.audioPlayerManager, guild);
+            GuildAudioManager guildAudioManager = new GuildAudioManager(this.audioPlayerManager, guild);
 
             guild
                     .getAudioManager()
@@ -38,8 +38,8 @@ public class PlayerManager {
         });
     }
 
-    public void loadAndPlay(final Guild guild, final AudioChannel audioChannel, final String trackUrl) {
-        final GuildAudioManager guildAudioManager = this.getGuildAudioManager(guild);
+    public void loadAndPlay(Guild guild, AudioChannel audioChannel, String trackUrl) {
+        GuildAudioManager guildAudioManager = this.getGuildAudioManager(guild);
 
         this.audioPlayerManager.loadItem(trackUrl, new AudioLoadResultHandler() {
             @Override

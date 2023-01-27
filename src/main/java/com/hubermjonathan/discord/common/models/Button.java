@@ -10,7 +10,7 @@ public abstract class Button extends ListenerAdapter {
     private final String id;
     private ButtonInteractionEvent event;
 
-    public Button(final String id) {
+    public Button(String id) {
         this.id = id;
     }
 
@@ -27,7 +27,7 @@ public abstract class Button extends ListenerAdapter {
     }
 
     @Override
-    public void onButtonInteraction(@NotNull final ButtonInteractionEvent event) {
+    public void onButtonInteraction(@NotNull ButtonInteractionEvent event) {
         this.event = event;
 
         if (shouldIgnoreEvent()) {

@@ -1,10 +1,10 @@
 package com.hubermjonathan.discord.mitch.events.buttons;
 
 import com.hubermjonathan.discord.common.models.Button;
-import com.hubermjonathan.discord.mitch.events.EventsUtil;
+import com.hubermjonathan.discord.mitch.events.Util;
 
 public class RSVPMaybe extends Button {
-    public RSVPMaybe(final String name) {
+    public RSVPMaybe(String name) {
         super(name);
     }
 
@@ -12,7 +12,7 @@ public class RSVPMaybe extends Button {
     public void execute() throws Exception {
         getEvent()
                 .editMessageEmbeds(
-                        EventsUtil.addMemberToMaybeField(
+                        Util.addMemberToMaybeField(
                                 getEvent().getMember().getEffectiveName(),
                                 getEvent().getMessage().getEmbeds().get(0)
                         )

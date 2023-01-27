@@ -9,11 +9,11 @@ import java.time.ZoneId;
 import java.util.Date;
 import java.util.TimeZone;
 
-public class MitchLogger {
-    public static void log(final User user, final String title, final String message) {
-        final MessageCreateBuilder messageBuilder = new MessageCreateBuilder();
-        final EmbedBuilder embedBuilder = new EmbedBuilder();
-        final SimpleDateFormat dateFormatter = new SimpleDateFormat("MM/dd/yyyy hh:mm aa");
+public class Logger {
+    public static void log(User user, String title, String message) {
+        MessageCreateBuilder messageBuilder = new MessageCreateBuilder();
+        EmbedBuilder embedBuilder = new EmbedBuilder();
+        SimpleDateFormat dateFormatter = new SimpleDateFormat("MM/dd/yyyy hh:mm aa");
 
         embedBuilder.setTitle(title);
         embedBuilder.setDescription(message);

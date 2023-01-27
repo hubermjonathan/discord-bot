@@ -1,16 +1,18 @@
 package com.hubermjonathan.discord.common.models;
 
-import com.hubermjonathan.discord.common.Constants;
-
 public abstract class BotOwnerButton extends Button {
-    public BotOwnerButton(String id) {
+    private final String botOwnerId;
+
+    public BotOwnerButton(String id, String botOwnerId) {
         super(id);
+
+        this.botOwnerId = botOwnerId;
     }
 
     @Override
     protected boolean shouldIgnoreEvent() {
         return getEvent().getUser().isBot()
                 || !getEvent().getComponentId().equals(getId())
-                || !getEvent().getUser().getId().equals(Constants.BOT_OWNER_ID);
+                || !getEvent().getUser().getId().equals(botOwnerId);
     }
 }

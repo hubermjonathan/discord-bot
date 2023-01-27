@@ -13,7 +13,7 @@ public abstract class Command extends ListenerAdapter {
     private final CommandData commandData;
     private SlashCommandInteractionEvent event;
 
-    public Command(final String name, final CommandData commandData) {
+    public Command(String name, CommandData commandData) {
         this.name = name;
         this.commandData = commandData;
     }
@@ -35,7 +35,7 @@ public abstract class Command extends ListenerAdapter {
     }
 
     @Override
-    public void onSlashCommandInteraction(@NotNull final SlashCommandInteractionEvent event) {
+    public void onSlashCommandInteraction(@NotNull SlashCommandInteractionEvent event) {
         this.event = event;
 
         if (shouldIgnoreEvent()) {

@@ -1,6 +1,7 @@
-package com.hubermjonathan.discord.mitch.events.events;
+package com.hubermjonathan.discord.mitch.events.tasks;
 
-import com.hubermjonathan.discord.mitch.events.EventsUtil;
+import com.hubermjonathan.discord.common.models.Task;
+import com.hubermjonathan.discord.mitch.events.Util;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
@@ -9,32 +10,29 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.TimerTask;
 
-public class SendEventReminder extends TimerTask {
-    private final Guild guild;
-
-    public SendEventReminder(final Guild guild) {
-        this.guild = guild;
+public class SendEventReminder extends Task {
+    public SendEventReminder(Guild guild, long startTime, long schedule) {
+        super(guild, startTime, schedule);
     }
 
     @Override
-    public void run() {
-        for (final TextChannel textChannel : guild.getTextChannels()) {
-            for (final Message eventMessage : textChannel.retrievePinnedMessages().complete()) {
-                if (!eventMessage.getAuthor().equals(guild.getSelfMember().getUser())) {
+    public void execute() {
+        for (TextChannel textChannel : getGuild().getTextChannels()) {
+            for (Message eventMessage : textChannel.retrievePinnedMessages().complete()) {
+                if (!eventMessage.getAuthor().equals(getGuild().getSelfMember().getUser())) {
                     continue;
                 }
 
                 try {
-                    final String eventTimestamp = eventMessage
+                    String eventTimestamp = eventMessage
                             .getEmbeds()
                             .get(0)
                             .getFooter()
                             .getText();
-                    final LocalDateTime eventLocalDateTime = LocalDateTime.of(
-                            EventsUtil.getDate(eventTimestamp, null),
-                            EventsUtil.getTime(eventTimestamp, null)
+                    LocalDateTime eventLocalDateTime = LocalDateTime.of(
+                            Util.getDate(eventTimestamp, null),
+                            Util.getTime(eventTimestamp, null)
                     );
                     LocalDateTime now = LocalDateTime.now(ZoneId.of(ZoneId.SHORT_IDS.get("PST")));
 
@@ -43,11 +41,11 @@ public class SendEventReminder extends TimerTask {
                             .minusNanos(now.getNano());
 
                     if (eventLocalDateTime.minusMinutes(30).isEqual(now)) {
-                        final String eventTitle = eventMessage
+                        String eventTitle = eventMessage
                                 .getEmbeds()
                                 .get(0)
                                 .getTitle();
-                        final ArrayList<String> membersGoing = new ArrayList<>(
+                        ArrayList<String> membersGoing = new ArrayList<>(
                                 Arrays.asList(
                                     eventMessage
                                             .getEmbeds()
@@ -59,16 +57,16 @@ public class SendEventReminder extends TimerTask {
                                             .split("\n")
                                 )
                         );
-                        final StringBuilder stringBuilder = new StringBuilder();
+                        StringBuilder stringBuilder = new StringBuilder();
 
                         if (membersGoing.get(0).equals("-----")) {
                             continue;
                         }
 
-                        for (final String member : membersGoing) {
+                        for (String member : membersGoing) {
                             stringBuilder
                                     .append(
-                                            guild
+                                            getGuild()
                                                     .getMembersByEffectiveName(member, true)
                                                     .get(0)
                                                     .getAsMention()
@@ -80,7 +78,7 @@ public class SendEventReminder extends TimerTask {
                                 .reply(String.format("%s%s %s", stringBuilder, eventTitle, "is starting in 30 minutes!"))
                                 .queue();
                     }
-                } catch (final Exception e) {
+                } catch (Exception e) {
                     System.out.println("invalid event timestamp");
                 }
             }

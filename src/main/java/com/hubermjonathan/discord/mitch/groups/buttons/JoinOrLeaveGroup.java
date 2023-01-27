@@ -1,8 +1,8 @@
 package com.hubermjonathan.discord.mitch.groups.buttons;
 
-import com.hubermjonathan.discord.common.Constants;
 import com.hubermjonathan.discord.common.models.Button;
-import com.hubermjonathan.discord.mitch.MitchLogger;
+import com.hubermjonathan.discord.mitch.Constants;
+import com.hubermjonathan.discord.mitch.Logger;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.PermissionOverride;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
@@ -13,7 +13,7 @@ import java.util.List;
 public class JoinOrLeaveGroup extends Button {
     private final String groupChannelId;
 
-    public JoinOrLeaveGroup(final String groupChannelId) {
+    public JoinOrLeaveGroup(String groupChannelId) {
         super(groupChannelId);
 
         this.groupChannelId = groupChannelId;
@@ -21,18 +21,18 @@ public class JoinOrLeaveGroup extends Button {
 
     @Override
     public void execute() throws Exception {
-        final TextChannel groupChannel = getEvent()
+        TextChannel groupChannel = getEvent()
                 .getGuild()
                 .getTextChannelById(groupChannelId);
-        final List<PermissionOverride> memberPermissionOverrides = groupChannel.getMemberPermissionOverrides();
+        List<PermissionOverride> memberPermissionOverrides = groupChannel.getMemberPermissionOverrides();
 
-        for (final PermissionOverride memberPermissionOverride : memberPermissionOverrides) {
+        for (PermissionOverride memberPermissionOverride : memberPermissionOverrides) {
             if (memberPermissionOverride.getMember().equals(getEvent().getMember())) {
                 groupChannel
                         .getManager()
                         .removePermissionOverride(memberPermissionOverride.getPermissionHolder())
                         .queue();
-                MitchLogger.log(
+                Logger.log(
                         getEvent().getGuild().getMemberById(Constants.BOT_OWNER_ID).getUser(),
                         "\uD83D\uDC65 groups",
                         String.format(
@@ -50,7 +50,7 @@ public class JoinOrLeaveGroup extends Button {
                 .getManager()
                 .putMemberPermissionOverride(getEvent().getMember().getIdLong(), EnumSet.of(Permission.VIEW_CHANNEL), null)
                 .queue();
-        MitchLogger.log(
+        Logger.log(
                 getEvent().getGuild().getMemberById(Constants.BOT_OWNER_ID).getUser(),
                 "\uD83D\uDC65 groups",
                 String.format(

@@ -1,26 +1,25 @@
-package com.hubermjonathan.discord.mitch.strangers.events;
+package com.hubermjonathan.discord.mitch.strangers.managers;
 
-import com.hubermjonathan.discord.common.Constants;
-import com.hubermjonathan.discord.mitch.MitchConstants;
-import com.hubermjonathan.discord.mitch.MitchLogger;
+import com.hubermjonathan.discord.common.models.Manager;
+import com.hubermjonathan.discord.mitch.Constants;
+import com.hubermjonathan.discord.mitch.Logger;
 import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.events.guild.member.GuildMemberJoinEvent;
-import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
 
-public class ManageStrangers extends ListenerAdapter {
+public class ManageStrangers extends Manager {
     @Override
-    public void onGuildMemberJoin(@NotNull final GuildMemberJoinEvent event) {
+    public void onGuildMemberJoin(@NotNull GuildMemberJoinEvent event) {
         if (event.getUser().isBot()) {
             return;
         }
 
-        final Role strangersRole = event
+        Role strangersRole = event
                 .getGuild()
-                .getRolesByName(MitchConstants.STRANGERS_ROLE_NAME, true)
+                .getRolesByName(Constants.STRANGERS_ROLE_NAME, true)
                 .get(0);
 
-        MitchLogger.log(
+        Logger.log(
                 event.getGuild().getMemberById(Constants.BOT_OWNER_ID).getUser(),
                 "\uD83D\uDC64 strangers",
                 String.format(
