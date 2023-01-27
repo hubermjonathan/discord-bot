@@ -1,20 +1,78 @@
 package com.hubermjonathan.discord.mitch.groups;
 
+import com.hubermjonathan.discord.mitch.Constants;
+import com.hubermjonathan.discord.mitch.groups.buttons.JoinOrLeaveGroup;
 import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
+import net.dv8tion.jda.api.events.Event;
 import net.dv8tion.jda.api.interactions.components.ActionRow;
 import net.dv8tion.jda.api.interactions.components.buttons.Button;
-import net.dv8tion.jda.api.utils.messages.MessageCreateBuilder;
-import net.dv8tion.jda.api.utils.messages.MessageData;
-import net.dv8tion.jda.api.utils.messages.MessageEditBuilder;
+import net.dv8tion.jda.api.utils.messages.*;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class Util {
+    public static void addEventListeners(@NotNull Event event) {
+        Guild guild = event.getJDA().getGuildById(Constants.SERVER_ID);
+        List<TextChannel> groupChannels = new ArrayList<>(
+                guild
+                        .getCategoriesByName(Constants.PUBLIC_GROUPS_CATEGORY_NAME, true)
+                        .get(0)
+                        .getTextChannels()
+        );
+
+        groupChannels.remove(0);
+
+        for (TextChannel textChannel : groupChannels) {
+            event
+                    .getJDA()
+                    .addEventListener(
+                            new JoinOrLeaveGroup(textChannel.getId())
+                    );
+        }
+    }
+
+    public static void updateGroupsMessage(@NotNull Event event) {
+        updateGroupsMessage(event, new ArrayList<>());
+    }
+
+    public static void updateGroupsMessage(@NotNull Event event, List<String> excludedChannels) {
+        Guild guild = event.getJDA().getGuildById(Constants.SERVER_ID);
+        List<TextChannel> groupChannels = guild.getCategoriesByName(Constants.PUBLIC_GROUPS_CATEGORY_NAME, true)
+                .get(0)
+                .getTextChannels()
+                .stream()
+                .filter(textChannel -> !excludedChannels.contains(textChannel.getId()))
+                .collect(Collectors.toList());
+        TextChannel groupSelectionChannel = groupChannels.get(0);
+
+        groupChannels.remove(0);
+
+        List<Button> groupButtons = Util.getGroupButtons(groupChannels);
+        List<ActionRow> groupActionRows = Util.getGroupActionRows(groupButtons);
+
+        try {
+            Message groupSelectionMessage = groupSelectionChannel
+                    .retrieveMessageById(groupSelectionChannel.getLatestMessageId())
+                    .complete();
+
+            groupSelectionMessage
+                    .editMessage((MessageEditData) buildGroupMessage(groupSelectionMessage, groupActionRows))
+                    .queue();
+        } catch (Exception e) {
+            groupSelectionChannel
+                    .sendMessage((MessageCreateData) buildGroupMessage(null, groupActionRows))
+                    .queue();
+        }
+    }
+
     public static MessageData buildGroupMessage(
             @Nullable Message message,
             List<ActionRow> actionRows

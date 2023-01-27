@@ -39,7 +39,7 @@ public abstract class Feature {
         commands.add(command);
     }
 
-    public void addEvent(Manager manager) {
+    public void addManager(Manager manager) {
         managers.add(manager);
     }
 

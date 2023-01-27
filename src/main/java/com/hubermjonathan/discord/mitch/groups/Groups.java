@@ -1,6 +1,8 @@
 package com.hubermjonathan.discord.mitch.groups;
 
 import com.hubermjonathan.discord.common.models.Feature;
+import com.hubermjonathan.discord.mitch.groups.commands.ArchiveGroup;
+import com.hubermjonathan.discord.mitch.groups.commands.CreateGroup;
 import com.hubermjonathan.discord.mitch.groups.managers.ManageGroups;
 
 public class Groups extends Feature {
@@ -9,7 +11,10 @@ public class Groups extends Feature {
     }
     @Override
     public void create() {
-        addEvent(new ManageGroups());
+        addCommand(new ArchiveGroup("archive", "archive a group"));
+        addCommand(new CreateGroup("group", "create a group"));
+
+        addManager(new ManageGroups());
     }
 
     @Override

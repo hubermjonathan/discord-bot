@@ -11,20 +11,22 @@ import java.util.TimeZone;
 
 public class Logger {
     public static void log(User user, String title, String message) {
-        MessageCreateBuilder messageBuilder = new MessageCreateBuilder();
-        EmbedBuilder embedBuilder = new EmbedBuilder();
-        SimpleDateFormat dateFormatter = new SimpleDateFormat("MM/dd/yyyy hh:mm aa");
+        if (System.getenv("DEV") == null) {
+            MessageCreateBuilder messageBuilder = new MessageCreateBuilder();
+            EmbedBuilder embedBuilder = new EmbedBuilder();
+            SimpleDateFormat dateFormatter = new SimpleDateFormat("MM/dd/yyyy hh:mm aa");
 
-        embedBuilder.setTitle(title);
-        embedBuilder.setDescription(message);
-        embedBuilder.setColor(0xcfb991);
-        dateFormatter.setTimeZone(TimeZone.getTimeZone(ZoneId.of(ZoneId.SHORT_IDS.get("PST"))));
-        embedBuilder.setFooter(dateFormatter.format(new Date()));
-        messageBuilder.setEmbeds(embedBuilder.build());
-        user
-                .openPrivateChannel()
-                .complete()
-                .sendMessage(messageBuilder.build())
-                .queue();
+            embedBuilder.setTitle(title);
+            embedBuilder.setDescription(message);
+            embedBuilder.setColor(0xcfb991);
+            dateFormatter.setTimeZone(TimeZone.getTimeZone(ZoneId.of(ZoneId.SHORT_IDS.get("PST"))));
+            embedBuilder.setFooter(dateFormatter.format(new Date()));
+            messageBuilder.setEmbeds(embedBuilder.build());
+            user
+                    .openPrivateChannel()
+                    .complete()
+                    .sendMessage(messageBuilder.build())
+                    .queue();
+        }
     }
 }

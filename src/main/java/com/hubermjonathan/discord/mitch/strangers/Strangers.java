@@ -11,7 +11,7 @@ public class Strangers extends Feature {
 
     @Override
     public void create() {
-        addEvent(new ManageStrangers());
+        addManager(new ManageStrangers());
     }
 
     @Override

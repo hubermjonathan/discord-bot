@@ -10,7 +10,7 @@ public class Music extends Feature {
 
     @Override
     public void create() {
-        addEvent(new ManageMusicChannel());
+        addManager(new ManageMusicChannel());
     }
 
     @Override

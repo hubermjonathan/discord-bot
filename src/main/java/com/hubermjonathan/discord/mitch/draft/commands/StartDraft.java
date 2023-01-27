@@ -5,6 +5,7 @@ import com.hubermjonathan.discord.mitch.Constants;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
+import net.dv8tion.jda.api.interactions.commands.DefaultMemberPermissions;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.Commands;
 import net.dv8tion.jda.api.utils.messages.MessageCreateBuilder;
@@ -20,7 +21,8 @@ public class StartDraft extends BotOwnerCommand {
                 name,
                 Commands
                         .slash(name, description)
-                        .addOption(OptionType.INTEGER, "rounds", "number of rounds in the draft", true),
+                        .addOption(OptionType.INTEGER, "rounds", "number of rounds in the draft", true)
+                        .setDefaultPermissions(DefaultMemberPermissions.DISABLED),
                 Constants.BOT_OWNER_ID
         );
     }
