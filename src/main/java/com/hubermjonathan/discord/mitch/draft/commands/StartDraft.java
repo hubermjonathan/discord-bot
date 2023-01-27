@@ -21,7 +21,8 @@ public class StartDraft extends BotOwnerCommand {
                 name,
                 Commands
                         .slash(name, description)
-                        .addOption(OptionType.INTEGER, "rounds", "number of rounds in the draft", true)
+                        .addOption(OptionType.INTEGER, "rounds", "the number of rounds in the draft", true)
+                        .addOption(OptionType.STRING, "channel", "the id of the channel to draft from", true)
                         .setDefaultPermissions(DefaultMemberPermissions.DISABLED),
                 Constants.BOT_OWNER_ID
         );
@@ -29,10 +30,14 @@ public class StartDraft extends BotOwnerCommand {
 
     @Override
     public void execute() throws Exception {
-        TextChannel channel = getEvent().getGuild().getTextChannelById(Constants.SEATTLE_TEXT_CHANNEL_ID);
+        TextChannel channel = getEvent()
+                .getGuild()
+                .getTextChannelById(getEvent().getOption("channel").getAsString());
         List<String> draftedMembers = draftMembers(channel.getMembers(), getEvent().getOption("rounds").getAsInt());
 
-        channel.sendMessage(buildMessage(draftedMembers)).queue();
+        channel
+                .sendMessage(buildMessage(draftedMembers))
+                .queue();
     }
 
     private MessageCreateData buildMessage(List<String> draftedMembers) {
