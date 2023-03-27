@@ -61,22 +61,5 @@ public class MitchBot {
         for (Feature feature : features) {
             feature.startTasks(guild);
         }
-
-        List<String> enabledFeatures = features
-                .stream()
-                .filter(Feature::isEnabled)
-                .map(feature -> feature.getClass().getSimpleName())
-                .collect(Collectors.toList());
-        List<String> disabledFeatures = features
-                .stream()
-                .filter(feature -> !feature.isEnabled())
-                .map(feature -> feature.getClass().getSimpleName())
-                .collect(Collectors.toList());
-
-        Logger.log(
-                jda.getUserById(Constants.BOT_OWNER_ID),
-                "\uD83D\uDCC4 system",
-                "bot started" + "\nenabled features: " + String.join(", ", enabledFeatures) + "\ndisabled features: " + String.join(", ", disabledFeatures)
-        );
     }
 }
