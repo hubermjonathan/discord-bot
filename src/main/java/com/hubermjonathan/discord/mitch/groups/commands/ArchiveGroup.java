@@ -34,6 +34,6 @@ public class ArchiveGroup extends BotOwnerCommand {
                 .setParent(category)
                 .sync()
                 .queue();
-        Util.updateGroupsMessage(getEvent(), Arrays.asList(getEvent().getOption("channel").getAsString()));
+        Util.updateGroupsMessage(getEvent(), Arrays.asList(getEvent().getChannel().getId()));
     }
 }
