@@ -5,26 +5,25 @@ import com.hubermjonathan.discord.mitch.Constants;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
-import net.dv8tion.jda.api.interactions.commands.DefaultMemberPermissions;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.Commands;
 import net.dv8tion.jda.api.utils.messages.MessageCreateBuilder;
 import net.dv8tion.jda.api.utils.messages.MessageCreateData;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
 public class StartDraft extends BotOwnerCommand {
-    public StartDraft(String name, String description) {
+    public StartDraft() {
         super(
-                name,
+                "draft",
                 Commands
-                        .slash(name, description)
+                        .slash("draft", "draft people to hang out")
                         .addOption(OptionType.INTEGER, "rounds", "the number of rounds in the draft", true)
-                        .addOption(OptionType.STRING, "channel", "the id of the channel to draft from", true)
-                        .setDefaultPermissions(DefaultMemberPermissions.DISABLED),
-                Constants.BOT_OWNER_ID
+                        .addOption(OptionType.CHANNEL, "channel", "the channel to draft from", true),
+                Arrays.asList(Constants.SEATTLE_TEXT_CHANNEL_ID)
         );
     }
 
@@ -32,7 +31,7 @@ public class StartDraft extends BotOwnerCommand {
     public void execute() throws Exception {
         TextChannel channel = getEvent()
                 .getGuild()
-                .getTextChannelById(getEvent().getOption("channel").getAsString());
+                .getTextChannelById(getEvent().getOption("channel").getAsChannel().getId());
         List<String> draftedMembers = draftMembers(channel.getMembers(), getEvent().getOption("rounds").getAsInt());
 
         channel

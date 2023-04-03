@@ -1,8 +1,8 @@
-package com.hubermjonathan.discord.mitch.strangers.tasks;
+package com.hubermjonathan.discord.mitch.management.tasks;
 
 import com.hubermjonathan.discord.common.models.Task;
 import com.hubermjonathan.discord.mitch.Constants;
-import com.hubermjonathan.discord.mitch.Logger;
+import com.hubermjonathan.discord.common.Logger;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Role;
@@ -15,12 +15,11 @@ public class KickStrangers extends Task {
     @Override
     public void execute() {
         Role strangersRole = getGuild()
-                .getRolesByName(Constants.STRANGERS_ROLE_NAME, true)
-                .get(0);
+                .getRoleById(Constants.STRANGERS_ROLE_ID);
 
         for (Member member : getGuild().getMembersWithRoles(strangersRole)) {
             Logger.log(
-                    getGuild().getMemberById(Constants.BOT_OWNER_ID).getUser(),
+                    getGuild().getJDA(),
                     "\uD83D\uDC64 strangers",
                     String.format(
                             "kicked %s",

@@ -24,13 +24,13 @@ public class Events extends Feature {
 
     @Override
     public void create() {
-        addButton(new DeleteEvent("deleteEvent"));
-        addButton(new RSVPGoing("rsvpGoing"));
-        addButton(new RSVPMaybe("rsvpMaybe"));
-        addButton(new RSVPNotGoing("rsvpNotGoing"));
+        addButton(new DeleteEvent());
+        addButton(new RSVPGoing());
+        addButton(new RSVPMaybe());
+        addButton(new RSVPNotGoing());
 
-        addCommand(new CreateEvent("event", "create an event"));
-        addCommand(new EditEvent("edit", "edit an event"));
+        addCommand(new CreateEvent());
+        addCommand(new EditEvent());
     }
 
     @Override

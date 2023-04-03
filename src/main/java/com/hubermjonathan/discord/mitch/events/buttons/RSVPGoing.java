@@ -4,8 +4,8 @@ import com.hubermjonathan.discord.common.models.Button;
 import com.hubermjonathan.discord.mitch.events.Util;
 
 public class RSVPGoing extends Button {
-    public RSVPGoing(String name) {
-        super(name);
+    public RSVPGoing() {
+        super("rsvpGoing");
     }
 
     @Override

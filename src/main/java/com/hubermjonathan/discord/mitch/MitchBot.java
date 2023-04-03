@@ -1,13 +1,12 @@
 package com.hubermjonathan.discord.mitch;
 
+import com.hubermjonathan.discord.common.Logger;
 import com.hubermjonathan.discord.common.models.Command;
 import com.hubermjonathan.discord.common.models.Feature;
 import com.hubermjonathan.discord.mitch.draft.Draft;
-import com.hubermjonathan.discord.mitch.emoji.Emoji;
+import com.hubermjonathan.discord.mitch.management.Management;
 import com.hubermjonathan.discord.mitch.events.Events;
 import com.hubermjonathan.discord.mitch.groups.Groups;
-import com.hubermjonathan.discord.mitch.music.Music;
-import com.hubermjonathan.discord.mitch.strangers.Strangers;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.Guild;
@@ -25,11 +24,9 @@ public class MitchBot {
 
     public MitchBot() {
         features.add(new Draft(true));
-        features.add(new Emoji(true));
         features.add(new Events(false));
         features.add(new Groups(true));
-        features.add(new Music(true));
-        features.add(new Strangers(true));
+        features.add(new Management(true));
     }
 
     public void run(String token) throws InterruptedException {
@@ -48,7 +45,7 @@ public class MitchBot {
         Guild guild = jda.getGuildById(Constants.SERVER_ID);
         List<CommandData> commands = features
                 .stream()
-                .map(feature -> feature.getCommands())
+                .map(Feature::getCommands)
                 .flatMap(List::stream)
                 .map(Command::getCommandData)
                 .collect(Collectors.toList());
@@ -60,6 +57,25 @@ public class MitchBot {
 
         for (Feature feature : features) {
             feature.startTasks(guild);
+        }
+
+        if (System.getenv("DEV") != null) {
+            List<String> enabledFeatures = features
+                    .stream()
+                    .filter(Feature::isEnabled)
+                    .map(feature -> feature.getClass().getSimpleName())
+                    .collect(Collectors.toList());
+            List<String> disabledFeatures = features
+                    .stream()
+                    .filter(feature -> !feature.isEnabled())
+                    .map(feature -> feature.getClass().getSimpleName())
+                    .collect(Collectors.toList());
+
+            Logger.log(
+                    jda,
+                    "\uD83D\uDCC4 system",
+                    "bot started" + "\nenabled features: " + String.join(", ", enabledFeatures) + "\ndisabled features: " + String.join(", ", disabledFeatures)
+            );
         }
     }
 }

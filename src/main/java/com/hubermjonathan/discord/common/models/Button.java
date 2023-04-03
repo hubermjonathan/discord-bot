@@ -1,6 +1,7 @@
 package com.hubermjonathan.discord.common.models;
 
 import com.hubermjonathan.discord.common.Constants;
+import com.hubermjonathan.discord.common.Logger;
 import net.dv8tion.jda.api.entities.emoji.Emoji;
 import net.dv8tion.jda.api.events.interaction.component.ButtonInteractionEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
@@ -41,6 +42,11 @@ public abstract class Button extends ListenerAdapter {
                     .queue();
         } catch (Exception e) {
             e.printStackTrace();
+            Logger.log(
+                    event.getJDA(),
+                    "\u26D4 error",
+                    String.format("%s", e.getLocalizedMessage())
+            );
             getEvent()
                     .reply(Emoji.fromUnicode(Constants.DENY_EMOJI).getName())
                     .setEphemeral(true)

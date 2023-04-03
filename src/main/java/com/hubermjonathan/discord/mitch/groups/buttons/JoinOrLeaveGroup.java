@@ -1,8 +1,7 @@
 package com.hubermjonathan.discord.mitch.groups.buttons;
 
 import com.hubermjonathan.discord.common.models.Button;
-import com.hubermjonathan.discord.mitch.Constants;
-import com.hubermjonathan.discord.mitch.Logger;
+import com.hubermjonathan.discord.common.Logger;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.PermissionOverride;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
@@ -33,7 +32,7 @@ public class JoinOrLeaveGroup extends Button {
                         .removePermissionOverride(memberPermissionOverride.getPermissionHolder())
                         .queue();
                 Logger.log(
-                        getEvent().getGuild().getMemberById(Constants.BOT_OWNER_ID).getUser(),
+                        getEvent().getJDA(),
                         "\uD83D\uDC65 groups",
                         String.format(
                                 "%s left #%s",
@@ -51,7 +50,7 @@ public class JoinOrLeaveGroup extends Button {
                 .putMemberPermissionOverride(getEvent().getMember().getIdLong(), EnumSet.of(Permission.VIEW_CHANNEL), null)
                 .queue();
         Logger.log(
-                getEvent().getGuild().getMemberById(Constants.BOT_OWNER_ID).getUser(),
+                getEvent().getJDA(),
                 "\uD83D\uDC65 groups",
                 String.format(
                         "%s joined #%s",

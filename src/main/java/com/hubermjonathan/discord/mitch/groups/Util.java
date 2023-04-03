@@ -23,8 +23,7 @@ public class Util {
         Guild guild = event.getJDA().getGuildById(Constants.SERVER_ID);
         List<TextChannel> groupChannels = new ArrayList<>(
                 guild
-                        .getCategoriesByName(Constants.PUBLIC_GROUPS_CATEGORY_NAME, true)
-                        .get(0)
+                        .getCategoryById(Constants.PUBLIC_GROUPS_CATEGORY_ID)
                         .getTextChannels()
         );
 
@@ -45,8 +44,7 @@ public class Util {
 
     public static void updateGroupsMessage(@NotNull Event event, List<String> excludedChannels) {
         Guild guild = event.getJDA().getGuildById(Constants.SERVER_ID);
-        List<TextChannel> groupChannels = guild.getCategoriesByName(Constants.PUBLIC_GROUPS_CATEGORY_NAME, true)
-                .get(0)
+        List<TextChannel> groupChannels = guild.getCategoryById(Constants.PUBLIC_GROUPS_CATEGORY_ID)
                 .getTextChannels()
                 .stream()
                 .filter(textChannel -> !excludedChannels.contains(textChannel.getId()))

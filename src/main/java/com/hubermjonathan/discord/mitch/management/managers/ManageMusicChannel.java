@@ -1,4 +1,4 @@
-package com.hubermjonathan.discord.mitch.music.managers;
+package com.hubermjonathan.discord.mitch.management.managers;
 
 import com.hubermjonathan.discord.common.models.Manager;
 import com.hubermjonathan.discord.mitch.Constants;
@@ -20,8 +20,7 @@ public class ManageMusicChannel extends Manager {
 
         TextChannel musicChannel = event
                 .getGuild()
-                .getTextChannelsByName(Constants.MUSIC_TEXT_CHANNEL_NAME, true)
-                .get(0);
+                .getTextChannelById(Constants.MUSIC_TEXT_CHANNEL_ID);
 
         if (event.getChannelJoined() != null && event.getChannelLeft() == null) {
             musicChannel

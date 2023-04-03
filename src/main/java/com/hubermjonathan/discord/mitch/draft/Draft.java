@@ -10,7 +10,7 @@ public class Draft extends Feature {
 
     @Override
     public void create() {
-        addCommand(new StartDraft("draft", "draft people to hang out"));
+        addCommand(new StartDraft());
     }
 
     @Override
