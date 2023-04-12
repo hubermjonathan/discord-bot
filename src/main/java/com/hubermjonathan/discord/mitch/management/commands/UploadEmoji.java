@@ -1,11 +1,12 @@
 package com.hubermjonathan.discord.mitch.management.commands;
 
 import com.hubermjonathan.discord.common.models.BotOwnerCommand;
+import com.hubermjonathan.discord.common.models.Command;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.Commands;
 
-public class UploadEmoji extends BotOwnerCommand {
+public class UploadEmoji extends Command {
     public UploadEmoji() {
         super(
                 "emoji",
