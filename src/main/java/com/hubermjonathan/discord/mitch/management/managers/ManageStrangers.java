@@ -20,7 +20,7 @@ public class ManageStrangers extends Manager {
 
         Logger.log(
                 event.getJDA(),
-                "\uD83D\uDC64 strangers",
+                "\uD83D\uDC64 management",
                 String.format(
                         "%s joined",
                         event.getMember().getEffectiveName()

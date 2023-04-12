@@ -20,7 +20,7 @@ public class KickStrangers extends Task {
         for (Member member : getGuild().getMembersWithRoles(strangersRole)) {
             Logger.log(
                     getGuild().getJDA(),
-                    "\uD83D\uDC64 strangers",
+                    "\uD83D\uDC64 management",
                     String.format(
                             "kicked %s",
                             member.getEffectiveName()
