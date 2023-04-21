@@ -1,5 +1,6 @@
 package com.hubermjonathan.discord.mitch.groups.managers;
 
+import com.hubermjonathan.discord.common.Logger;
 import com.hubermjonathan.discord.common.models.Manager;
 import net.dv8tion.jda.api.entities.MessageReaction;
 import net.dv8tion.jda.api.entities.channel.ChannelType;
@@ -22,6 +23,15 @@ public class ManageThreads extends Manager {
                 .getManager()
                 .setName(String.format("\uD83D\uDCAC %s (tbd)", event.getChannel().getName().toLowerCase()))
                 .queue();
+        Logger.log(
+                event.getJDA(),
+                "\uD83D\uDC64 management",
+                String.format(
+                        "thread %s created in %s",
+                        event.getChannel().getAsMention(),
+                        event.getChannel().asThreadChannel().getParentChannel().getAsMention()
+                )
+        );
 
         List<MessageReaction> reactions = event
                 .getChannel()
