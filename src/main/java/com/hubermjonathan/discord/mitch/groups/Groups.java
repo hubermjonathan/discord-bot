@@ -4,7 +4,6 @@ import com.hubermjonathan.discord.common.models.Feature;
 import com.hubermjonathan.discord.mitch.groups.commands.ArchiveGroup;
 import com.hubermjonathan.discord.mitch.groups.commands.CreateGroup;
 import com.hubermjonathan.discord.mitch.groups.managers.ManageGroups;
-import com.hubermjonathan.discord.mitch.groups.managers.ManageThreads;
 
 public class Groups extends Feature {
     public Groups(boolean enabled) {
@@ -16,7 +15,6 @@ public class Groups extends Feature {
         addCommand(new CreateGroup());
 
         addManager(new ManageGroups());
-        addManager(new ManageThreads());
     }
 
     @Override

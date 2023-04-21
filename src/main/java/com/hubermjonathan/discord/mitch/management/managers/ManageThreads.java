@@ -1,4 +1,4 @@
-package com.hubermjonathan.discord.mitch.groups.managers;
+package com.hubermjonathan.discord.mitch.management.managers;
 
 import com.hubermjonathan.discord.common.Logger;
 import com.hubermjonathan.discord.common.models.Manager;

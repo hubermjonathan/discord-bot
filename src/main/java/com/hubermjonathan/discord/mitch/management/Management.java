@@ -4,6 +4,7 @@ import com.hubermjonathan.discord.common.models.Feature;
 import com.hubermjonathan.discord.mitch.management.commands.UploadEmoji;
 import com.hubermjonathan.discord.mitch.management.managers.ManageMusicChannel;
 import com.hubermjonathan.discord.mitch.management.managers.ManageStrangers;
+import com.hubermjonathan.discord.mitch.management.managers.ManageThreads;
 import com.hubermjonathan.discord.mitch.management.tasks.KickStrangers;
 
 public class Management extends Feature {
@@ -17,6 +18,7 @@ public class Management extends Feature {
 
         addManager(new ManageMusicChannel());
         addManager(new ManageStrangers());
+        addManager(new ManageThreads());
     }
 
     @Override
