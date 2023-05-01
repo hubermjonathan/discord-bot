@@ -15,7 +15,7 @@ public class ArchiveGroup extends BotOwnerCommand {
                 "archive",
                 Commands
                         .slash("archive", "archive a group")
-                        .addOption(OptionType.CHANNEL, "channel", "group channel to archive"),
+                        .addOption(OptionType.CHANNEL, "channel", "group channel to archive", true),
                 Arrays.asList(Constants.SIGNUP_SHEET_TEXT_CHANNEL_ID)
         );
     }

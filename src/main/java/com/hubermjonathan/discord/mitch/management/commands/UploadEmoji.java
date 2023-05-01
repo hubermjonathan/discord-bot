@@ -3,6 +3,7 @@ package com.hubermjonathan.discord.mitch.management.commands;
 import com.hubermjonathan.discord.common.Logger;
 import com.hubermjonathan.discord.common.models.Command;
 import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.entities.emoji.RichCustomEmoji;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.Commands;
 
@@ -29,21 +30,23 @@ public class UploadEmoji extends Command {
 
         String emojiName = attachment.getFileName().substring(0, attachment.getFileName().length() - 4);
 
-        Logger.log(
-                getEvent().getJDA(),
-                "\uD83D\uDC64 management",
-                String.format(
-                        "%s uploaded an emoji %s",
-                        getEvent().getMember().getEffectiveName(),
-                        emojiName
-                )
-        );
-        getEvent()
+        RichCustomEmoji emoji = getEvent()
                 .getGuild()
                 .createEmoji(
                         emojiName,
                         attachment.getProxy().downloadAsIcon().join()
                 )
-                .queue();
+                .complete();
+        Logger.log(
+                getEvent().getJDA(),
+                "\uD83D\uDC64 management",
+                String.format(
+                        "%s uploaded an emoji %s <:%s:%s>",
+                        getEvent().getMember().getEffectiveName(),
+                        emojiName,
+                        emoji.getName(),
+                        emoji.getId()
+                )
+        );
     }
 }
