@@ -22,3 +22,13 @@ dependencies {
 kotlin {
     jvmToolchain(11)
 }
+
+tasks {
+    jar {
+        manifest {
+            attributes(
+                "Main-Class" to "com.hubermjonathan.discord.BotRunnerKt",
+            )
+        }
+    }
+}
