@@ -1,6 +1,7 @@
 package com.hubermjonathan.discord.mitch.management;
 
 import com.hubermjonathan.discord.common.models.Feature;
+import com.hubermjonathan.discord.mitch.management.commands.MakeFriend;
 import com.hubermjonathan.discord.mitch.management.commands.UploadEmoji;
 import com.hubermjonathan.discord.mitch.management.managers.ManageMusicChannel;
 import com.hubermjonathan.discord.mitch.management.managers.ManageStrangers;
@@ -14,6 +15,7 @@ public class Management extends Feature {
 
     @Override
     public void create() {
+        addCommand(new MakeFriend());
         addCommand(new UploadEmoji());
 
         addManager(new ManageMusicChannel());
