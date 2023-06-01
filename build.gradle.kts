@@ -1,5 +1,5 @@
 plugins {
-    java
+    kotlin("jvm") version "1.8.21"
     id("com.github.johnrengelman.shadow") version "8.1.1"
 }
 
@@ -19,8 +19,6 @@ dependencies {
     implementation("com.sedmelluq:lavaplayer:1.3.77")
 }
 
-java {
-    toolchain {
-        languageVersion.set(JavaLanguageVersion.of(11))
-    }
+kotlin {
+    jvmToolchain(11)
 }
