@@ -40,12 +40,12 @@ tasks {
         }
     }
 
-    shadowJar {
-        dependsOn(build)
+    build {
+        dependsOn(shadowJar)
     }
 
     task("stage") {
-        dependsOn(shadowJar)
+        dependsOn(build)
     }
 }
 
