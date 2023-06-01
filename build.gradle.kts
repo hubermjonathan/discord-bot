@@ -1,3 +1,4 @@
+
 import org.jlleitschuh.gradle.ktlint.KtlintExtension
 
 plugins {
@@ -28,12 +29,23 @@ kotlin {
 }
 
 tasks {
-    jar {
+    withType<Jar> {
+        archiveBaseName.set("discord-bot")
+        archiveVersion.set("")
+
         manifest {
             attributes(
                 "Main-Class" to "com.hubermjonathan.discord.BotRunnerKt",
             )
         }
+    }
+
+    shadowJar {
+        dependsOn(build)
+    }
+
+    task("stage") {
+        dependsOn(shadowJar)
     }
 }
 
