@@ -1,4 +1,3 @@
-
 import org.jlleitschuh.gradle.ktlint.KtlintExtension
 
 plugins {
