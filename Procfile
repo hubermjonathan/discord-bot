@@ -1,1 +1,1 @@
-worker: java $JAVA_OPTS -cp target/classes:target/dependency/* com.hubermjonathan.discord.BotRunner
+worker: java $JAVA_OPTS -jar build/libs/discord-bot-all.jar
