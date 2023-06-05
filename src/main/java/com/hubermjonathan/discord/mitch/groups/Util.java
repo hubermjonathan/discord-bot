@@ -1,6 +1,5 @@
 package com.hubermjonathan.discord.mitch.groups;
 
-import com.hubermjonathan.discord.common.Logger;
 import com.hubermjonathan.discord.mitch.Constants;
 import com.hubermjonathan.discord.mitch.groups.buttons.JoinOrLeaveGroup;
 import net.dv8tion.jda.api.EmbedBuilder;
@@ -66,11 +65,12 @@ public class Util {
                     .editMessage((MessageEditData) buildGroupMessage(groupSelectionMessage, groupActionRows))
                     .queue();
         } catch (Exception e) {
-            Logger.log(
-                    event.getJDA(),
-                    "\u26D4 error",
-                    String.format("%s", e.getLocalizedMessage())
-            );
+            // FIXME
+//            DiscordLogger.log(
+//                    event.getJDA(),
+//                    "\u26D4 error",
+//                    String.format("%s", e.getLocalizedMessage())
+//            );
             groupSelectionChannel
                     .sendMessage((MessageCreateData) buildGroupMessage(null, groupActionRows))
                     .queue();
