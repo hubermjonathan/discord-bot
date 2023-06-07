@@ -18,9 +18,10 @@ repositories {
 }
 
 dependencies {
-    implementation("ch.qos.logback:logback-classic:1.2.8")
-    implementation("net.dv8tion:JDA:5.0.0-beta.9")
+    api("io.insert-koin:koin-core:3.4.1")
+    implementation("ch.qos.logback:logback-classic:1.2.9")
     implementation("com.sedmelluq:lavaplayer:1.3.77")
+    implementation("net.dv8tion:JDA:5.0.0-beta.9")
 }
 
 kotlin {

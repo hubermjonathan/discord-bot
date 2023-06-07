@@ -1,7 +1,6 @@
 package com.hubermjonathan.discord.mitch.groups.buttons;
 
 import com.hubermjonathan.discord.common.models.Button;
-import com.hubermjonathan.discord.common.Logger;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.PermissionOverride;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
@@ -31,15 +30,16 @@ public class JoinOrLeaveGroup extends Button {
                         .getManager()
                         .removePermissionOverride(memberPermissionOverride.getPermissionHolder())
                         .queue();
-                Logger.log(
-                        getEvent().getJDA(),
-                        "\uD83D\uDC65 groups",
-                        String.format(
-                                "%s left #%s",
-                                getEvent().getMember().getEffectiveName(),
-                                groupChannel.getName()
-                        )
-                );
+                // FIXME
+//                DiscordLogger.log(
+//                        getEvent().getJDA(),
+//                        "\uD83D\uDC65 groups",
+//                        String.format(
+//                                "%s left #%s",
+//                                getEvent().getMember().getEffectiveName(),
+//                                groupChannel.getName()
+//                        )
+//                );
 
                 return;
             }
@@ -49,14 +49,15 @@ public class JoinOrLeaveGroup extends Button {
                 .getManager()
                 .putMemberPermissionOverride(getEvent().getMember().getIdLong(), EnumSet.of(Permission.VIEW_CHANNEL), null)
                 .queue();
-        Logger.log(
-                getEvent().getJDA(),
-                "\uD83D\uDC65 groups",
-                String.format(
-                        "%s joined #%s",
-                        getEvent().getMember().getEffectiveName(),
-                        groupChannel.getName()
-                )
-        );
+        // FIXME
+//        DiscordLogger.log(
+//                getEvent().getJDA(),
+//                "\uD83D\uDC65 groups",
+//                String.format(
+//                        "%s joined #%s",
+//                        getEvent().getMember().getEffectiveName(),
+//                        groupChannel.getName()
+//                )
+//        );
     }
 }
