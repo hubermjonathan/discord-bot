@@ -11,7 +11,9 @@ class StrangerManager(context: Context) : Manager(context) {
     override fun onGuildMemberJoin(event: GuildMemberJoinEvent) {
         if (event.user.isBot) return
 
-        logger.info("${event.member.effectiveName} joined")
-        event.guild.addRoleToMember(event.member, event.guild.strangersRole).queue()
+        logger.info("${event.member.effectiveName} joined the server")
+        event.guild
+                .addRoleToMember(event.member, event.guild.strangersRole)
+                .queue()
     }
 }

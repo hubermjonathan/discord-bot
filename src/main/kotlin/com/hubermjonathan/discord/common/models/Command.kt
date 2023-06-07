@@ -1,6 +1,7 @@
 package com.hubermjonathan.discord.common.models
 
 import com.hubermjonathan.discord.mitch.Constants
+import com.hubermjonathan.discord.mitch.MitchConfig
 import net.dv8tion.jda.api.JDA
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent
 import net.dv8tion.jda.api.hooks.ListenerAdapter
@@ -8,20 +9,19 @@ import net.dv8tion.jda.api.interactions.commands.build.CommandData
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
-// TODO: Clean up these params -- maybe make this extend something?
-abstract class Command(val name: String, val commandData: CommandData, protected val context: Context, private val allowedChannels: List<String>? = null) : ListenerAdapter(), KoinComponent {
+abstract class Command(private val name: String, val commandData: CommandData, protected val context: Context, private val allowedChannels: List<String>? = null) : ListenerAdapter(), KoinComponent {
     protected val jda: JDA by inject()
     private val logger = context.logger
 
     protected open fun shouldIgnoreEvent(event: SlashCommandInteractionEvent): Boolean {
         val userIsBot = event.user.isBot
-        val eventNameIsWrong = event.name != this.name
-        val isRunningInDevMode = System.getenv("DEV") != null
+        val commandNameIsWrong = event.name != this.name
+        val isRunningInDevMode = MitchConfig.DEV_MODE
         val channelIsNotAllowed = allowedChannels?.contains(event.channel.id) == false
         val channelIsNotTestingChannel = event.channel.id != Constants.BOT_TESTING_CHANNEL_ID
 
         return userIsBot ||
-            eventNameIsWrong ||
+            commandNameIsWrong ||
             (!isRunningInDevMode && channelIsNotAllowed) ||
             (isRunningInDevMode && channelIsNotTestingChannel)
     }
@@ -32,12 +32,11 @@ abstract class Command(val name: String, val commandData: CommandData, protected
         try {
             execute(event)
             event
-                .reply("nice")
+                .reply("nice") // TODO
                 .setEphemeral(true)
                 .queue()
         } catch (e: Exception) {
-            e.printStackTrace()
-            logger.error(e.localizedMessage)
+            logger.error(e.localizedMessage, e)
             event
                 .reply(e.localizedMessage)
                 .setEphemeral(true)

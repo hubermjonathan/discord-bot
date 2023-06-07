@@ -6,8 +6,8 @@ import com.hubermjonathan.discord.mitch.guild
 import com.hubermjonathan.discord.mitch.strangersRole
 import java.time.Duration
 
-private val delay = Duration.ofHours(24)
-private val schedule = Duration.ofHours(12)
+private val delay = Duration.ofHours(12)
+private val schedule = Duration.ofHours(24)
 
 class KickStrangersTask(context: Context) : Task(delay, schedule, context) {
     private val logger = context.logger
@@ -15,9 +15,11 @@ class KickStrangersTask(context: Context) : Task(delay, schedule, context) {
     override fun run() {
         val guild = jda.guild
 
-        guild.getMembersWithRoles(guild.strangersRole).forEach {
-            it.kick().queue()
-            logger.info("kicked ${it.effectiveName}")
-        }
+        guild
+                .getMembersWithRoles(guild.strangersRole)
+                .forEach {
+                    logger.info("kicked ${it.effectiveName} from the server")
+                    it.kick().queue()
+                }
     }
 }

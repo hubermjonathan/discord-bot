@@ -13,6 +13,7 @@ abstract class Feature(name: String, icon: String) {
 
     fun load(jda: JDABuilder) {
         val listenerAdapters = buttons + commands + managers
+
         listenerAdapters.forEach {
             jda.addEventListeners(it)
         }
@@ -20,6 +21,7 @@ abstract class Feature(name: String, icon: String) {
 
     fun startTasks() {
         val timer = Timer()
+
         tasks.forEach {
             timer.schedule(it, it.delay.toMillis(), it.schedule.toMillis())
         }

@@ -1,5 +1,6 @@
 package com.hubermjonathan.discord.common
 
+import com.hubermjonathan.discord.mitch.MitchConfig
 import com.hubermjonathan.discord.mitch.botOwner
 import net.dv8tion.jda.api.EmbedBuilder
 import net.dv8tion.jda.api.JDA
@@ -28,17 +29,17 @@ class DiscordLogger(private val title: String, private val icon: String? = null)
         this.log(Severity.INFO, "$icon $title", message)
     }
 
-    fun error(message: String) {
-        this.log(Severity.ERROR, "\u26D4 error", message)
+    fun error(message: String, exception: Throwable? = null) {
+        this.log(Severity.ERROR, "\u26D4 error", message, exception)
     }
 
-    private fun log(severity: Severity, title: String, message: String) {
+    private fun log(severity: Severity, title: String, message: String, exception: Throwable? = null) {
         when (severity) {
             Severity.INFO -> logger.info(message)
-            Severity.ERROR -> logger.error(message)
+            Severity.ERROR -> logger.error(message, exception)
         }
 
-        if (System.getenv("LOG_EVENTS") != null) {
+        if (MitchConfig.LOG_EVENTS_TO_BOT_OWNER) {
             messageBotOwner(title, message)
         }
     }

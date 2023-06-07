@@ -9,7 +9,10 @@ class ThreadManager(context: Context) : Manager(context) {
     private val logger = context.logger
 
     override fun onChannelCreate(event: ChannelCreateEvent) {
-        if (!event.isFromType(ChannelType.GUILD_PUBLIC_THREAD) && !event.isFromType(ChannelType.GUILD_PRIVATE_THREAD)) {
+        val channelIsNotPublicThread = !event.isFromType(ChannelType.GUILD_PUBLIC_THREAD)
+        val channelIsNotPrivateThread = !event.isFromType(ChannelType.GUILD_PRIVATE_THREAD)
+
+        if (channelIsNotPublicThread && channelIsNotPrivateThread) {
             return
         }
 
