@@ -28,11 +28,10 @@ val Guild.friendsRole
 class MitchBot : KoinComponent {
     private val jdaBuilder: JDABuilder by inject()
     private val jda: JDA by inject()
-    private val managementFeature: ManagementFeature by inject()
 
     fun run() {
         val features = listOf(
-            managementFeature,
+            ManagementFeature(),
         )
 
         features.forEach {
