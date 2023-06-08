@@ -7,11 +7,12 @@ import com.hubermjonathan.discord.mitch.management.commands.UploadEmojiCommand
 import com.hubermjonathan.discord.mitch.management.managers.StrangersManager
 import com.hubermjonathan.discord.mitch.management.managers.ThreadManager
 import com.hubermjonathan.discord.mitch.management.tasks.KickStrangersTask
+import net.dv8tion.jda.api.JDA
 
 private const val name = "management"
 private const val icon = "\uD83D\uDC64"
 
-class ManagementFeature : Feature(name, icon) {
+class ManagementFeature(jda: JDA) : Feature(jda, name, icon) {
     override val buttons = emptyList<Button>()
 
     override val commands = listOf(

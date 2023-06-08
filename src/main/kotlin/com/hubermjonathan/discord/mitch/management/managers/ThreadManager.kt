@@ -1,12 +1,12 @@
 package com.hubermjonathan.discord.mitch.management.managers
 
-import com.hubermjonathan.discord.common.models.Context
+import com.hubermjonathan.discord.common.models.FeatureContext
 import com.hubermjonathan.discord.common.models.Manager
 import net.dv8tion.jda.api.entities.channel.ChannelType
 import net.dv8tion.jda.api.events.channel.ChannelCreateEvent
 
-class ThreadManager(context: Context) : Manager(context) {
-    private val logger = context.logger
+class ThreadManager(featureContext: FeatureContext) : Manager(featureContext) {
+    private val logger = featureContext.logger
 
     override fun onChannelCreate(event: ChannelCreateEvent) {
         val channelIsNotPublicThread = !event.isFromType(ChannelType.GUILD_PUBLIC_THREAD)

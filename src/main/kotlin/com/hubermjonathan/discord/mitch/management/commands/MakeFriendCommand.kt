@@ -1,7 +1,7 @@
 package com.hubermjonathan.discord.mitch.management.commands
 
 import com.hubermjonathan.discord.common.models.Command
-import com.hubermjonathan.discord.common.models.Context
+import com.hubermjonathan.discord.common.models.FeatureContext
 import com.hubermjonathan.discord.mitch.management.friendsRole
 import com.hubermjonathan.discord.mitch.management.strangersRole
 import com.hubermjonathan.discord.mitch.purdudesGuild
@@ -14,8 +14,8 @@ private val commandData = Commands
     .slash(name, "make a stranger a friend")
     .addOption(OptionType.USER, "stranger", "the stranger to make a friend", true)
 
-class MakeFriendCommand(context: Context) : Command(name, commandData, context) {
-    private val logger = context.logger
+class MakeFriendCommand(featureContext: FeatureContext) : Command(name, commandData, featureContext) {
+    private val logger = featureContext.logger
 
     override fun execute(event: SlashCommandInteractionEvent): String {
         val guild = jda.purdudesGuild

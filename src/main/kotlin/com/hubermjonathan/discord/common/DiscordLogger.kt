@@ -1,23 +1,13 @@
 package com.hubermjonathan.discord.common
 
+import com.hubermjonathan.discord.common.Util.buildMessageEmbed
 import com.hubermjonathan.discord.mitch.MitchConfig
 import com.hubermjonathan.discord.mitch.botOwner
-import net.dv8tion.jda.api.EmbedBuilder
 import net.dv8tion.jda.api.JDA
 import net.dv8tion.jda.api.utils.messages.MessageCreateData
-import org.koin.core.component.KoinComponent
-import org.koin.core.component.inject
 import org.slf4j.LoggerFactory
-import java.text.SimpleDateFormat
-import java.time.ZoneId
-import java.util.*
 
-private val dateFormatter = SimpleDateFormat("MM/dd/yyyy hh:mm aa").apply {
-    timeZone = TimeZone.getTimeZone(ZoneId.of(ZoneId.SHORT_IDS["PST"]))
-}
-
-class DiscordLogger(private val title: String, private val icon: String? = null) : KoinComponent {
-    private val jda: JDA by inject()
+class DiscordLogger(private val jda: JDA, private val title: String, private val icon: String? = null) {
     private val logger = LoggerFactory.getLogger(title)
 
     private enum class Severity {
@@ -40,22 +30,13 @@ class DiscordLogger(private val title: String, private val icon: String? = null)
         }
 
         if (MitchConfig.LOG_EVENTS_TO_BOT_OWNER) {
-            messageBotOwner(title, message)
+            val embed = buildMessageEmbed(title, message, severity == Severity.ERROR)
+
+            jda.botOwner
+                .openPrivateChannel()
+                .complete()
+                .sendMessage(MessageCreateData.fromEmbeds(embed))
+                .queue()
         }
-    }
-
-    private fun messageBotOwner(title: String, message: String) {
-        val embed = EmbedBuilder()
-            .setTitle(title)
-            .setDescription(message)
-            .setColor(0xcfb991)
-            .setFooter(dateFormatter.format(Date()))
-            .build()
-
-        jda.botOwner
-            .openPrivateChannel()
-            .complete()
-            .sendMessage(MessageCreateData.fromEmbeds(embed))
-            .queue()
     }
 }

@@ -1,14 +1,13 @@
 package com.hubermjonathan.discord.mitch.groups.buttons
 
 import com.hubermjonathan.discord.common.models.Button
-import com.hubermjonathan.discord.common.models.Context
+import com.hubermjonathan.discord.common.models.FeatureContext
 import com.hubermjonathan.discord.mitch.purdudesGuild
 import net.dv8tion.jda.api.Permission
 import net.dv8tion.jda.api.events.interaction.component.ButtonInteractionEvent
-import java.lang.IllegalStateException
 
-class JoinOrLeaveGroupButton(private val groupChannelId: String, context: Context) : Button(groupChannelId, context) {
-    private val logger = context.logger
+class JoinOrLeaveGroupButton(private val groupChannelId: String, featureContext: FeatureContext) : Button(groupChannelId, featureContext) {
+    private val logger = featureContext.logger
 
     override fun execute(event: ButtonInteractionEvent) {
         val groupChannel = jda.purdudesGuild.getTextChannelById(groupChannelId)
