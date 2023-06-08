@@ -35,6 +35,5 @@ abstract class Button(private val id: String, protected val context: Context) : 
         }
     }
 
-    @Throws(Exception::class)
     abstract fun execute(event: ButtonInteractionEvent)
 }

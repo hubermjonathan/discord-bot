@@ -35,7 +35,7 @@ tasks {
 
         manifest {
             attributes(
-                "Main-Class" to "com.hubermjonathan.discord.BotRunnerKt",
+                "Main-Class" to "com.hubermjonathan.discord.mitch.MitchBot",
             )
         }
     }
