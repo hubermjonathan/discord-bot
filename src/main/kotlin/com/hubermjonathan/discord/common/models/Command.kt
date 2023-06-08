@@ -33,23 +33,33 @@ abstract class Command(private val name: String, val commandData: CommandData, p
             val channelIsNotTestingChannel = event.channel != jda.purdudesGuild.botTestingChannel
 
             if (!isRunningInDevMode && channelIsNotAllowed) {
-                throw IllegalArgumentException("command cannot be run in this channel")
+                throw InteractionException(
+                    "command cannot be run in this channel",
+                    event.user,
+                    name,
+                    featureContext,
+                )
             }
 
             if (isRunningInDevMode && channelIsNotTestingChannel) {
-                throw IllegalArgumentException("command cannot be run outside of bot testing while in dev mode")
+                throw InteractionException(
+                    "command cannot be run outside of bot testing while in dev mode",
+                    event.user,
+                    name,
+                    featureContext,
+                )
             }
 
             val result = execute(event)
 
             event
-                .replyEmbeds(buildMessageEmbed("\uD83E\uDD18 $name", result))
+                .replyEmbeds(buildMessageEmbed("\uD83E\uDD18 $name", result).build())
                 .setEphemeral(true)
                 .queue()
-        } catch (e: Exception) {
+        } catch (e: InteractionException) {
             logger.error(e.localizedMessage, e)
             event
-                .replyEmbeds(buildMessageEmbed("\u26D4 $name", e.localizedMessage, true))
+                .replyEmbeds(buildMessageEmbed("\u26D4 $name", e.localizedMessage, true).build())
                 .setEphemeral(true)
                 .queue()
         }

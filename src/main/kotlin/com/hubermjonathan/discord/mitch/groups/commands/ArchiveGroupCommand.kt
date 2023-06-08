@@ -2,6 +2,7 @@ package com.hubermjonathan.discord.mitch.groups.commands
 
 import com.hubermjonathan.discord.common.models.BotOwnerCommand
 import com.hubermjonathan.discord.common.models.FeatureContext
+import com.hubermjonathan.discord.common.models.InteractionException
 import com.hubermjonathan.discord.mitch.groups.archivedGroupsCategory
 import com.hubermjonathan.discord.mitch.groups.signupSheetTextChannel
 import com.hubermjonathan.discord.mitch.purdudesGuild
@@ -21,7 +22,12 @@ class ArchiveGroupCommand(featureContext: FeatureContext) : BotOwnerCommand(name
         val channelToArchive = try {
             event.getOption("channel")!!.asChannel.asTextChannel()
         } catch (e: IllegalStateException) {
-            throw IllegalArgumentException("group must be a text channel")
+            throw InteractionException(
+                "group must be a text channel",
+                event.user,
+                name,
+                featureContext,
+            )
         }
 
         channelToArchive.manager

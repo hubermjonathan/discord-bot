@@ -2,6 +2,7 @@ package com.hubermjonathan.discord.mitch.management.commands
 
 import com.hubermjonathan.discord.common.models.Command
 import com.hubermjonathan.discord.common.models.FeatureContext
+import com.hubermjonathan.discord.common.models.InteractionException
 import com.hubermjonathan.discord.mitch.management.friendsRole
 import com.hubermjonathan.discord.mitch.management.strangersRole
 import com.hubermjonathan.discord.mitch.purdudesGuild
@@ -20,14 +21,29 @@ class MakeFriendCommand(featureContext: FeatureContext) : Command(name, commandD
     override fun execute(event: SlashCommandInteractionEvent): String {
         val guild = jda.purdudesGuild
         val stranger = event.getOption("stranger")!!.asMember
-            ?: throw IllegalArgumentException("${event.getOption("stranger")!!.asUser.name} is not a member of this server")
+            ?: throw InteractionException(
+                "${event.getOption("stranger")!!.asUser.name} is not a member of this server",
+                event.user,
+                name,
+                featureContext,
+            )
 
         if (!stranger.roles.contains(guild.strangersRole)) {
-            throw IllegalArgumentException("${stranger.effectiveName} is not a stranger")
+            throw InteractionException(
+                "${stranger.effectiveName} is not a stranger",
+                event.user,
+                name,
+                featureContext,
+            )
         }
 
         if (stranger.roles.contains(guild.friendsRole)) {
-            throw IllegalArgumentException("${stranger.effectiveName} is already a friend")
+            throw InteractionException(
+                "${stranger.effectiveName} is already a friend",
+                event.user,
+                name,
+                featureContext,
+            )
         }
 
         guild

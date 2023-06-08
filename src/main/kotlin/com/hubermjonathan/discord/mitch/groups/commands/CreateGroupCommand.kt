@@ -19,13 +19,6 @@ class CreateGroupCommand(featureContext: FeatureContext) : BotOwnerCommand(name,
 
     override fun execute(event: SlashCommandInteractionEvent): String {
         val groupChannelName = event.getOption("name")!!.asString
-        val regex = "[\\p{L}\\p{N}\\p{P}\\p{Z}]"
-        val groupChannelIcon = groupChannelName.replace(regex.toRegex(), "")
-
-        if (groupChannelIcon.length != 1 || groupChannelName.indexOf(groupChannelIcon) != 0) {
-            throw IllegalArgumentException("group name must be correct, guess how")
-        }
-
         val groupChannel = jda.purdudesGuild.publicGroupsCategory
             .createTextChannel(groupChannelName)
             .complete()

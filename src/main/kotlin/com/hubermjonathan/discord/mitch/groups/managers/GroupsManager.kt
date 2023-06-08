@@ -108,7 +108,13 @@ class GroupsManager(featureContext: FeatureContext) : Manager(featureContext) {
             MessageCreateBuilder()
         }
 
-        messageBuilder.setEmbeds(buildMessageEmbed("${featureContext.icon} ${featureContext.name}", "click the buttons below to join or leave a group"))
+        messageBuilder.setEmbeds(
+            buildMessageEmbed(
+                "${featureContext.icon} ${featureContext.name}",
+                "click the buttons below to join or leave a group",
+            )
+                .build(),
+        )
         messageBuilder.setComponents(actionRows)
 
         return messageBuilder.build()
