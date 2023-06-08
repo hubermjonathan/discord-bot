@@ -6,11 +6,12 @@ import com.hubermjonathan.discord.common.models.Task
 import com.hubermjonathan.discord.mitch.groups.commands.ArchiveGroupCommand
 import com.hubermjonathan.discord.mitch.groups.commands.CreateGroupCommand
 import com.hubermjonathan.discord.mitch.groups.managers.GroupsManager
+import net.dv8tion.jda.api.JDA
 
 private const val name = "groups"
 private const val icon = "\uD83D\uDC65"
 
-class GroupsFeature : Feature(name, icon) {
+class GroupsFeature(jda: JDA) : Feature(jda, name, icon) {
     override val buttons = emptyList<Button>()
 
     override val commands = listOf(

@@ -1,21 +1,19 @@
 package com.hubermjonathan.discord.mitch.groups.managers
 
-import com.hubermjonathan.discord.common.models.Context
+import com.hubermjonathan.discord.common.Util.buildMessageEmbed
+import com.hubermjonathan.discord.common.models.FeatureContext
 import com.hubermjonathan.discord.common.models.Manager
 import com.hubermjonathan.discord.mitch.groups.archivedGroupsCategory
 import com.hubermjonathan.discord.mitch.groups.buttons.JoinOrLeaveGroupButton
 import com.hubermjonathan.discord.mitch.groups.publicGroupsCategory
 import com.hubermjonathan.discord.mitch.groups.signupSheetTextChannel
 import com.hubermjonathan.discord.mitch.purdudesGuild
-import net.dv8tion.jda.api.EmbedBuilder
 import net.dv8tion.jda.api.entities.Message
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel
 import net.dv8tion.jda.api.entities.channel.unions.ChannelUnion
 import net.dv8tion.jda.api.events.channel.ChannelCreateEvent
 import net.dv8tion.jda.api.events.channel.update.ChannelUpdateNameEvent
 import net.dv8tion.jda.api.events.channel.update.ChannelUpdateParentEvent
-import net.dv8tion.jda.api.events.channel.update.ChannelUpdatePositionEvent
-import net.dv8tion.jda.api.events.session.ReadyEvent
 import net.dv8tion.jda.api.interactions.components.ActionRow
 import net.dv8tion.jda.api.interactions.components.buttons.Button
 import net.dv8tion.jda.api.utils.messages.MessageCreateBuilder
@@ -24,10 +22,10 @@ import net.dv8tion.jda.api.utils.messages.MessageData
 import net.dv8tion.jda.api.utils.messages.MessageEditBuilder
 import net.dv8tion.jda.api.utils.messages.MessageEditData
 
-class GroupsManager(context: Context) : Manager(context) {
+class GroupsManager(featureContext: FeatureContext) : Manager(featureContext) {
     private val groupButtons = mutableMapOf<TextChannel, JoinOrLeaveGroupButton>()
 
-    override fun onReady(event: ReadyEvent) {
+    override fun whenLoaded() {
         createOrUpdateGroupsMessage()
     }
 
@@ -40,10 +38,6 @@ class GroupsManager(context: Context) : Manager(context) {
     }
 
     override fun onChannelUpdateName(event: ChannelUpdateNameEvent) {
-        createOrUpdateGroupsMessageIfInGroupChannel(event.channel)
-    }
-
-    override fun onChannelUpdatePosition(event: ChannelUpdatePositionEvent) {
         createOrUpdateGroupsMessageIfInGroupChannel(event.channel)
     }
 
@@ -77,7 +71,7 @@ class GroupsManager(context: Context) : Manager(context) {
         groupChannels.filter {
             it !in groupButtons
         }.forEach {
-            val groupButton = JoinOrLeaveGroupButton(it.id, context)
+            val groupButton = JoinOrLeaveGroupButton(it.id, featureContext)
 
             groupButtons[it] = groupButton
             jda.addEventListener(groupButton)
@@ -97,12 +91,12 @@ class GroupsManager(context: Context) : Manager(context) {
     private fun getGroupButtonRows(groupChannels: List<TextChannel>): List<ActionRow> {
         val buttons = groupChannels.map {
             val emoji = it.name.split("-").first()
-            val name = it.name.split("-").drop(0).joinToString(" ")
+            val name = it.name.split("-").drop(1).joinToString(" ")
 
             Button.secondary(it.id, "$emoji $name")
         }
 
-        return buttons.chunked(5).map {
+        return buttons.chunked(2).map {
             ActionRow.of(it)
         }
     }
@@ -113,12 +107,8 @@ class GroupsManager(context: Context) : Manager(context) {
         } else {
             MessageCreateBuilder()
         }
-        val embedBuilder = EmbedBuilder()
 
-        embedBuilder.setTitle("${context.icon} ${context.name}")
-        embedBuilder.setDescription("click the buttons below to join or leave a group")
-        embedBuilder.setColor(0xcfb991)
-        messageBuilder.setEmbeds(embedBuilder.build())
+        messageBuilder.setEmbeds(buildMessageEmbed("${featureContext.icon} ${featureContext.name}", "click the buttons below to join or leave a group"))
         messageBuilder.setComponents(actionRows)
 
         return messageBuilder.build()

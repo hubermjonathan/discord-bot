@@ -1,21 +1,18 @@
 package com.hubermjonathan.discord.common.models
 
+import com.hubermjonathan.discord.common.Util.buildMessageEmbed
 import com.hubermjonathan.discord.mitch.MitchConfig
 import com.hubermjonathan.discord.mitch.botTestingChannel
 import com.hubermjonathan.discord.mitch.purdudesGuild
-import net.dv8tion.jda.api.JDA
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent
 import net.dv8tion.jda.api.hooks.ListenerAdapter
 import net.dv8tion.jda.api.interactions.commands.build.CommandData
-import org.koin.core.component.KoinComponent
-import org.koin.core.component.inject
-import java.lang.IllegalArgumentException
 
-abstract class Command(private val name: String, val commandData: CommandData, protected val context: Context) : ListenerAdapter(), KoinComponent {
+abstract class Command(private val name: String, val commandData: CommandData, protected val featureContext: FeatureContext) : ListenerAdapter() {
     protected open val allowedChannels: List<TextChannel>? = null
-    protected val jda: JDA by inject()
-    private val logger = context.logger
+    protected val jda = featureContext.jda
+    private val logger = featureContext.logger
 
     protected open fun shouldIgnoreEvent(event: SlashCommandInteractionEvent): Boolean {
         val userIsBot = event.user.isBot
@@ -46,13 +43,13 @@ abstract class Command(private val name: String, val commandData: CommandData, p
             val result = execute(event)
 
             event
-                .reply("\uD83E\uDD18 $result")
+                .replyEmbeds(buildMessageEmbed("\uD83E\uDD18 $name", result))
                 .setEphemeral(true)
                 .queue()
         } catch (e: Exception) {
             logger.error(e.localizedMessage, e)
             event
-                .reply(e.localizedMessage)
+                .replyEmbeds(buildMessageEmbed("\u26D4 $name", e.localizedMessage, true))
                 .setEphemeral(true)
                 .queue()
         }
