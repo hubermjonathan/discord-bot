@@ -4,7 +4,7 @@ import com.hubermjonathan.discord.common.models.Button
 import com.hubermjonathan.discord.common.models.Feature
 import com.hubermjonathan.discord.mitch.management.commands.MakeFriendCommand
 import com.hubermjonathan.discord.mitch.management.commands.UploadEmojiCommand
-import com.hubermjonathan.discord.mitch.management.managers.StrangerManager
+import com.hubermjonathan.discord.mitch.management.managers.StrangersManager
 import com.hubermjonathan.discord.mitch.management.managers.ThreadManager
 import com.hubermjonathan.discord.mitch.management.tasks.KickStrangersTask
 
@@ -20,7 +20,7 @@ class ManagementFeature : Feature(name, icon) {
     )
 
     override val managers = listOf(
-        StrangerManager(context),
+        StrangersManager(context),
         ThreadManager(context),
     )
 

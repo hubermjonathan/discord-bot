@@ -1,6 +1,7 @@
 package com.hubermjonathan.discord.mitch
 
 import com.hubermjonathan.discord.common.models.Command
+import com.hubermjonathan.discord.mitch.groups.GroupsFeature
 import com.hubermjonathan.discord.mitch.management.ManagementFeature
 import net.dv8tion.jda.api.JDA
 import net.dv8tion.jda.api.JDABuilder
@@ -18,21 +19,23 @@ import org.slf4j.LoggerFactory
 
 fun main() {
     startKoin {
-        modules(module {
-            single<JDABuilder> {
-                JDABuilder
+        modules(
+            module {
+                single {
+                    JDABuilder
                         .createDefault(MitchConfig.MITCH_TOKEN)
                         .setChunkingFilter(ChunkingFilter.ALL)
                         .setMemberCachePolicy(MemberCachePolicy.ALL)
                         .enableIntents(GatewayIntent.GUILD_MEMBERS)
-            }
+                }
 
-            single<JDA> {
-                get<JDABuilder>()
+                single {
+                    get<JDABuilder>()
                         .build()
                         .awaitReady()
-            }
-        })
+                }
+            },
+        )
     }
 
     MitchBot().run()
@@ -47,6 +50,7 @@ class MitchBot : KoinComponent {
         logger.info("running mitch bot")
 
         val features = listOf(
+            GroupsFeature(),
             ManagementFeature(),
         )
 
@@ -56,9 +60,9 @@ class MitchBot : KoinComponent {
 
         val commands = features.flatMap { it.commands }
 
-        jda.guild
-                .setCommands(commands)
-                .queue()
+        jda.purdudesGuild
+            .setCommands(commands)
+            .queue()
 
         features.forEach {
             it.startTasks()
@@ -68,6 +72,6 @@ class MitchBot : KoinComponent {
 
 private fun Guild.setCommands(commands: List<Command>): CommandListUpdateAction {
     return this
-            .updateCommands()
-            .addCommands(commands.map { it.commandData })
+        .updateCommands()
+        .addCommands(commands.map { it.commandData })
 }

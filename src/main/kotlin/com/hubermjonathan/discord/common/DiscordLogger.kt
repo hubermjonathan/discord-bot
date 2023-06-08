@@ -48,6 +48,7 @@ class DiscordLogger(private val title: String, private val icon: String? = null)
         val embed = EmbedBuilder()
             .setTitle(title)
             .setDescription(message)
+            .setColor(0xcfb991)
             .setFooter(dateFormatter.format(Date()))
             .build()
 

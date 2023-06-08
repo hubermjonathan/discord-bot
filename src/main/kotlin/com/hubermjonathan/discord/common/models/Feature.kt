@@ -9,7 +9,7 @@ abstract class Feature(name: String, icon: String) {
     abstract val commands: List<Command>
     abstract val managers: List<Manager>
     abstract val tasks: List<Task>
-    protected val context = Context(logger = DiscordLogger(name, icon))
+    protected val context = Context(logger = DiscordLogger(name, icon), name, icon)
 
     fun load(jda: JDABuilder) {
         val listenerAdapters = buttons + commands + managers

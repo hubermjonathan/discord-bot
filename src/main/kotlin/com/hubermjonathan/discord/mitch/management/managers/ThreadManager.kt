@@ -12,9 +12,7 @@ class ThreadManager(context: Context) : Manager(context) {
         val channelIsNotPublicThread = !event.isFromType(ChannelType.GUILD_PUBLIC_THREAD)
         val channelIsNotPrivateThread = !event.isFromType(ChannelType.GUILD_PRIVATE_THREAD)
 
-        if (channelIsNotPublicThread && channelIsNotPrivateThread) {
-            return
-        }
+        if (channelIsNotPublicThread && channelIsNotPrivateThread) return
 
         logger.info("thread ${event.channel.asMention} created in ${event.channel.asThreadChannel().parentChannel.asMention}")
     }
