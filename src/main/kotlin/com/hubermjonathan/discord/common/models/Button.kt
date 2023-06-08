@@ -23,7 +23,7 @@ abstract class Button(private val id: String, protected val featureContext: Feat
             event
                 .deferEdit()
                 .queue()
-        } catch (e: Exception) {
+        } catch (e: InteractionException) {
             logger.error(e.localizedMessage, e)
             event
                 .reply(e.localizedMessage)
