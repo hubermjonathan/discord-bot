@@ -1,7 +1,6 @@
 package com.hubermjonathan.discord.mitch
 
 import com.hubermjonathan.discord.common.models.Command
-import com.hubermjonathan.discord.mitch.groups.GroupsFeature
 import com.hubermjonathan.discord.mitch.management.ManagementFeature
 import net.dv8tion.jda.api.JDABuilder
 import net.dv8tion.jda.api.entities.Guild
@@ -22,7 +21,6 @@ fun main() {
         .build()
         .awaitReady()
     val features = listOf(
-        GroupsFeature(jda),
         ManagementFeature(jda),
     )
     val commands = features.flatMap { it.commands }
